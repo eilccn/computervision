@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION "3.17")
+project(project1)
+find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( project1 imgDisplay.cpp )
+target_link_libraries( project1 ${OpenCV_LIBS} )
+set( CMAKE_CXX_STANDARD 14 )
