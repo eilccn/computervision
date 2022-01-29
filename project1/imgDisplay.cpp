@@ -27,8 +27,8 @@ int main(int argc, char** argv) {
     if (k == 'q')
     {
         imwrite("Image Display", img);
+        cv::destroyAllWindows();  
     }
-    cv::destroyAllWindows();
 
     return 0;
 }
