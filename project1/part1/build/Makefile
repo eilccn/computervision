@@ -57,10 +57,10 @@ RM = /usr/local/Cellar/cmake/3.22.1/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/eileenchang/cvprojects/project1
+CMAKE_SOURCE_DIR = /Users/eileenchang/cvprojects/project1/part1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/eileenchang/cvprojects/project1/build
+CMAKE_BINARY_DIR = /Users/eileenchang/cvprojects/project1/part1/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eileenchang/cvprojects/project1/build/CMakeFiles /Users/eileenchang/cvprojects/project1/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eileenchang/cvprojects/project1/part1/build/CMakeFiles /Users/eileenchang/cvprojects/project1/part1/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eileenchang/cvprojects/project1/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/eileenchang/cvprojects/project1/part1/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named project1
+# Target rules for targets named part1
 
 # Build rule for target.
-project1: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 project1
-.PHONY : project1
+part1: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 part1
+.PHONY : part1
 
 # fast build rule for target.
-project1/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/project1.dir/build.make CMakeFiles/project1.dir/build
-.PHONY : project1/fast
+part1/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/part1.dir/build.make CMakeFiles/part1.dir/build
+.PHONY : part1/fast
 
 imgDisplay.o: imgDisplay.cpp.o
 .PHONY : imgDisplay.o
 
 # target to build an object file
 imgDisplay.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/project1.dir/build.make CMakeFiles/project1.dir/imgDisplay.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/part1.dir/build.make CMakeFiles/part1.dir/imgDisplay.cpp.o
 .PHONY : imgDisplay.cpp.o
 
 imgDisplay.i: imgDisplay.cpp.i
@@ -142,7 +142,7 @@ imgDisplay.i: imgDisplay.cpp.i
 
 # target to preprocess a source file
 imgDisplay.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/project1.dir/build.make CMakeFiles/project1.dir/imgDisplay.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/part1.dir/build.make CMakeFiles/part1.dir/imgDisplay.cpp.i
 .PHONY : imgDisplay.cpp.i
 
 imgDisplay.s: imgDisplay.cpp.s
@@ -150,7 +150,7 @@ imgDisplay.s: imgDisplay.cpp.s
 
 # target to generate assembly for a file
 imgDisplay.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/project1.dir/build.make CMakeFiles/project1.dir/imgDisplay.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/part1.dir/build.make CMakeFiles/part1.dir/imgDisplay.cpp.s
 .PHONY : imgDisplay.cpp.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... project1"
+	@echo "... part1"
 	@echo "... imgDisplay.o"
 	@echo "... imgDisplay.i"
 	@echo "... imgDisplay.s"

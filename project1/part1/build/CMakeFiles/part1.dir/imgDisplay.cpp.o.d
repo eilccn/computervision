@@ -1,5 +1,5 @@
-CMakeFiles/project1.dir/imgDisplay.cpp.o: \
-  /Users/eileenchang/cvprojects/project1/imgDisplay.cpp \
+CMakeFiles/part1.dir/imgDisplay.cpp.o: \
+  /Users/eileenchang/cvprojects/project1/part1/imgDisplay.cpp \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/pthread.h \
