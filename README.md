@@ -1,7 +1,18 @@
-# cvprojects
+# project 1: real-time image filtering
 
-• Links/URLs to any videos you created and want to submit as part of your report.
-• The URL for your wiki report for this project.
-• What operating system and IDE you used to run and compile your code.
+• Links/URLs to videos
+ 
+• Project Wiki URL
+https://wiki.khoury.northeastern.edu/x/GxQdBg
+
+• Operating system and IDE used to run and compile code
+-Mac OS
+-Terminal, cmake, and tmux
+
 • Instructions for running your executables.
+-Place all files along with CMakeLists.txt into one directory (let's assume it's called "project1")
+-Create a directory within project1 called "build"
+-Inside the build directory type "cmake .." in command line followed by "make"
+-You can now run the code by typing ./project1 in command line
+
 • Instructions for testing any extensions you completed.
