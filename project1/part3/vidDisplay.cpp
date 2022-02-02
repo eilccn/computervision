@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 		} 
 		*/
 		
-		char last = waitKey(0);
+		int last = waitKey(0);	
 	
 		switch(last) {
 		case 'q':
@@ -77,16 +77,20 @@ int main(int argc, char *argv[]) {
 		  break;
 		}
 		case 'g': // display greyscale live video
+		{
 		  cv::cvtColor(frame, convertedImage, cv::COLOR_BGR2GRAY);
 		  break;
-		default:
+		}
+		default: // 0 to get to original video
+		{
 		  convertedImage = frame;
+		}
 		}
 		
 		cv::imshow(window, convertedImage);
-
-        	char key = waitKey(10);
-        	if (key != 'q')
+		
+		int key = waitKey(10);
+        	if (key != -1)
           	{
 		  last = key;
 		}
