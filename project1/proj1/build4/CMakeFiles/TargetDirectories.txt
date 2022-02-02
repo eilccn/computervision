@@ -1,0 +1,3 @@
+/Users/eileenchang/cvprojects/project1/proj1/build4/CMakeFiles/proj1.dir
+/Users/eileenchang/cvprojects/project1/proj1/build4/CMakeFiles/edit_cache.dir
+/Users/eileenchang/cvprojects/project1/proj1/build4/CMakeFiles/rebuild_cache.dir
