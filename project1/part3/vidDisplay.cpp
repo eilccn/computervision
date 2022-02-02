@@ -1,16 +1,11 @@
 #include <cstdio>
-#include <cstring>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include <iostream>
 
 using namespace cv;
 using namespace std;
-
-
-
-
-
 
 
 int main(int argc, char *argv[]) {
@@ -40,24 +35,20 @@ int main(int argc, char *argv[]) {
 
 	printf("Expected size: %d %d\n", refS.width, refS.height);
 	
+	// create destination output
+        cv::Mat convertedImage;
+
 	// loop for various filter keys
 	for(;!quit;) {
-		cv::Mat src;
-                *capdev >> src; // get a new frame from the camera, treat as a stream
+		cv::Mat frame;
+                *capdev >> frame; // get a new frame from the camera, treat as a stream
 
-		cv::Mat src2 = src; // does not allocate new image, src2 just refers to src data
-		src.copyTo( src2 ); // this actually duplicates image data, so src2 indep of src
 
 		// test if video capture  was successful
-                if( src.empty() ) {
+                if( frame.empty() ) {
                   printf("frame is empty\n");
                   break;
                 }
-		
-		// create destination output
-		cv::Mat dst;
-		// copy contents of source to destination output
-		src.copyTo( dst );
 		
 		/*	
 		// loop over all rows
@@ -69,34 +60,41 @@ int main(int argc, char *argv[]) {
 		  }
 		} 
 		*/
-
-                // loads main live video stream
-                cv::imshow(window, dst);
-
-		// see if there is a waiting keystroke
-		int key = cv::waitKey(10);
-
-		switch(key) {
+		
+		char last = waitKey(0);
+	
+		switch(last) {
 		case 'q':
+		{ 
 		  quit = 1;
 		  break;
-
+		}
 		case 's': // capture a photo if the user hits s
+		{
 		  sprintf(buffer, "%s.%03d.png", label, frameid++);
-		  cv::imwrite(buffer, src, pars);
+		  cv::imwrite(buffer, convertedImage, pars);
 		  printf("Image written: %s\n", buffer);
 		  break;
-
+		}
 		case 'g': // display greyscale live video
-		cv::cvtColor(src, dst, cv::COLOR_BGR2GRAY);  
+		  cv::cvtColor(frame, convertedImage, cv::COLOR_BGR2GRAY);
+		  break;
+		default:
+		  convertedImage = frame;
 		}
 		
+		cv::imshow(window, convertedImage);
 
+        	char key = waitKey(10);
+        	if (key != 'q')
+          	{
+		  last = key;
+		}
 	}
-
+	
 	// terminate the video capture
 	printf("Terminating\n");
 	delete capdev;
-
+	
 	return(0);
 }
