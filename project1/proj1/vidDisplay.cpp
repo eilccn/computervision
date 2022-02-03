@@ -9,7 +9,7 @@ using namespace cv;
 using namespace std;
 
 enum Filter {
-	PREVIEW, GRAY, ALTGRAY, BLUR, SOBELX, SOBELY, QUANT, CARTOON, INVERT
+	PREVIEW, GRAY, ALTGRAY, BLUR, SOBELX, SOBELY, GRADIENT, QUANT, CARTOON, INVERT
 };
 
 int main(int argc, char *argv[]) {
@@ -38,17 +38,14 @@ int main(int argc, char *argv[]) {
 		       (int) capdev->get(cv::CAP_PROP_FRAME_HEIGHT));
 
 	printf("Expected size: %d %d\n", refS.width, refS.height);
-	
-	int last = 0;
-	int key = 0;
 
+	// create instance of filterState to keep track of states	
 	Filter filterState = Filter::PREVIEW;
 
 	// loop for various filter keys
 	for(;!quit;) {
 		cv::Mat frame;
                 *capdev >> frame; // get a new frame from the camera, treat as a stream
-
 
 		// test if video capture  was successful
                 if( frame.empty() ) {
@@ -59,7 +56,7 @@ int main(int argc, char *argv[]) {
 	        // create destination output
         	cv::Mat convertedImage; 
 
-		// if-else ladder for filter and corresponding cv::Mat image output
+		// if-else ladder for filter and corresponding cv::Mat converted image output
 		if (filterState == PREVIEW) {
 		  convertedImage = frame;
 		}
