@@ -13,9 +13,10 @@ enum Filter {
 };
 
 int main(int argc, char *argv[]) {
-	// declare variables
-	char label[256]; // a string for image capture file
 	int quit = 0;
+
+	// declare variables for image capture
+	char label[256]; // a string for image capture file
 	int frameid = 0;
 	char buffer[256];
 	std::vector<int> pars;
