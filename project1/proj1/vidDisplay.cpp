@@ -1,12 +1,16 @@
 #include <cstdio>
-#include <opencv2/opencv.hpp>
+#import <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>
+#include "filter.h"
 
 using namespace cv;
 using namespace std;
 
+enum Filter {
+	PREVIEW, GRAY, ALTGRAY, BLUR, SOBELX, SOBELY, QUANT, CARTOON, INVERT
+};
 
 int main(int argc, char *argv[]) {
 	// declare variables
@@ -35,8 +39,10 @@ int main(int argc, char *argv[]) {
 
 	printf("Expected size: %d %d\n", refS.width, refS.height);
 	
-	// create destination output
-        cv::Mat convertedImage;
+	int last = 0;
+	int key = 0;
+
+	Filter filterState = Filter::PREVIEW;
 
 	// loop for various filter keys
 	for(;!quit;) {
@@ -50,19 +56,51 @@ int main(int argc, char *argv[]) {
                   break;
                 }
 		
-		/*	
-		// loop over all rows
-		for(i=0; i<src.rows; i++) {
-		  // loop over all of columns
-		  for (j=0; j<src.cols, j++) {
-		    // apply filter and write result to destination
-		    dst.at<cv::Vec3b>(i, j) = applyFilter( src, i, j ); // fxn returns pixel (cv::Vec3b)
-		  }
-		} 
-		*/
+	        // create destination output
+        	cv::Mat convertedImage; 
+
+		// if-else ladder for filter and corresponding cv::Mat image output
+		if (filterState == PREVIEW) {
+		  convertedImage = frame;
+		}
+		else if (filterState == GRAY) {
+		  cv::Mat gray_image;
+		  cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
+		  convertedImage = gray_image;
+                }
+		else if (filterState == ALTGRAY) {
+		  convertedImage = alt_greyscale(frame, convertedImage);
+		}
 		
-		int last = waitKey(0);	
-	
+		// load video
+		cv::imshow(window, convertedImage);
+
+		// wait for keypress
+                key = waitKey(1);
+
+		// if-else ladder for keypress and corresponding filter
+		if (key == 'q') {
+		  quit = 1;
+		  break;
+		}
+		else if (key == ' ') {
+		  filterState = PREVIEW;
+		}
+		else if (key == 's') {
+		  sprintf(buffer, "%s.%03d.png", label, frameid++);
+                  cv::imwrite(buffer, convertedImage, pars);
+                  printf("Image written: %s\n", buffer);
+                }
+		else if (key == 'g') {
+		  filterState = GRAY;
+		}
+		else if (key == 'h') {
+		  filterState = ALTGRAY;
+		}		
+		
+		/* ************************************
+		// Alternative switch case for keypress (didn't work) 
+
 		switch(last) {
 		case 'q':
 		{ 
@@ -78,12 +116,13 @@ int main(int argc, char *argv[]) {
 		}
 		case 'g': // display greyscale live video
 		{
-		  cv::cvtColor(frame, convertedImage, cv::COLOR_BGR2GRAY);
+		  cv::cvtColor(frame, convertedImage, cv::COLOR_BGR2GRAY);	  
 		  break;
 		}
 		case 'h': // display alternative greyscale
 		{
-		  alt_greyscale(frame, convertedImage);
+		  convertedImage = alt_greyscale(frame, convertedImage);
+		  break; 
 		}
 		default: // 0 to get to original video
 		{
@@ -93,11 +132,12 @@ int main(int argc, char *argv[]) {
 		
 		cv::imshow(window, convertedImage);
 		
-		int key = waitKey(1);
-        	if (key != -1)
+		key = waitKey(1);
+  	      	if (key != -1)
           	{
 		  last = key;
 		}
+		************************************** */
 	}
 	
 	// terminate the video capture
