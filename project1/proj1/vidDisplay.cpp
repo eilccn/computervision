@@ -69,12 +69,15 @@ int main(int argc, char *argv[]) {
 		else if (filterState == ALTGRAY) {
 		  convertedImage = alt_greyscale(frame, convertedImage);
 		}
+		else if (filterState == BLUR) {
+		  convertedImage = blur5x5(frame, convertedImage);
+		}
 		
 		// load video
 		cv::imshow(window, convertedImage);
 
 		// wait for keypress
-                key = waitKey(1);
+                int key = waitKey(1);
 
 		// if-else ladder for keypress and corresponding filter
 		if (key == 'q') {
@@ -94,6 +97,9 @@ int main(int argc, char *argv[]) {
 		}
 		else if (key == 'h') {
 		  filterState = ALTGRAY;
+		}
+		else if (key == 'b') {
+		  filterState = BLUR;
 		}		
 		
 		/* ************************************
