@@ -74,7 +74,10 @@ int main(int argc, char *argv[]) {
 		  blur5x5(frame, convertedImage);
 		}
 		else if (filterState == SOBELX) {
-		  sobel3x3(frame, convertedImage);
+		  sobelX3x3(frame, convertedImage);
+		}
+		else if (filterState == SOBELY) {
+		  sobelY3x3(frame, convertedImage);
 		}
 
 		// load video
@@ -108,7 +111,9 @@ int main(int argc, char *argv[]) {
 		else if (key == 'x') {
 		  filterState = SOBELX;
 		}
-				
+		else if (key == 'y') {
+		  filterState = SOBELY;
+		}				
 	}
 	
 	// terminate the video capture
