@@ -104,34 +104,35 @@ int sobel3x3( cv::Mat &src, cv::Mat &dst) {
         int c;
         int i, j;
 
-        // applying filter [-1 0 1] horizontally
+        // applying filter [-1 0 1] 
         // loop over all rows except top and bottom
         for(i=1; i<src.rows-1; i++) {
           // loop over all rows except first and last
           for(j=1; j<src.cols-1; j++) {
             // apply the filter and write the result to temp destination image
             for (c=0;c<3;c++) { // loop over number of channels
-              first_result[c] = src.at<cv::Vec3b>(i-1,j-1)[c]*(-1) + src.at<cv::Vec3b>(i-1, j)[c]*0 +
-              src.at<cv::Vec3b>(i-1, j+1)[c];
+              first_result[c] = src.at<cv::Vec3b>(i-1,j-1)[c]*(-1) + src.at<cv::Vec3b>(i, j-1)[c]*0 +
+              src.at<cv::Vec3b>(i+1, j-1)[c];
             first_result[c] /= 1; // do nothing to scale it
-            first_final[c] = (unsigned short)first_result[c];
+            first_final[c] = (signed short)first_result[c];
             temp_dst.at<cv::Vec3b>(i, j)[c] = first_final[c];
             }
            }
           }
 
-        // applying filter [1 2 1] vertically
+        // applying filter [1 2 1] 
         // loop over all rows except top and bottom
         for(i=1; i<src.rows-1; i++) {
           // loop over all rows except first and last
           for(j=1; j<src.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
-              second_result[c] = temp_dst.at<cv::Vec3b>(i-1, j-1)[c] + temp_dst.at<cv::Vec3b>(i, j-1)[c]*2 +
-              temp_dst.at<cv::Vec3b>(i+1, j-1)[c];
+              second_result[c] = temp_dst.at<cv::Vec3b>(i-1, j-1)[c] + temp_dst.at<cv::Vec3b>(i-1, j)[c]*2 +
+              temp_dst.at<cv::Vec3b>(i-1, j+1)[c];
             second_result[c] /= 4; // sum of filter coefficients
-            finalresult[c] = (unsigned short)second_result[c];
+            finalresult[c] = (signed short)second_result[c];
             dst.at<cv::Vec3b>(i,j)[c] = second_result[c];
+	    
             }
           }
         }

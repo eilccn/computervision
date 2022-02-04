@@ -75,6 +75,7 @@ int main(int argc, char *argv[]) {
 		}
 		else if (filterState == SOBELX) {
 		  sobel3x3(frame, convertedImage);
+		  convertScaleAbs(convertedImage, frame);
 		}
 		
 		// load video
