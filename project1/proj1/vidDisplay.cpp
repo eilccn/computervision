@@ -56,6 +56,7 @@ int main(int argc, char *argv[]) {
 		
 	        // create destination output
         	cv::Mat convertedImage; 
+		convertedImage = frame;		
 
 		// if-else ladder for filter and corresponding cv::Mat converted image output
 		if (filterState == PREVIEW) {
@@ -67,10 +68,13 @@ int main(int argc, char *argv[]) {
 		  convertedImage = gray_image;
                 }
 		else if (filterState == ALTGRAY) {
-		  convertedImage = alt_greyscale(frame, convertedImage);
+		  alt_greyscale(frame, convertedImage);
 		}
 		else if (filterState == BLUR) {
-		  convertedImage = blur5x5(frame, convertedImage);
+		  blur5x5(frame, convertedImage);
+		}
+		else if (filterState == SOBELX) {
+		  sobel3x3(frame, convertedImage);
 		}
 		
 		// load video
@@ -101,6 +105,9 @@ int main(int argc, char *argv[]) {
 		else if (key == 'b') {
 		  filterState = BLUR;
 		}		
+		else if (key == 'x') {
+		  filterState = SOBELX;
+		}
 		
 		/* ************************************
 		// Alternative switch case for keypress (didn't work) 
