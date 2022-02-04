@@ -6,8 +6,7 @@
 https://wiki.khoury.northeastern.edu/x/GxQdBg
 
 • Operating system and IDE used to run and compile code
--Mac OS
--Terminal, cmake, and tmux
+Mac OS, terminal, cmake, and tmux
 
 • Instructions for running your executables.
 -Place all files along with CMakeLists.txt into one directory (let's assume it's called "project1")
@@ -16,3 +15,4 @@ https://wiki.khoury.northeastern.edu/x/GxQdBg
 -You can now run the code by typing ./project1 in command line
 
 • Instructions for testing any extensions you completed.
+No extensions
