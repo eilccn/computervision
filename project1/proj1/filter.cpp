@@ -23,13 +23,22 @@ using namespace std;
 // Functions
 
 int alt_greyscale( cv::Mat &src, cv::Mat &dst) {
-	dst.create(src.size(), CV_8UC1);	
+	dst.create(src.size(), src.type());	
+	
+        for (int i=0; i<src.rows; i++) {
+          for (int j=0; j<src.cols; j++) {
+            dst.at<cv::Vec3b>(i, j)[0] = ((src.at<cv::Vec3b>(i, j)[0] + src.at<cv::Vec3b>(i, j)[1] + 
+	      src.at<cv::Vec3b>(i, j)[2]) / 3);
+	  
+	    dst.at<cv::Vec3b>(i, j)[1] = (src.at<cv::Vec3b>(i, j)[0] + src.at<cv::Vec3b>(i, j)[1] +
+              src.at<cv::Vec3b>(i, j)[2]) / 3;
 
-        for (int i=1; i<src.rows-1; i++) {
-          for (int j=1; j<src.cols-1; j++) {
-            dst.at<cv::Vec3b>(i, j) = ((src.at<cv::Vec3b>(i, j)[0] + src.at<cv::Vec3b>(i, j)[1] + src.at<cv::Vec3b>(i, j)[2]) / 3);
+	    dst.at<cv::Vec3b>(i, j)[2] = (src.at<cv::Vec3b>(i, j)[0] + src.at<cv::Vec3b>(i, j)[1] +
+              src.at<cv::Vec3b>(i, j)[2]) / 3;
           }
-	}    
+	}
+	
+    	
 	return 0;
 }
 
@@ -78,7 +87,7 @@ int blur5x5(cv::Mat &src, cv::Mat &dst)
               temp_dst.at<cv::Vec3b>(i+3, j-1)[c];
             second_result[c] /= 10; // sum of filter coefficients
             finalresult[c] = (unsigned char)second_result[c];
-	    dst.at<cv::Vec3b>(i,j)[c] = second_result[c];	    
+	    dst.at<cv::Vec3b>(i,j)[c] = finalresult[c];	    
 	    }
 	  }
 	}
@@ -98,8 +107,8 @@ int sobel3x3( cv::Mat &src, cv::Mat &dst) {
 
         cv::Vec3i first_result = {0, 0, 0}; // initialize to zeros
         cv::Vec3i second_result = {0, 0, 0};
-        cv::Vec3b finalresult;
-        cv::Vec3b first_final;
+        cv::Vec3s finalresult;
+        cv::Vec3s first_final;
 
         int c;
         int i, j;
@@ -111,11 +120,9 @@ int sobel3x3( cv::Mat &src, cv::Mat &dst) {
           for(j=1; j<src.cols-1; j++) {
             // apply the filter and write the result to temp destination image
             for (c=0;c<3;c++) { // loop over number of channels
-              first_result[c] = src.at<cv::Vec3b>(i-1,j-1)[c]*(-1) + src.at<cv::Vec3b>(i, j-1)[c]*0 +
-              src.at<cv::Vec3b>(i+1, j-1)[c];
-            first_result[c] /= 1; // do nothing to scale it
-            first_final[c] = (signed short)first_result[c];
-            temp_dst.at<cv::Vec3b>(i, j)[c] = first_final[c];
+              temp_dst.at<cv::Vec3s>(i, j)[c] = (src.at<cv::Vec3b>(i-1,j-1)[c] + 
+	        src.at<cv::Vec3b>(i, j-1)[c]*2 + src.at<cv::Vec3b>(i+1, j-1)[c]) / 4;
+
             }
            }
           }
@@ -127,21 +134,17 @@ int sobel3x3( cv::Mat &src, cv::Mat &dst) {
           for(j=1; j<src.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
-              second_result[c] = temp_dst.at<cv::Vec3b>(i-1, j-1)[c] + temp_dst.at<cv::Vec3b>(i-1, j)[c]*2 +
-              temp_dst.at<cv::Vec3b>(i-1, j+1)[c];
-            second_result[c] /= 4; // sum of filter coefficients
-            finalresult[c] = (signed short)second_result[c];
-            dst.at<cv::Vec3b>(i,j)[c] = second_result[c];
-	    
+              dst.at<cv::Vec3s>(i,j)[c] = temp_dst.at<cv::Vec3s>(i-1, j-1)[c]*(-1) + 
+		temp_dst.at<cv::Vec3s>(i-1, j)[c]*0 + temp_dst.at<cv::Vec3s>(i-1, j+1)[c];
             }
           }
         }
-
+	dst.convertTo(dst, CV_8UC3);
         return 0;
 }
 
 /*
-cv::Mat sobelX3x3( cv::Mat &src, cv::Mat &dst ) {
+int sobel( cv::Mat &src, cv::Mat &dst ) {
 	// output needs to be type 16S
 
 	int c, y, x;
@@ -194,7 +197,7 @@ cv::Mat sobelX3x3( cv::Mat &src, cv::Mat &dst ) {
 	for(c=0; c<3; c++) {
 	  first_result[c] += 255*maxneg; // set max negative value to 0
 	  first_result[c] /= maxpos+maxneg; // sets the max range back to 255
-	  first_final[c] = (ushort)first_result[c]; // explicit cast to final value
+	  first_final[c] = (signed short)first_result[c]; // explicit cast to final value
 	  temp_dst.at<cv::Vec3b>(i, j)[c] = first_final[c];
 	}	
 
@@ -221,12 +224,11 @@ cv::Mat sobelX3x3( cv::Mat &src, cv::Mat &dst ) {
         for(c=0; c<3; c++) {
           second_result[c] += 255*maxneg; // set max negative value to 0
           second_result[c] /= maxpos+maxneg; // sets the max range back to 255
-          finalresult[c] = (ushort)second_result[c]; // explicit cast to final value
-          temp_dst.at<cv::Vec3b>(i, j)[c] = finalresult[c];
+          finalresult[c] = (signed short)second_result[c]; // explicit cast to final value
+          dst.at<cv::Vec3b>(i, j)[c] = finalresult[c];
 	}
 
-	return(dst);
-        
+       return 0; 
 }
 
 // SOBEL Y FILTER

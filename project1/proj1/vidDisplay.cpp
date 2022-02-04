@@ -75,9 +75,8 @@ int main(int argc, char *argv[]) {
 		}
 		else if (filterState == SOBELX) {
 		  sobel3x3(frame, convertedImage);
-		  convertScaleAbs(convertedImage, frame);
 		}
-		
+
 		// load video
 		cv::imshow(window, convertedImage);
 
@@ -109,47 +108,7 @@ int main(int argc, char *argv[]) {
 		else if (key == 'x') {
 		  filterState = SOBELX;
 		}
-		
-		/* ************************************
-		// Alternative switch case for keypress (didn't work) 
-
-		switch(last) {
-		case 'q':
-		{ 
-		  quit = 1;
-		  break;
-		}
-		case 's': // capture a photo if the user hits s
-		{
-		  sprintf(buffer, "%s.%03d.png", label, frameid++);
-		  cv::imwrite(buffer, convertedImage, pars);
-		  printf("Image written: %s\n", buffer);
-		  break;
-		}
-		case 'g': // display greyscale live video
-		{
-		  cv::cvtColor(frame, convertedImage, cv::COLOR_BGR2GRAY);	  
-		  break;
-		}
-		case 'h': // display alternative greyscale
-		{
-		  convertedImage = alt_greyscale(frame, convertedImage);
-		  break; 
-		}
-		default: // 0 to get to original video
-		{
-		  convertedImage = frame;
-		}
-		}
-		
-		cv::imshow(window, convertedImage);
-		
-		key = waitKey(1);
-  	      	if (key != -1)
-          	{
-		  last = key;
-		}
-		************************************** */
+				
 	}
 	
 	// terminate the video capture
