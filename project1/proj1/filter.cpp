@@ -1,5 +1,7 @@
 #include <cstdio>
+#include <cmath>
 #include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>
@@ -183,12 +185,32 @@ int sobelY3x3( cv::Mat &src, cv::Mat &dst ) {
          return 0;
 }
 
-/*
+
 // GRADIENT
-int magnitude( cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
+int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
+	dst.create(sx.size(), sx.type());
 
+	int i, j, c;
+        for(i=1; i<sx.rows-1; i++) {
+          // loop over all rows except first and last
+          for(j=1; j<sx.cols-1; j++) {
+            // apply the filter and write the result to a destination image
+            for (c=0;c<3;c++) {
+	      dst.at<cv::Vec3s>(i,j)[c] = cv::sqrt( cv::pow(sx.at<cv::Vec3b>(i,j)[c], 2.0) + 
+		cv::pow(sy.at<cv::Vec3b>(i,j)[c], 2.0) );
+	      /*
+              dst.at<cv::Vec3s>(i,j)[c] = cv::sqrt( (cv::pow(sx.at<cv::Vec3b>(i,j)[c], 
+	        2.0, dst.at<cv::Vec3b>(i,j)[c]) ) + (cv::pow(sy.at<cv::Vec3b>(i,j)[c], 2.0,
+		dst.at<cv::Vec3b>(i,j)[c])) );
+	      */
+            }
+           }
+         }
+	
+	dst.convertTo(dst, CV_8UC3);
+	return 0;	
 }
-
+/*
 // BLUR QUANTIZE FILTER
 int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 
@@ -204,6 +226,7 @@ int invert( cv::Mat &src, cv::Mat &dst) {
 
 }
 
+// ALT SOBEL (didn't work)
 int sobel( cv::Mat &src, cv::Mat &dst ) {
         // output needs to be type 16S
 

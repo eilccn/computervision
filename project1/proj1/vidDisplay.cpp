@@ -79,7 +79,23 @@ int main(int argc, char *argv[]) {
 		else if (filterState == SOBELY) {
 		  sobelY3x3(frame, convertedImage);
 		}
+		
+		else if (filterState == GRADIENT) {
+		  cv::Mat sx;
+		  sx.create(frame.size(), frame.type());
+		  sobelX3x3(frame, sx);
+		  sx = frame;
 
+		  cv::Mat sy;
+		  sy.create(frame.size(), frame.type());
+		  sobelY3x3(frame, sy);
+		  sy = frame;
+		
+		  convertedImage.create(frame.size(), frame.type());
+
+		  magnitude(sx, sy, convertedImage);
+		}
+		
 		// load video
 		cv::imshow(window, convertedImage);
 
@@ -114,6 +130,9 @@ int main(int argc, char *argv[]) {
 		else if (key == 'y') {
 		  filterState = SOBELY;
 		}				
+		else if (key == 'm') {
+		  filterState = GRADIENT;
+		}
 	}
 	
 	// terminate the video capture
