@@ -196,20 +196,19 @@ int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
           for(j=1; j<sx.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
-	      dst.at<cv::Vec3s>(i,j)[c] = cv::sqrt( cv::pow(sx.at<cv::Vec3b>(i,j)[c], 2.0) + 
-		cv::pow(sy.at<cv::Vec3b>(i,j)[c], 2.0) );
-	      /*
-              dst.at<cv::Vec3s>(i,j)[c] = cv::sqrt( (cv::pow(sx.at<cv::Vec3b>(i,j)[c], 
-	        2.0, dst.at<cv::Vec3b>(i,j)[c]) ) + (cv::pow(sy.at<cv::Vec3b>(i,j)[c], 2.0,
-		dst.at<cv::Vec3b>(i,j)[c])) );
-	      */
+	      dst.at<cv::Vec3s>(i,j)[c] = cv::sqrt( cv::pow(sx.at<cv::Vec3s>(i,j)[c], 2.0) + 
+		cv::pow(sy.at<cv::Vec3s>(i,j)[c], 2.0) );
+	      
             }
            }
          }
 	
 	dst.convertTo(dst, CV_8UC3);
+
 	return 0;	
+
 }
+
 /*
 // BLUR QUANTIZE FILTER
 int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
