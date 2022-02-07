@@ -79,7 +79,6 @@ int main(int argc, char *argv[]) {
 		else if (filterState == SOBELY) {
 		  sobelY3x3(frame, convertedImage);
 		}
-		
 		else if (filterState == GRADIENT) {
 		  cv::Mat sx;
 		  sx.create(frame.size(), frame.type());
@@ -90,12 +89,16 @@ int main(int argc, char *argv[]) {
 		  sy.create(frame.size(), frame.type());
 		  sobelY3x3(frame, sy);
 		  sy = frame;
-		
-		  convertedImage.create(frame.size(), frame.type());
 
 		  magnitude(sx, sy, convertedImage);
 		}
-		
+		else if (filterState == QUANT) {
+		  blurQuantize(frame, convertedImage, 15);
+		}
+		else if (filterState == INVERT) {
+		  invert(frame, convertedImage);
+		}
+
 		// load video
 		cv::imshow(window, convertedImage);
 
@@ -132,6 +135,12 @@ int main(int argc, char *argv[]) {
 		}				
 		else if (key == 'm') {
 		  filterState = GRADIENT;
+		}
+		else if (key == 'l') {
+		  filterState = QUANT;
+		}
+		else if (key == 'i') {
+		  filterState = INVERT;
 		}
 	}
 	
