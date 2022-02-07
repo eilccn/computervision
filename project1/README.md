@@ -1,3 +1,5 @@
+# Project 1: Real-time image filtering
+
 • Links/URLs to videos
 
 • Project Wiki URL: https://wiki.khoury.northeastern.edu/x/GxQdBg
