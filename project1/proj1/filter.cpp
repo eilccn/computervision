@@ -210,34 +210,49 @@ int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
 // BLUR QUANTIZE FILTER
 int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 	dst.create(src.size(), src.type());
-
+	
 	blur5x5(src, dst);
-		
+
 	int i, j, c;
 	
-	// bucket size
-	int b;
-	b = 255 / levels;
-	int t = c / b;
-	int f = t * b;
+	int b = 255 / levels;
 
-        for(i=1; i<dst.rows-1; i++) {
+        for(i=0; i<dst.rows; i++) {
           // loop over all rows except first and last
-          for(j=1; j<dst.cols-1; j++) {
+          for(j=0; j<dst.cols; j++) {
             // apply the filter and write the result to a destination image
-            for (c=0;c<3;c++) {
-              dst.at<cv::Vec3b>(i,j)[c] = dst.at<cv::Vec3b>(i,j)[c]*f; 
-            }
-          }
+	    for(c=0; c<3; c++) {
+              dst.at<cv::Vec3b>(i, j)[c] = dst.at<cv::Vec3b>(i, j)[c] / b * b + b / 2; 
+	    }
+	  }
         }
-
 	return 0;
 }
 
 
 // INVERT FILTER (CHOICE)
 int invert(cv::Mat &src, cv::Mat &dst) {
-	return 0;
+        dst.create(src.size(), src.type());
+
+        int i, j, c;
+
+        // bucket size
+        int b;
+        b = 255 / 10;
+        int t = c / b;
+        int f = t * b;
+
+        for(i=1; i<dst.rows-1; i++) {
+          // loop over all rows except first and last
+          for(j=1; j<dst.cols-1; j++) {
+            // apply the filter and write the result to a destination image
+            for (c=0;c<3;c++) {
+              dst.at<cv::Vec3b>(i,j)[c] = dst.at<cv::Vec3b>(i,j)[c]*f;
+            }
+          }
+        }
+
+        return 0;
 }
 
 
