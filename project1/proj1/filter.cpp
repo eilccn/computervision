@@ -22,6 +22,7 @@ using namespace std;
         }
 */
 
+
 // Filter Functions
 int greyscale( cv::Mat &src, cv::Mat &dst) {
 	dst.create(src.size(), src.type());	
@@ -45,6 +46,7 @@ int greyscale( cv::Mat &src, cv::Mat &dst) {
     	
 	return 0;
 }
+
 
 // BLUR FILTER
 int blur5x5(cv::Mat &src, cv::Mat &dst) 
@@ -225,6 +227,36 @@ int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 }
 
 
+// CARTOON FILTER
+int cartoon( cv::Mat &src, cv::Mat &dst, int levels, int magThreshold ) {
+        dst.create(src.size(), src.type());
+
+        int i, j, c;
+
+	// apply gradient magnitude filter
+	cv::Mat mag;
+	mag.create(src.size(), src.type());
+
+        cv::Mat sx;
+        sx.create(src.size(), src.type());
+        sobelX3x3(src, sx);
+        sx = src;
+
+        cv::Mat sy;
+        sy.create(src.size(), src.type());
+        sobelY3x3(src, sy);
+        sy = src;
+
+	magnitude(sx, sy, mag);
+	mag = src;
+
+	// apply blur and quantize filter
+	blurQuantize(mag, dst, levels);
+
+	return 0;
+}
+
+
 // INVERT FILTER (CHOICE)
 int invert(cv::Mat &src, cv::Mat &dst) {
         dst.create(src.size(), src.type());
@@ -246,11 +278,3 @@ int invert(cv::Mat &src, cv::Mat &dst) {
         return 0;
 }
 
-
-/*
-// CARTOON FILTER
-int cartoon( cv::Mat &src, cv::Mat &dst, int levels, int magThreshold ) {
-
-}
-
-*/

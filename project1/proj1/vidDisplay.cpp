@@ -98,6 +98,9 @@ int main(int argc, char *argv[]) {
 		else if (filterState == INVERT) {
 		  invert(frame, convertedImage);
 		}
+		else if (filterState == CARTOON) {
+		  cartoon(frame, convertedImage, 15, 15);
+		}
 
 		// load video
 		cv::imshow(window, convertedImage);
@@ -141,6 +144,9 @@ int main(int argc, char *argv[]) {
 		}
 		else if (key == 'i') {
 		  filterState = INVERT;
+		}
+		else if (key == 'c') {
+		  filterState = CARTOON;
 		}
 	}
 	
