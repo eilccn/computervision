@@ -3,7 +3,7 @@
 
 // function declaration
 
-int alt_greyscale(cv::Mat &src, cv::Mat &dst);
+int greyscale(cv::Mat &src, cv::Mat &dst);
 
 int blur5x5(cv::Mat &src, cv::Mat &dst);
 

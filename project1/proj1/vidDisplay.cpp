@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 		  convertedImage = gray_image;
                 }
 		else if (filterState == ALTGRAY) {
-		  alt_greyscale(frame, convertedImage);
+		  greyscale(frame, convertedImage);
 		}
 		else if (filterState == BLUR) {
 		  blur5x5(frame, convertedImage);

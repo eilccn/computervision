@@ -22,13 +22,15 @@ using namespace std;
         }
 */
 
-// Functions
-
-int alt_greyscale( cv::Mat &src, cv::Mat &dst) {
+// Filter Functions
+int greyscale( cv::Mat &src, cv::Mat &dst) {
 	dst.create(src.size(), src.type());	
-	
+
+	// loop over all rows	
         for (int i=0; i<src.rows; i++) {
+	  // loop over all cols
           for (int j=0; j<src.cols; j++) {
+	    // apply filter and write result to destination
             dst.at<cv::Vec3b>(i, j)[0] = ((src.at<cv::Vec3b>(i, j)[0] + src.at<cv::Vec3b>(i, j)[1] + 
 	      src.at<cv::Vec3b>(i, j)[2]) / 3);
 	  
@@ -48,48 +50,37 @@ int alt_greyscale( cv::Mat &src, cv::Mat &dst) {
 int blur5x5(cv::Mat &src, cv::Mat &dst) 
 {
 	dst.create(src.size(), src.type());
-	
+
+	// create temp destination	
 	cv:Mat temp_dst;
 	temp_dst.create(src.size(), src.type());
 	
-	cv::Vec3i first_result = {0, 0, 0, 0, 0}; // initialize to zeros
-	cv::Vec3i second_result = {0, 0, 0, 0, 0};
-	cv::Vec3b finalresult;
-	cv::Vec3b first_final;
-	
-	int c;
-	int i, j;
+	int c, i, j;
 
 	// applying filter [1 2 4 2 1] horizontally
 	// loop over all rows except top and bottom
 	for(i=1; i<src.rows-1; i++) {
-	  // loop over all rows except first and last
+	  // loop over all cols except first and last
 	  for(j=1; j<src.cols-1; j++) {
 	    // apply the filter and write the result to temp destination image
 	    for (c=0;c<3;c++) { // loop over number of channels
-	      first_result[c] = src.at<cv::Vec3b>(i-1,j-1)[c] + src.at<cv::Vec3b>(i-1, j)[c]*2 + 
-	      src.at<cv::Vec3b>(i-1, j+1)[c]*4 + src.at<cv::Vec3b>(i-1, j+2)[c]*2 +
-	      src.at<cv::Vec3b>(i-1, j+3)[c];
-	    first_result[c] /= 10; // sum of the filter coefficients
-	    first_final[c] = (unsigned char)first_result[c];
-	    temp_dst.at<cv::Vec3b>(i, j)[c] = first_final[c];
+	      temp_dst.at<cv::Vec3b>(i, j)[c] = (src.at<cv::Vec3b>(i-1,j-1)[c] + 
+	        src.at<cv::Vec3b>(i-1, j)[c]*2 + src.at<cv::Vec3b>(i-1, j+1)[c]*4 + 
+	        src.at<cv::Vec3b>(i-1, j+2)[c]*2 + src.at<cv::Vec3b>(i-1, j+3)[c]) / 10;
 	    }
-	   }
 	  }
+	}
 	
 	// applying filter [1 2 4 2 1] vertically
         // loop over all rows except top and bottom
         for(i=1; i<src.rows-1; i++) {
-          // loop over all rows except first and last
+          // loop over all cols except first and last
           for(j=1; j<src.cols-1; j++) {
 	    // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
-              second_result[c] = temp_dst.at<cv::Vec3b>(i-1, j-1)[c] + temp_dst.at<cv::Vec3b>(i, j-1)[c]*2 +
-              temp_dst.at<cv::Vec3b>(i+1, j-1)[c]*4 + temp_dst.at<cv::Vec3b>(i+2, j-1)[c]*2 +
-              temp_dst.at<cv::Vec3b>(i+3, j-1)[c];
-            second_result[c] /= 10; // sum of filter coefficients
-            finalresult[c] = (unsigned char)second_result[c];
-	    dst.at<cv::Vec3b>(i,j)[c] = finalresult[c];	    
+              dst.at<cv::Vec3b>(i,j)[c] = (temp_dst.at<cv::Vec3b>(i-1, j-1)[c] + 
+	        temp_dst.at<cv::Vec3b>(i, j-1)[c]*2 + temp_dst.at<cv::Vec3b>(i+1, j-1)[c]*4 + 
+		temp_dst.at<cv::Vec3b>(i+2, j-1)[c]*2 + temp_dst.at<cv::Vec3b>(i+3, j-1)[c]) / 10;
 	    }
 	  }
 	}
@@ -114,7 +105,7 @@ int sobelX3x3( cv::Mat &src, cv::Mat &dst) {
         // applying filter [1 2 1] 
         // loop over all rows except top and bottom
         for(i=1; i<src.rows-1; i++) {
-          // loop over all rows except first and last
+          // loop over all cols except first and last
           for(j=1; j<src.cols-1; j++) {
             // apply the filter and write the result to temp destination image
             for (c=0;c<3;c++) { // loop over number of channels
@@ -122,21 +113,21 @@ int sobelX3x3( cv::Mat &src, cv::Mat &dst) {
 	        src.at<cv::Vec3b>(i, j-1)[c]*2 + src.at<cv::Vec3b>(i+1, j-1)[c]) / 4;
 
             }
-           }
-         }
+          }
+        }
 
         // applying filter [-1 0 1] 
         // loop over all rows except top and bottom
         for(i=1; i<src.rows-1; i++) {
-          // loop over all rows except first and last
+          // loop over all cols except first and last
           for(j=1; j<src.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
               dst.at<cv::Vec3s>(i,j)[c] = temp_dst.at<cv::Vec3s>(i-1, j-1)[c]*(-1) + 
 		temp_dst.at<cv::Vec3s>(i-1, j)[c]*0 + temp_dst.at<cv::Vec3s>(i-1, j+1)[c];
             }
-           }
-         }
+          }
+        }
 	// convert destinatinon to CV_8UC3
 	dst.convertTo(dst, CV_8UC3);
         return 0;
@@ -158,28 +149,28 @@ int sobelY3x3( cv::Mat &src, cv::Mat &dst ) {
         // applying filter [-1 0 1]
         // loop over all rows except top and bottom
         for(i=1; i<src.rows-1; i++) {
-          // loop over all rows except first and last
+          // loop over all cols except first and last
           for(j=1; j<src.cols-1; j++) {
             // apply the filter and write the result to temp destination image
             for (c=0;c<3;c++) { // loop over number of channels
               temp_dst.at<cv::Vec3s>(i, j)[c] = (src.at<cv::Vec3b>(i-1,j-1)[c]*(-1) +
                 src.at<cv::Vec3b>(i, j-1)[c]*0 + src.at<cv::Vec3b>(i+1, j-1)[c]);
             }
-           }
-         }
+          }
+        }
 
         // applying filter [1 2 1]
         // loop over all rows except top and bottom
         for(i=1; i<src.rows-1; i++) {
-          // loop over all rows except first and last
+          // loop over all cols except first and last
           for(j=1; j<src.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
               dst.at<cv::Vec3s>(i,j)[c] = (temp_dst.at<cv::Vec3s>(i-1, j-1)[c] +
                 temp_dst.at<cv::Vec3s>(i-1, j)[c]*2 + temp_dst.at<cv::Vec3s>(i-1, j+1)[c]) / 4;
             }
-           }
-         }
+          }
+        }
 	 // convert destination to CV_8UC3
          dst.convertTo(dst, CV_8UC3);
          return 0;
@@ -191,16 +182,18 @@ int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
 	dst.create(sx.size(), sx.type());
 
 	int i, j, c;
+	
+	// loop over all rows except top and bottom
         for(i=1; i<sx.rows-1; i++) {
-          // loop over all rows except first and last
+          // loop over all cols except first and last
           for(j=1; j<sx.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
 	      dst.at<cv::Vec3s>(i,j)[c] = cv::sqrt( cv::pow(sx.at<cv::Vec3s>(i,j)[c], 2.0) + 
 		cv::pow(sy.at<cv::Vec3s>(i,j)[c], 2.0) ); 
             }
-           }
-         }
+          }
+        }
 	// convert destination to CV_8UC3
 	dst.convertTo(dst, CV_8UC3);
 	return 0;	
@@ -211,14 +204,16 @@ int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
 int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 	dst.create(src.size(), src.type());
 	
+	// apply blur filter	
 	blur5x5(src, dst);
-
-	int i, j, c;
 	
+	// initialize variables
+	int i, j, c;	
 	int b = 255 / levels;
 
+	//loop over all rows
         for(i=0; i<dst.rows; i++) {
-          // loop over all rows except first and last
+          // loop over all colss
           for(j=0; j<dst.cols; j++) {
             // apply the filter and write the result to a destination image
 	    for(c=0; c<3; c++) {
@@ -235,19 +230,15 @@ int invert(cv::Mat &src, cv::Mat &dst) {
         dst.create(src.size(), src.type());
 
         int i, j, c;
-
-        // bucket size
-        int b;
-        b = 255 / 10;
-        int t = c / b;
-        int f = t * b;
-
+	
+	// loop over all rows
         for(i=1; i<dst.rows-1; i++) {
-          // loop over all rows except first and last
+          // loop over all cols
           for(j=1; j<dst.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
-              dst.at<cv::Vec3b>(i,j)[c] = dst.at<cv::Vec3b>(i,j)[c]*f;
+              dst.at<cv::Vec3b>(i,j)[c] = ( dst.at<cv::Vec3b>(i,j)[0] + dst.at<cv::Vec3b>(i,j)[1] +
+		dst.at<cv::Vec3b>(i,j)[2] ) / -3;
             }
           }
         }
