@@ -253,6 +253,19 @@ int cartoon( cv::Mat &src, cv::Mat &dst, int levels, int magThreshold ) {
 	// apply blur and quantize filter
 	blurQuantize(mag, dst, levels);
 
+        // loop over all rows except top and bottom
+        for(i=1; i<dst.rows-1; i++) {
+          // loop over all cols except first and last
+          for(j=1; j<dst.cols-1; j++) {
+            // apply the filter and write the result to a destination image
+            for (c=0;c<3;c++) {
+	      if (mag.at<cv::Vec3b>(i, j)[c] < magThreshold) {
+	        dst.at<cv::Vec3b>(i,j)[c] = 0;
+	      }
+            }
+          }
+        }
+
 	return 0;
 }
 
