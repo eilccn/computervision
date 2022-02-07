@@ -226,7 +226,7 @@ int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
           for(j=1; j<dst.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
-              dst.at<cv::Vec3b>(i,j)[c] = dst.at<cv::Vec3b>(i,j)[f]; 
+              dst.at<cv::Vec3b>(i,j)[c] = dst.at<cv::Vec3b>(i,j)[c]*f; 
             }
           }
         }
