@@ -1,11 +1,10 @@
 # Project 1: Real-time image filtering
 
-• Links/URLs to videos: 
+• Links/URLs to videos: https://drive.google.com/file/d/1VH6HbUszX0352z7_PlvPN_wfrOIJg-UF/view?usp=sharing 
 
 • Project Wiki URL: https://wiki.khoury.northeastern.edu/x/GxQdBg
 
-• Operating system and IDE used to run and compile code: <br />
-Mac OS, terminal, cmake, and tmux
+• Operating system and IDE used to run and compile code: Mac OS, terminal, cmake, and tmux
 
 • Instructions for running your executables: <br /> 
 1. Place all files (filter.cpp, filter.h, vidDisplay.cpp, CMakeLists.txt)  into one directory (i.e. assume it's called "project1") <br />
