@@ -74,23 +74,31 @@ int main(int argc, char *argv[]) {
 		  blur5x5(frame, convertedImage);
 		}
 		else if (filterState == SOBELX) {
-		  sobelX3x3(frame, convertedImage);
+	          cv::Mat sobelx;
+		  sobelx.create(frame.size(), frame.type());
+		  sobelX3x3(frame, sobelx);
+	          convertScaleAbs(sobelx, convertedImage);
 		}
 		else if (filterState == SOBELY) {
-		  sobelY3x3(frame, convertedImage);
+		  cv::Mat sobely;
+		  sobely.create(frame.size(), frame.type());
+		  sobelY3x3(frame, sobely);
+		  convertScaleAbs(sobely, convertedImage);
 		}
 		else if (filterState == GRADIENT) {
 		  cv::Mat sx;
-		  sx.create(frame.size(), frame.type());
+		  sx.create(frame.size(), CV_16SC3);
 		  sobelX3x3(frame, sx);
-		  sx = frame;
 
 		  cv::Mat sy;
-		  sy.create(frame.size(), frame.type());
+		  sy.create(frame.size(), CV_16SC3);
 		  sobelY3x3(frame, sy);
-		  sy = frame;
 
-		  magnitude(sx, sy, convertedImage);
+		  cv::Mat mag;
+		  mag.create(frame.size(), frame.type());
+	
+		  magnitude(sx, sy, mag);
+		  mag.copyTo(convertedImage);
 		}
 		else if (filterState == QUANT) {
 		  blurQuantize(frame, convertedImage, 15);
@@ -99,7 +107,7 @@ int main(int argc, char *argv[]) {
 		  invert(frame, convertedImage);
 		}
 		else if (filterState == CARTOON) {
-		  cartoon(frame, convertedImage, 15, 15);
+		  cartoon(frame, convertedImage, 15, 20);
 		}
 
 		// load video
