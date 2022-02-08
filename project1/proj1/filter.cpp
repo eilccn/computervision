@@ -23,7 +23,8 @@ using namespace std;
 */
 
 
-// Filter Functions
+// FILTER FUNCTIONS
+
 int greyscale( cv::Mat &src, cv::Mat &dst) {
 	dst.create(src.size(), src.type());	
 
@@ -41,9 +42,7 @@ int greyscale( cv::Mat &src, cv::Mat &dst) {
 	    dst.at<cv::Vec3b>(i, j)[2] = (src.at<cv::Vec3b>(i, j)[0] + src.at<cv::Vec3b>(i, j)[1] +
               src.at<cv::Vec3b>(i, j)[2]) / 3;
           }
-	}
-	
-    	
+	}	
 	return 0;
 }
 
@@ -177,7 +176,7 @@ int sobelY3x3( cv::Mat &src, cv::Mat &dst ) {
 
 // GRADIENT
 int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
-
+	// create destination output
 	dst.create(sx.size(), sx.type());
 
 	int i, j, c;
@@ -199,6 +198,7 @@ int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
 
 // BLUR QUANTIZE FILTER
 int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
+	// create destination output
 	dst.create(src.size(), src.type());
 
 	// apply blur filter	
@@ -224,6 +224,7 @@ int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 
 // CARTOON FILTER
 int cartoon( cv::Mat &src, cv::Mat &dst, int levels, int magThreshold ) {
+	// create destination output
         dst.create(src.size(), src.type());
 
         int i, j, c;
@@ -238,8 +239,8 @@ int cartoon( cv::Mat &src, cv::Mat &dst, int levels, int magThreshold ) {
         sobelY3x3(src, sobely);
 
 	cv::Mat mag;		
+	mag.create(src.size(), src.type());
 	magnitude(sobelx, sobely, mag);
-	
 
 	// apply blur and quantize filter
 	blurQuantize(src, dst, levels);
@@ -251,7 +252,7 @@ int cartoon( cv::Mat &src, cv::Mat &dst, int levels, int magThreshold ) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
 	      if (mag.at<cv::Vec3s>(i, j)[c] > magThreshold) {
-	        dst.at<cv::Vec3b>(i,j)[c] = 0;
+	        dst.at<cv::Vec3b>(i,j)[c] = 0; // set pixel black where mag > threshold
 	      }
             }
           }
@@ -261,20 +262,43 @@ int cartoon( cv::Mat &src, cv::Mat &dst, int levels, int magThreshold ) {
 }
 
 
-// INVERT FILTER (CHOICE)
+// CUSTOM GREYSCALE WITH WHITE OUTLINE FILTER (CHOICE)
 int invert(cv::Mat &src, cv::Mat &dst) {
+	// create destination output
         dst.create(src.size(), src.type());
 
+	// create temp dst
+	cv::Mat temp;
+	temp.create(src.size(), src.type());
+
         int i, j, c;
-	
+	int threshold = 20;
+
+        // apply gradient magnitude filter
+        cv::Mat sobelx;
+        sobelx.create(src.size(), CV_16SC3);
+        sobelX3x3(src, sobelx);
+
+        cv::Mat sobely;
+        sobely.create(src.size(), CV_16SC3);
+        sobelY3x3(src, sobely);
+
+        cv::Mat mag;
+        mag.create(src.size(), src.type());
+        magnitude(sobelx, sobely, mag);
+
+	// apply greyscale filter
+	greyscale(src, dst);
+
 	// loop over all rows
-        for(i=1; i<dst.rows-1; i++) {
+        for(i=1; i<mag.rows-1; i++) {
           // loop over all cols
-          for(j=1; j<dst.cols-1; j++) {
+          for(j=1; j<mag.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
-              dst.at<cv::Vec3b>(i,j)[c] = ( dst.at<cv::Vec3b>(i,j)[0] + dst.at<cv::Vec3b>(i,j)[1] + 
-	        dst.at<cv::Vec3b>(i,j)[2] ) / -3;
+	      if (mag.at<cv::Vec3s>(i,j)[c] > threshold) { 
+                dst.at<cv::Vec3b>(i,j)[c] = 255; // set pixel white where mag > threshold
+	      }
             }
           }
         }
