@@ -94,11 +94,7 @@ int main(int argc, char *argv[]) {
 		  sy.create(frame.size(), CV_16SC3);
 		  sobelY3x3(frame, sy);
 
-		  cv::Mat mag;
-		  mag.create(frame.size(), frame.type());
-	
-		  magnitude(sx, sy, mag);
-		  mag.copyTo(convertedImage);
+		  magnitude(sx, sy, convertedImage);		  
 		}
 		else if (filterState == QUANT) {
 		  blurQuantize(frame, convertedImage, 15);

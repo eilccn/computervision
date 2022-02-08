@@ -177,11 +177,9 @@ int sobelY3x3( cv::Mat &src, cv::Mat &dst ) {
 
 // GRADIENT
 int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
-	/*
+	
 	dst.create(sx.size(), sx.type());
 	
-	Vec3i temp_result = {0,0,0};
-	*/
 	int i, j, c;
 	
 	// loop over all rows except top and bottom
@@ -202,8 +200,6 @@ int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
 // BLUR QUANTIZE FILTER
 int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 	dst.create(src.size(), src.type());
-
-	
 	
 	// apply blur filter	
 	blur5x5(src, dst);
@@ -233,21 +229,20 @@ int cartoon( cv::Mat &src, cv::Mat &dst, int levels, int magThreshold ) {
         int i, j, c;
 
 	// apply gradient magnitude filter
-        cv::Mat sx;
-        sx.create(src.size(), CV_16SC3);
-        sobelX3x3(src, sx);
+        cv::Mat sobelx;
+        sobelx.create(src.size(), CV_16SC3);
+        sobelX3x3(src, sobelx);
       
 
-        cv::Mat sy;
-        sy.create(src.size(), CV_16SC3);
-        sobelY3x3(src, sy);
+        cv::Mat sobely;
+        sobely.create(src.size(), CV_16SC3);
+        sobelY3x3(src, sobely);
        
 
 	cv::Mat mag;
         mag.create(src.size(), src.type());
 
-	magnitude(sx, sy, mag);
-	
+	magnitude(sobelx, sobely, mag);		
 
 	// apply blur and quantize filter
 	blurQuantize(src, dst, levels);
@@ -281,8 +276,8 @@ int invert(cv::Mat &src, cv::Mat &dst) {
           for(j=1; j<dst.cols-1; j++) {
             // apply the filter and write the result to a destination image
             for (c=0;c<3;c++) {
-              dst.at<cv::Vec3b>(i,j)[c] = ( dst.at<cv::Vec3b>(i,j)[0] + dst.at<cv::Vec3b>(i,j)[1] +
-		dst.at<cv::Vec3b>(i,j)[2] ) / -3;
+              dst.at<cv::Vec3b>(i,j)[c] = ( dst.at<cv::Vec3b>(i,j)[0] + dst.at<cv::Vec3b>(i,j)[1] + 
+	        dst.at<cv::Vec3b>(i,j)[2] ) / -3;
             }
           }
         }
