@@ -200,7 +200,11 @@ int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
 int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 	// create destination output
 	dst.create(src.size(), src.type());
-
+/*
+	// create temp dst
+	cv::Mat temp;
+	temp.create(src.size(), src.type());
+*/
 	// apply blur filter	
 	blur5x5(src, dst);
 	
@@ -209,9 +213,9 @@ int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 	int b = 255 / levels;
 
 	//loop over all rows
-        for(i=0; i<dst.rows; i++) {
+        for(i=1; i<src.rows-1; i++) {
           // loop over all colss
-          for(j=0; j<dst.cols; j++) {
+          for(j=1; j<src.cols-1; j++) {
             // apply the filter and write the result to a destination image
 	    for(c=0; c<3; c++) {
               dst.at<cv::Vec3b>(i, j)[c] = (unsigned char) dst.at<cv::Vec3b>(i, j)[c] / b * b + b / 2; 
@@ -266,10 +270,6 @@ int cartoon( cv::Mat &src, cv::Mat &dst, int levels, int magThreshold ) {
 int invert(cv::Mat &src, cv::Mat &dst) {
 	// create destination output
         dst.create(src.size(), src.type());
-
-	// create temp dst
-	cv::Mat temp;
-	temp.create(src.size(), src.type());
 
         int i, j, c;
 	int threshold = 20;
