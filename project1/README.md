@@ -8,8 +8,8 @@ Mac OS, terminal, cmake, and tmux
 
 1. Place all files from the "vid_display" directory (filter.cpp, filter.h, vidDisplay.cpp) into a directory on your own OS (i.e. assume it's called "proj1") <br />
 2. You may download the CMake compiler then add your own CMakeLists.txt file to your directory for compiling OR you may opt to use a different compiling method.
-3. Create a directory within your "proj1" directory called "build". <br />
-4. Inside the "build" directory enter "cmake .." in the command line followed by "make". <br />
+3. Create a directory within your "proj1" directory called "build." <br />
+4. If using CMake, while inside the "build" directory enter "cmake .." in the command line followed by "make." <br />
 5. You should now be able to run the code by entering "./project1" in the command line.
 
 ### Description
