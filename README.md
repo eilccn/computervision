@@ -1,6 +1,6 @@
 # Pattern Recognition and Computer Vision Projects
 
-All programs are written in C++ along with OpenCV and the CMake compiling system.
+All projects are implemented with C++ along with OpenCV and the CMake compiler.
 
 Project 1: Real-time image filtering system
 
