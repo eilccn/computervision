@@ -33,8 +33,8 @@ int greyscale( cv::Mat &src, cv::Mat &dst) {
 	  // loop over all cols
           for (int j=0; j<src.cols; j++) {
 	    // apply filter and write result to destination
-            dst.at<cv::Vec3b>(i, j)[0] = ((src.at<cv::Vec3b>(i, j)[0] + src.at<cv::Vec3b>(i, j)[1] + 
-	      src.at<cv::Vec3b>(i, j)[2]) / 3);
+            dst.at<cv::Vec3b>(i, j)[0] = (src.at<cv::Vec3b>(i, j)[0] + src.at<cv::Vec3b>(i, j)[1] + 
+	      src.at<cv::Vec3b>(i, j)[2]) / 3;
 	  
 	    dst.at<cv::Vec3b>(i, j)[1] = (src.at<cv::Vec3b>(i, j)[0] + src.at<cv::Vec3b>(i, j)[1] +
               src.at<cv::Vec3b>(i, j)[2]) / 3;
@@ -201,6 +201,11 @@ int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 	// create destination output
 	dst.create(src.size(), src.type());
 /*
+	/*NOTE: i initially created a temp destination output for the quantization calculation
+	but it created a seg fault. simply applying the calculation to the dst output seemed to
+	resolve the seg fault issue.
+	*/
+
 	// create temp dst
 	cv::Mat temp;
 	temp.create(src.size(), src.type());
