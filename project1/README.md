@@ -6,10 +6,10 @@ Mac OS, terminal, cmake, and tmux
 
 ### Instructions for running executables
 
-1. Place all files (filter.cpp, filter.h, vidDisplay.cpp, CMakeLists.txt)  into one directory (i.e. assume it's called "project1") <br />
-2. Create a directory within project1 called "build". <br />
+1. Place all files from the "proj1" directory (filter.cpp, filter.h, vidDisplay.cpp, CMakeLists.txt)  into a directory on user's own OS (i.e. assume it's called "proj1") <br />
+2. Create a directory within proj1 called "build". <br />
 3. Inside the build directory type "cmake .." in command line followed by "make". <br />
-4. You can now run the code by typing "./project1" in the command line.
+4. You can now run the code by entering "./project1" in the command line.
 
 ### Description
 
