@@ -1,8 +1,11 @@
 # Project 1: Real-time image filtering system
 
-• Operating system and IDE used to run and compile code: Mac OS, terminal, cmake, and tmux
+### Operating system and IDE used to run and compile code
 
-• Instructions for running executables: <br /> 
+Mac OS, terminal, cmake, and tmux
+
+### Instructions for running executables
+
 1. Place all files (filter.cpp, filter.h, vidDisplay.cpp, CMakeLists.txt)  into one directory (i.e. assume it's called "project1") <br />
 2. Create a directory within project1 called "build". <br />
 3. Inside the build directory type "cmake .." in command line followed by "make". <br />
