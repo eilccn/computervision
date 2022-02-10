@@ -25,6 +25,7 @@ using namespace std;
 
 // FILTER FUNCTIONS
 
+// AVERAGE GREYSCALE FILTER
 int greyscale( cv::Mat &src, cv::Mat &dst) {
 	dst.create(src.size(), src.type());	
 
@@ -200,16 +201,12 @@ int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst ) {
 int blurQuantize( cv::Mat &src, cv::Mat &dst, int levels ) {
 	// create destination output
 	dst.create(src.size(), src.type());
-/*
+
 	/*NOTE: i initially created a temp destination output for the quantization calculation
 	but it created a seg fault. simply applying the calculation to the dst output seemed to
 	resolve the seg fault issue.
 	*/
 
-	// create temp dst
-	cv::Mat temp;
-	temp.create(src.size(), src.type());
-*/
 	// apply blur filter	
 	blur5x5(src, dst);
 	
