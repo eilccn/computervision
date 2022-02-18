@@ -44,9 +44,9 @@ int main(int argc, char *argv[]) {
 
     // check if the file is an image
     if( strstr(dp->d_name, ".jpg") ||
-	strstr(dp->d_name, ".png") ||
-	strstr(dp->d_name, ".ppm") ||
-	strstr(dp->d_name, ".tif") ) {
+	    strstr(dp->d_name, ".png") ||
+	    strstr(dp->d_name, ".ppm") ||
+	    strstr(dp->d_name, ".tif") ) {
 
       printf("processing image file: %s\n", dp->d_name);
 

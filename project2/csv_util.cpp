@@ -14,6 +14,7 @@ The function returns a std::vector of char* for the filenames and a 2D std::vect
 #include <cstdio>
 #include <cstring>
 #include <vector>
+#include <iostream>
 #include "opencv2/opencv.hpp"
 
 /*

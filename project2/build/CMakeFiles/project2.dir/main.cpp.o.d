@@ -1,5 +1,5 @@
-CMakeFiles/project2.dir/target.cpp.o: \
-  /Users/eileenchang/computervision/project2/target.cpp \
+CMakeFiles/project2.dir/main.cpp.o: \
+  /Users/eileenchang/computervision/project2/main.cpp \
   /Users/eileenchang/computervision/project2/directory.h \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/opencv.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/opencv_modules.hpp \

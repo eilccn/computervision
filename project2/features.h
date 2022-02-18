@@ -1,0 +1,7 @@
+#ifndef FEATURES_H
+#define FEATURES_H
+#include <opencv2/opencv.hpp>
+
+int process_baseline(cv::Mat &img, std::vector<float> &fvec);
+
+#endif

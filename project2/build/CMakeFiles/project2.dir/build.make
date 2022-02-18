@@ -83,30 +83,62 @@ CMakeFiles/project2.dir/target.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/project2.dir/target.cpp.s"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/eileenchang/computervision/project2/target.cpp -o CMakeFiles/project2.dir/target.cpp.s
 
-CMakeFiles/project2.dir/filters.cpp.o: CMakeFiles/project2.dir/flags.make
-CMakeFiles/project2.dir/filters.cpp.o: ../filters.cpp
-CMakeFiles/project2.dir/filters.cpp.o: CMakeFiles/project2.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/project2.dir/filters.cpp.o"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project2.dir/filters.cpp.o -MF CMakeFiles/project2.dir/filters.cpp.o.d -o CMakeFiles/project2.dir/filters.cpp.o -c /Users/eileenchang/computervision/project2/filters.cpp
+CMakeFiles/project2.dir/features.cpp.o: CMakeFiles/project2.dir/flags.make
+CMakeFiles/project2.dir/features.cpp.o: ../features.cpp
+CMakeFiles/project2.dir/features.cpp.o: CMakeFiles/project2.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/project2.dir/features.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project2.dir/features.cpp.o -MF CMakeFiles/project2.dir/features.cpp.o.d -o CMakeFiles/project2.dir/features.cpp.o -c /Users/eileenchang/computervision/project2/features.cpp
 
-CMakeFiles/project2.dir/filters.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/project2.dir/filters.cpp.i"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/eileenchang/computervision/project2/filters.cpp > CMakeFiles/project2.dir/filters.cpp.i
+CMakeFiles/project2.dir/features.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/project2.dir/features.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/eileenchang/computervision/project2/features.cpp > CMakeFiles/project2.dir/features.cpp.i
 
-CMakeFiles/project2.dir/filters.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/project2.dir/filters.cpp.s"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/eileenchang/computervision/project2/filters.cpp -o CMakeFiles/project2.dir/filters.cpp.s
+CMakeFiles/project2.dir/features.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/project2.dir/features.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/eileenchang/computervision/project2/features.cpp -o CMakeFiles/project2.dir/features.cpp.s
+
+CMakeFiles/project2.dir/directory.cpp.o: CMakeFiles/project2.dir/flags.make
+CMakeFiles/project2.dir/directory.cpp.o: ../directory.cpp
+CMakeFiles/project2.dir/directory.cpp.o: CMakeFiles/project2.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/project2.dir/directory.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project2.dir/directory.cpp.o -MF CMakeFiles/project2.dir/directory.cpp.o.d -o CMakeFiles/project2.dir/directory.cpp.o -c /Users/eileenchang/computervision/project2/directory.cpp
+
+CMakeFiles/project2.dir/directory.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/project2.dir/directory.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/eileenchang/computervision/project2/directory.cpp > CMakeFiles/project2.dir/directory.cpp.i
+
+CMakeFiles/project2.dir/directory.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/project2.dir/directory.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/eileenchang/computervision/project2/directory.cpp -o CMakeFiles/project2.dir/directory.cpp.s
+
+CMakeFiles/project2.dir/csv_util.cpp.o: CMakeFiles/project2.dir/flags.make
+CMakeFiles/project2.dir/csv_util.cpp.o: ../csv_util.cpp
+CMakeFiles/project2.dir/csv_util.cpp.o: CMakeFiles/project2.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/project2.dir/csv_util.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project2.dir/csv_util.cpp.o -MF CMakeFiles/project2.dir/csv_util.cpp.o.d -o CMakeFiles/project2.dir/csv_util.cpp.o -c /Users/eileenchang/computervision/project2/csv_util.cpp
+
+CMakeFiles/project2.dir/csv_util.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/project2.dir/csv_util.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/eileenchang/computervision/project2/csv_util.cpp > CMakeFiles/project2.dir/csv_util.cpp.i
+
+CMakeFiles/project2.dir/csv_util.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/project2.dir/csv_util.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/eileenchang/computervision/project2/csv_util.cpp -o CMakeFiles/project2.dir/csv_util.cpp.s
 
 # Object files for target project2
 project2_OBJECTS = \
 "CMakeFiles/project2.dir/target.cpp.o" \
-"CMakeFiles/project2.dir/filters.cpp.o"
+"CMakeFiles/project2.dir/features.cpp.o" \
+"CMakeFiles/project2.dir/directory.cpp.o" \
+"CMakeFiles/project2.dir/csv_util.cpp.o"
 
 # External object files for target project2
 project2_EXTERNAL_OBJECTS =
 
 project2: CMakeFiles/project2.dir/target.cpp.o
-project2: CMakeFiles/project2.dir/filters.cpp.o
+project2: CMakeFiles/project2.dir/features.cpp.o
+project2: CMakeFiles/project2.dir/directory.cpp.o
+project2: CMakeFiles/project2.dir/csv_util.cpp.o
 project2: CMakeFiles/project2.dir/build.make
 project2: /usr/local/lib/libopencv_gapi.4.5.4.dylib
 project2: /usr/local/lib/libopencv_stitching.4.5.4.dylib
@@ -165,7 +197,7 @@ project2: /usr/local/lib/libopencv_photo.4.5.4.dylib
 project2: /usr/local/lib/libopencv_imgproc.4.5.4.dylib
 project2: /usr/local/lib/libopencv_core.4.5.4.dylib
 project2: CMakeFiles/project2.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/eileenchang/computervision/project2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable project2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/eileenchang/computervision/project2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable project2"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/project2.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

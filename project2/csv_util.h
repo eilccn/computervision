@@ -9,7 +9,10 @@
 
 #ifndef CVS_UTIL_H
 #define CVS_UTIL_H
-namespace std;
+#include <cstdio>
+#include <cstring>
+#include <vector>
+#include "opencv2/opencv.hpp"
 
 /*
   Given a filename, and image filename, and the image features, by
