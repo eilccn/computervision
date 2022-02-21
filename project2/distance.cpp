@@ -21,7 +21,7 @@ using namespace std;
 using namespace cv;
 
 // sum squared difference
-int ssd(std::vector<float> &target_data, std::vector<std::vector<float>> &directory_data) {
+int ssd(std::vector<float> &target_data, std::vector<std::vector<float>> &directory_data, char *num_matches) {
     
     // initialize variables
     double target_sum;
@@ -65,8 +65,8 @@ int ssd(std::vector<float> &target_data, std::vector<std::vector<float>> &direct
     sort(ssd_values.begin(), ssd_values.end());
     
     // return N matches
-
-    /*ssd_values.resize(N);*/
+    int N = atoi(num_matches); // convert argv[6] (N number of matches) from char to integer*/
+    ssd_values.resize(N);
 
     for( auto& n : ssd_values) {
         std::cout << std::fixed << n << std::endl;

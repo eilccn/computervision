@@ -71,9 +71,9 @@ int process_directory(char *dir, char *csv, char *featuretype) {
             // COMPUTE FEATURE VECTORS
             // initialize varaiables for command line arguments passed in as parameters
             char outputfile[256]; // csv file
-            std::vector<float> fvec; // vector for image data
             char ft[256]; // feature type
             strcpy(ft, featuretype);
+            std::vector<float> fvec; // vector for image data
 
             // if-else ladder for feature type computation based on command line argument
             if (strcmp(ft, "b") == 0) {
