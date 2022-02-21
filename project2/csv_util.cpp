@@ -174,7 +174,6 @@ int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::ve
   for(;;) {
     std::vector<float> dvec;
     
-    
     // read the filename
     if( getstring( fp, img_file ) ) {
       break;

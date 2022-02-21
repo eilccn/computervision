@@ -24,7 +24,8 @@ using namespace cv;
   Given a directory on the command line, scans through the directory for image files.
   Reads the full path name for each file, computes each image's features, then writes those features to a csv file
  */
-int process_directory(char *dir, char *csv) {
+int process_directory(char *dir, char *csv, char *featuretype) {
+    // initialize variables for reading directory
     char dirname[256];
     char buffer[256];
     FILE *fp;
@@ -67,20 +68,23 @@ int process_directory(char *dir, char *csv) {
                 continue;
             }
 
-            // compute feature vectors
-            std::vector<float> fvec;
-            process_baseline(img, fvec);
-            
-            // write feature set to csv file
-            char outputfile[256];
-            strcpy(outputfile, csv);
+            // COMPUTE FEATURE VECTORS
+            // initialize varaiables for command line arguments passed in as parameters
+            char outputfile[256]; // csv file
+            std::vector<float> fvec; // vector for image data
+            char ft[256]; // feature type
+            strcpy(ft, featuretype);
 
+            // if-else ladder for feature type computation based on command line argument
+            if (strcmp(ft, "b") == 0) {
+                // compute 9x9 center feature vector
+                process_baseline(img, fvec);
+            }
             
-           
+            // write feature set to new csv file
+            strcpy(outputfile, csv);
             append_image_data_csv(outputfile, dp->d_name, fvec, 0);
-            
-                
-            
+
         }
     }
     return 0;

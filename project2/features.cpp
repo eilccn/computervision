@@ -1,3 +1,9 @@
+/*
+  Eileen Chang
+  
+  Functions for calculating feature sets
+*/
+
 #include "filters.h"
 #include "features.h"
 #include "csv_util.h"
@@ -47,11 +53,37 @@ int process_baseline(cv::Mat &img, std::vector<float> &fvec) {
     std::cout << "}; \n";
     */
     
+    
     return 0;
 }
 
+/*
+// compute rg histogram
+cv::Mat histogram(cv::Mat &img) {
+    const int Hsize = 32;
+    int dim[2] = {Hsize, Hsize};
+    hist2d = cv::Mat::zeros(2, dim, CV_32S);
+    int i, j rx, ry;
+    int num_bins = 16;
+    float r, g, b;
 
+    for(i=0; i<img.rows; i++) {
+        for(j=0; j<img.cols; j++) {
+            r = img.at<cv::Vec3b>(i, j)[0];
+            g = img.at<cv::Vec3b>(i, j)[1];
+            b = img.at<cv::Vec3b>(i, j)[2];
+            rx = num_bins * r / (r + b + g + 1);
+            ry = num_bins * g / (r + b + g + 1);
+            
+            hist2d.at<int>(rx, ry)++;
+    
 
+        }
+
+        return hist2d;
+    }
+
+*/
 
 
 

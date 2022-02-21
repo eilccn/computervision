@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/project2.dir/csv_util.cpp.o.d"
   "CMakeFiles/project2.dir/directory.cpp.o"
   "CMakeFiles/project2.dir/directory.cpp.o.d"
+  "CMakeFiles/project2.dir/distance.cpp.o"
+  "CMakeFiles/project2.dir/distance.cpp.o.d"
   "CMakeFiles/project2.dir/features.cpp.o"
   "CMakeFiles/project2.dir/features.cpp.o.d"
   "CMakeFiles/project2.dir/target.cpp.o"

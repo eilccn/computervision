@@ -177,6 +177,30 @@ directory.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/project2.dir/build.make CMakeFiles/project2.dir/directory.cpp.s
 .PHONY : directory.cpp.s
 
+distance.o: distance.cpp.o
+.PHONY : distance.o
+
+# target to build an object file
+distance.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project2.dir/build.make CMakeFiles/project2.dir/distance.cpp.o
+.PHONY : distance.cpp.o
+
+distance.i: distance.cpp.i
+.PHONY : distance.i
+
+# target to preprocess a source file
+distance.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project2.dir/build.make CMakeFiles/project2.dir/distance.cpp.i
+.PHONY : distance.cpp.i
+
+distance.s: distance.cpp.s
+.PHONY : distance.s
+
+# target to generate assembly for a file
+distance.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project2.dir/build.make CMakeFiles/project2.dir/distance.cpp.s
+.PHONY : distance.cpp.s
+
 features.o: features.cpp.o
 .PHONY : features.o
 
@@ -240,6 +264,9 @@ help:
 	@echo "... directory.o"
 	@echo "... directory.i"
 	@echo "... directory.s"
+	@echo "... distance.o"
+	@echo "... distance.i"
+	@echo "... distance.s"
 	@echo "... features.o"
 	@echo "... features.i"
 	@echo "... features.s"
