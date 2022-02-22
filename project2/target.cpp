@@ -54,6 +54,11 @@ int main( int argc, char *argv[] ) {
         // compute 9x9 center feature vector
         process_baseline(img, target_fvec);
     }
+    /*
+    else if (strcmp(argv[4], "h") == 0) {
+        // compute normalized histogram feature vector
+    }
+    */
 
     /* write feature set data to csv file if it exists OR read feature set data if csv file already exists */
     // initialize csv file variable
@@ -81,6 +86,11 @@ int main( int argc, char *argv[] ) {
     if(strcmp(argv[5], "ssd") == 0) {
         ssd(target_fvec, dir_filenames, dir_fvec, argv[6]);
     }
+    /*
+    else if(strcmp(argv[5], "histx") == 0) {
+        histx(target_fvec, dir_filenames, dir_fvec, argv[6]);
+    }
+    */
     
     return 0;
 }

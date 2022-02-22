@@ -1,7 +1,7 @@
 /*
   Eileen Chang
   
-  Code to read image files in a directory, compute their features, and write their features to a csv file
+  Code to read image files in a directory, compute their features, write their features to a csv file, then read the feature set froom the written csv file
 */
 #include "csv_util.h"
 #include "directory.h"
@@ -19,10 +19,8 @@ using namespace std;
 using namespace cv;
 
 /*
-  int process_directory(char *arg)
-
   Given a directory on the command line, scans through the directory for image files.
-  Reads the full path name for each file, computes each image's features, then writes those features to a csv file
+  Reads the full path name for each file, computes each image's features, writes those features to a csv file, then reads those features from the csv file
  */
 int process_directory(char *dir, char *csv, char *featuretype) {
     // initialize variables for reading directory
@@ -53,7 +51,7 @@ int process_directory(char *dir, char *csv, char *featuretype) {
         strstr(dp->d_name, ".ppm") ||
         strstr(dp->d_name, ".tif") ) {
 
-            printf("processing image file: %s\n", dp->d_name);
+            // printf("processing image file: %s\n", dp->d_name);
 
             // build the overall filename
             strcpy(buffer, dirname);
@@ -79,6 +77,10 @@ int process_directory(char *dir, char *csv, char *featuretype) {
             if (strcmp(ft, "b") == 0) {
                 // compute 9x9 center feature vector
                 process_baseline(img, fvec);
+            }
+            else if (strcmp(ft, "h") == 0) {
+                // compute normalized histogram feature vector
+                histogram(img, fvec);
             }
             
             // write feature set to new csv file

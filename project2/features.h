@@ -4,4 +4,6 @@
 
 int process_baseline(cv::Mat &img, std::vector<float> &fvec);
 
+int histogram(cv::Mat &img, std::vector<float> &fvec);
+
 #endif

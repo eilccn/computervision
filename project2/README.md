@@ -6,7 +6,7 @@ The URL for your wiki report for this project:
 https://wiki.khoury.northeastern.edu/x/mYR5Bg
 
 What operating system and IDE you used to run and compile your code:
-MacOS, Visual Studio Code
+MacOS, Visual Studio Code + CMake Tools
 
 Instructions for running your executables:
 1. Place all .cpp and .h files along with a CMakeLists.txt file into a directory (i.e. called "project2")
