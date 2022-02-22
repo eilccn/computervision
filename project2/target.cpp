@@ -79,7 +79,7 @@ int main( int argc, char *argv[] ) {
     /* compare target image to directory images using distance functions and return N number of the top matches */
     
     if(strcmp(argv[5], "ssd") == 0) {
-        ssd(target_fvec, dir_fvec, argv[6]);
+        ssd(target_fvec, dir_filenames, dir_fvec, argv[6]);
     }
     
     return 0;
