@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/Users/eileenchang/computervision/project1/vid_display/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/vid_display.dir/vidDisplay.cpp.o -c /Users/eileenchang/computervision/project1/vid_display/vidDisplay.cpp",
+  "file": "/Users/eileenchang/computervision/project1/vid_display/vidDisplay.cpp"
+},
+{
+  "directory": "/Users/eileenchang/computervision/project1/vid_display/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/vid_display.dir/filter.cpp.o -c /Users/eileenchang/computervision/project1/vid_display/filter.cpp",
+  "file": "/Users/eileenchang/computervision/project1/vid_display/filter.cpp"
+}
+]

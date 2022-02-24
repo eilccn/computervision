@@ -1,3 +1,8 @@
+/*
+  Eileen Chang
+  
+  Header for filters.cpp
+*/
 #ifndef FILTERS_H
 #define FILTERS_H
 #include <opencv2/opencv.hpp>

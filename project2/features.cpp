@@ -2,6 +2,11 @@
   Eileen Chang
   
   Functions for calculating feature sets
+  These functions are called via argv[4] in the command line:
+  "b" will call the process_baseline function 
+  "h" will call the histogram function
+  "m" will call the multi_hist function
+  "t" will call the texturecolor function
 */
 
 #include "filters.h"
@@ -42,16 +47,6 @@ int process_baseline(cv::Mat &img, std::vector<float> &fvec) {
             }
         }
     }
-
-    /*
-    // Print out the vector
-    std::cout << "v = { ";
-
-    for (auto n : fvec) {
-        std::cout << n << ", ";
-    }
-    std::cout << "}; \n";
-    */
     
     return 0;
 }
@@ -71,6 +66,7 @@ int histogram(cv::Mat &img, std::vector<float> &fvec) {
             r = img.at<cv::Vec3b>(i, j)[0];
             g = img.at<cv::Vec3b>(i, j)[1];
             b = img.at<cv::Vec3b>(i, j)[2];
+
             rx = num_bins * r / (r + b + g + 1);
             ry = num_bins * g / (r + b + g + 1);
             
@@ -89,29 +85,42 @@ int histogram(cv::Mat &img, std::vector<float> &fvec) {
     return 0;
 }
 
-    /*
-    // Print out the vector
-    std::cout << "v = { ";
+// compute multi histogram feature set
+int multi_hist(cv::Mat &img, std::vector<float> &fvec) {
+    // initialize vectors for each separate histogram
+    std::vector<float> center_fvec;
+    std::vector<float> whole_fvec;
 
-    for (auto n : fvec) {
-        std::cout << std::fixed << n << ", ";
+    // obtain center 5x5 square of the image
+    cv::Mat center;
+    const int cropSize = 5;
+    const int offsetW = (img.cols - cropSize) / 2;
+    const int offsetH = (img.rows - cropSize) / 2;
+    const Rect cropped(offsetW, offsetH, cropSize, cropSize);
+    center = img(cropped).clone();
+
+    // compute rg histogram feature set for center 9x9
+    histogram(center, center_fvec);
+
+    // compute rg histogram feature set for whole image
+    histogram(img, whole_fvec);
+
+    /* Concatenate the center and whole image vectors */
+    // populate the concatenated vector into the fvec output
+    center_fvec.insert(center_fvec.end(), whole_fvec.begin(), whole_fvec.end());
+
+    for(auto& n : center_fvec) {
+        fvec.push_back(n);
     }
-    std::cout << "}; \n";
 
     return 0;
-    
 }
-*/
 
-
-
-
-
-/*
 // compute texture and color feature set 
-int(cv::Mat &img, std::vector<float> &fvec) {
-    int i, j, c;
-
+// this function is called in the command line as argv[4] 
+int texturecolor(cv::Mat &img, std::vector<float> &fvec) {
+    /* TEXTURE */
+    // apply sobel filters, gradient magnitude filter, and greyscale filter
     cv::Mat sx;
 	sx.create(img.size(), CV_16SC3);
 	sobelX3x3(img, sx);
@@ -126,19 +135,96 @@ int(cv::Mat &img, std::vector<float> &fvec) {
 	magnitude(sx, sy, mag_img);
 	convertScaleAbs(mag_img, converted_img);
 
+    // initialize vectors for gray magnitude histogram
+    const int Hsize = 32;
+    int dim[1] = {Hsize};
+    cv::Mat hist1d;
+    hist1d = cv::Mat::zeros(1, dim, CV_32S);
+    int i, j, c;
+    int num_bins = 16;
+    std::vector<float> graymag_fvec;
+
     // convert gradient magnitude image to greyscale
     cv::Mat gray_img;
     img.copyTo(gray_img);
     cv::cvtColor(converted_img, gray_img, cv::COLOR_BGR2GRAY);
 
+    // push magnitude values to histogram
     for(i=0; i<gray_img.rows; i++) {
         for(j=0; j<gray_img.cols; j++) {
-            magnitude = (int)gray_img.at<uchar>(i,j)[0];
-            bin = (int)magnitude / (256 / num_bins));
-            hist1d bin += 1;
+            for(c=0; c<3; c++) {
+                auto value = gray_img.at<uchar>(i,j);
+                hist1d.at<int>(value)++;
+                /*graymag_fvec.push_back(value);*/
+            }
+        }
+    }
+
+
+    for(i=0; i<hist1d.rows; i++) {
+        for(j=0; j<hist1d.cols; j++) {
+            graymag_fvec.push_back(hist1d.at<int>(i,j));
+        }
+    }
+
+    /* COLOR */
+    std::vector<float> color_fvec;
+    histogram(img, color_fvec);
+
+    /* Concatenate the COLOR and GRAYMAG vectors */
+    // populate the concatenated vector into the fvec output
+    graymag_fvec.insert(graymag_fvec.end(), color_fvec.begin(), color_fvec.end());
+
+    for(auto& n : graymag_fvec) {
+        fvec.push_back(n);
+    }
+
+    /*
+    // Print out the vector
+    std::cout << "v = { ";
+
+    for (auto x : fvec) {
+        std::cout << x << ", ";
+    }
+    std::cout << "}; \n";
+    */
+    
+    return 0;
+}
+
+// compute custom feature set: green images
+/*
+This function collects only the green values from the image
+as a 1d cv::Mat histogram
+*/
+int green(cv::Mat &img, std::vector<float> &fvec) {
+    const int Hsize = 32;
+    int dim[1] = {Hsize};
+    cv::Mat hist1d;
+    hist1d = cv::Mat::zeros(1, dim, CV_32S);
+    int i, j, gx;
+    int num_bins = 16;
+    float r, g, b;
+
+    for(i=0; i<img.rows; i++) {
+        for(j=0; j<img.cols; j++) {
+            r = img.at<cv::Vec3b>(i, j)[0];
+            g = img.at<cv::Vec3b>(i, j)[1];
+            b = img.at<cv::Vec3b>(i, j)[2];
+
+            gx = num_bins * g / (r + b + g + 1);
+            
+            hist1d.at<int>(gx)++;
+        }
+
+    }
+
+    for(i=0; i<hist1d.rows; i++) {
+        for(j=0; j<hist1d.cols; j++) {
+            
+            fvec.push_back(hist1d.at<int>(i,j));
         }
     }
 
     return 0;
 }
-*/

@@ -2,6 +2,7 @@
   Eileen Chang
   
   Code to read image files in a directory, compute their features, write their features to a csv file, then read the feature set froom the written csv file
+  Initializes feature set computation function corresponding to a command line argument passed in as a parameter
 */
 #include "csv_util.h"
 #include "directory.h"
@@ -21,6 +22,7 @@ using namespace cv;
 /*
   Given a directory on the command line, scans through the directory for image files.
   Reads the full path name for each file, computes each image's features, writes those features to a csv file, then reads those features from the csv file
+  Initializes feature set computation function corresponding to a command line argument passed in as a parameter
  */
 int process_directory(char *dir, char *csv, char *featuretype) {
     // initialize variables for reading directory
@@ -81,6 +83,23 @@ int process_directory(char *dir, char *csv, char *featuretype) {
             else if (strcmp(ft, "h") == 0) {
                 // compute normalized histogram feature vector
                 histogram(img, fvec);
+            }
+            else if (strcmp(ft, "m") == 0) {
+                // compute multihistogram feature vector
+                multi_hist(img, fvec);
+            }
+            else if (strcmp(ft, "t") == 0) {
+                // compute texture color feature vector
+                texturecolor(img, fvec);
+            }
+            /*
+            else if (strcmp(ft, "g") == 0) {
+                // compute green histogram feature vector
+                groundsky(img, fvec);
+            }
+            */
+            else if (strcmp(ft, "gr") == 0) {
+                green(img, fvec);
             }
             
             // write feature set to new csv file

@@ -12,7 +12,8 @@ Instructions for running your executables:
 1. Place all .cpp and .h files along with a CMakeLists.txt file into a directory (i.e. called "project2")
 2. Open "project2" in Visual Studio Code
 3. Build "project2" using the "CMake Tools" extension
-4. Run the program by first entering "./project2 /{target image pathname}
+4. Run the program by first entering "./project2 " followed by the required command line arguments (please read the main file "target.cpp" for what arguments need to be passed)
+5. Note: Every time you use a new feature type, new data needs to be written to a csv file. There is no implementation for clearing the csv file so the outputfile needs to be manually deleted and recreated.
 
 Instructions for testing any extensions you completed:
 No extensions completed
