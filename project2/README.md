@@ -8,16 +8,22 @@ Content-based image retrieval, when applied to computer vision, searches through
 The overall program is a command line program that takes in the following arguments:
 
 [argv0]: ./project2 
+
 [argv1]: target image path
+
 [argv2]: directory path
+
 [argv3]: csv file path
+
 [argv4]: feature type (b, h, m, t)
+
 [argv5]: matching method (ssd, histx, multix, tcx)
+
 [argv6]: # images N to return
 
 The overall flow of the program is that it computes the features of a target image, computes the features of each directory image, computes the distance between the target image and each directory image according to a distance metric, sorts the directory images according to their distance from the target image, and returns the top N matches. When using distance metrics, the smaller the distance between two images, the more similar they will be. The matching methods I implemented include sum square difference, histogram intersection, and histogram intersection with weighted averaging to combine the distances between the different histograms. The feature types include a 9x9 center crop of the image, an rg histogram, a multi-histogram (the first is the rg histogram of the center 9x9 crop and the second is the rg histogram of the whole image), a texture/color histogram (the texture histogram is grayscale gradient magnitude and the color is an rg histogram), and a custom built feature type that only collects the green values from an rg histogram.  
 
-Instructions for running  executables:
+### Instructions for running  executables:###
 1. Place all .cpp and .h files along with a CMakeLists.txt file into a directory (i.e. called "project2")
 2. Open "project2" in Visual Studio Code
 3. Build "project2" using the "CMake Tools" extension
