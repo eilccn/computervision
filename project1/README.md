@@ -1,8 +1,6 @@
 # Project 1: Real-time image filtering system
 
-### Operating system and IDE used to run and compile code
-
-Mac OS, terminal, cmake, and tmux
+https://wiki.khoury.northeastern.edu/display/~eilccn/CS5330+Project+1+Wiki
 
 ### Instructions for running executables
 
