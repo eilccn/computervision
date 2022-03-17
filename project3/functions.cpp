@@ -37,7 +37,6 @@ int threshold(cv::Mat &src, cv::Mat &dst) {
     }
 
     return 0;
-
 }
 
 /** MORPHOLOGICAL FILTERING
@@ -46,22 +45,22 @@ int threshold(cv::Mat &src, cv::Mat &dst) {
 **/
 int morphological(cv::Mat &src, cv::Mat &dst) {
     // threshold the image
-			cv::Mat threshold_img;
-			threshold(src, threshold_img);
+	cv::Mat threshold_img;
+	threshold(src, threshold_img);
 
-			// create structuring element
-			int morph_size = 2;
+	// create structuring element
+	int morph_size = 2;
 
-			cv::Mat element = getStructuringElement(
-        		MORPH_RECT,
-        		Size(2 * morph_size + 1, 2 * morph_size + 1),
-        		Point(morph_size, morph_size));
+	cv::Mat element = getStructuringElement(
+        MORPH_RECT,
+        Size(2 * morph_size + 1, 2 * morph_size + 1),
+        Point(morph_size, morph_size));
 
-			// apply closing morphological filtering
-			cv::morphologyEx(threshold_img, dst, MORPH_CLOSE, element, Point(-1, -1), 2);
+	// apply closing morphological filtering
+	cv::morphologyEx(threshold_img, dst, MORPH_CLOSE, element, Point(-1, -1), 2);
 
-			// apply open morphological filtering
-			cv::morphologyEx(threshold_img, dst, MORPH_OPEN, element, Point(-1, -1), 2);
+	// apply open morphological filtering
+	cv::morphologyEx(threshold_img, dst, MORPH_OPEN, element, Point(-1, -1), 2);
     
     return 0;
 }
