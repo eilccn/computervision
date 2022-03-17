@@ -1,6 +1,10 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/project3.dir/main.cpp.o"
-  "CMakeFiles/project3.dir/main.cpp.o.d"
+  "CMakeFiles/project3.dir/filter.cpp.o"
+  "CMakeFiles/project3.dir/filter.cpp.o.d"
+  "CMakeFiles/project3.dir/functions.cpp.o"
+  "CMakeFiles/project3.dir/functions.cpp.o.d"
+  "CMakeFiles/project3.dir/vidDisplay.cpp.o"
+  "CMakeFiles/project3.dir/vidDisplay.cpp.o.d"
   "project3"
   "project3.pdb"
 )

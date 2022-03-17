@@ -129,29 +129,77 @@ project3/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/build
 .PHONY : project3/fast
 
-main.o: main.cpp.o
-.PHONY : main.o
+filter.o: filter.cpp.o
+.PHONY : filter.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/main.cpp.o
-.PHONY : main.cpp.o
+filter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/filter.cpp.o
+.PHONY : filter.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+filter.i: filter.cpp.i
+.PHONY : filter.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/main.cpp.i
-.PHONY : main.cpp.i
+filter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/filter.cpp.i
+.PHONY : filter.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+filter.s: filter.cpp.s
+.PHONY : filter.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/main.cpp.s
-.PHONY : main.cpp.s
+filter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/filter.cpp.s
+.PHONY : filter.cpp.s
+
+functions.o: functions.cpp.o
+.PHONY : functions.o
+
+# target to build an object file
+functions.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/functions.cpp.o
+.PHONY : functions.cpp.o
+
+functions.i: functions.cpp.i
+.PHONY : functions.i
+
+# target to preprocess a source file
+functions.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/functions.cpp.i
+.PHONY : functions.cpp.i
+
+functions.s: functions.cpp.s
+.PHONY : functions.s
+
+# target to generate assembly for a file
+functions.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/functions.cpp.s
+.PHONY : functions.cpp.s
+
+vidDisplay.o: vidDisplay.cpp.o
+.PHONY : vidDisplay.o
+
+# target to build an object file
+vidDisplay.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/vidDisplay.cpp.o
+.PHONY : vidDisplay.cpp.o
+
+vidDisplay.i: vidDisplay.cpp.i
+.PHONY : vidDisplay.i
+
+# target to preprocess a source file
+vidDisplay.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/vidDisplay.cpp.i
+.PHONY : vidDisplay.cpp.i
+
+vidDisplay.s: vidDisplay.cpp.s
+.PHONY : vidDisplay.s
+
+# target to generate assembly for a file
+vidDisplay.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/project3.dir/build.make CMakeFiles/project3.dir/vidDisplay.cpp.s
+.PHONY : vidDisplay.cpp.s
 
 # Help Target
 help:
@@ -162,9 +210,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... project3"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... filter.o"
+	@echo "... filter.i"
+	@echo "... filter.s"
+	@echo "... functions.o"
+	@echo "... functions.i"
+	@echo "... functions.s"
+	@echo "... vidDisplay.o"
+	@echo "... vidDisplay.i"
+	@echo "... vidDisplay.s"
 .PHONY : help
 
 

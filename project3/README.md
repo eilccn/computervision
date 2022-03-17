@@ -3,7 +3,6 @@
 Links/URLs to any videos you created and want to submit as part of your report.
 
 The URL for your wiki report for this project.
-https://wiki.khoury.northeastern.edu/display/~eilccn/CS5330+Project+3%3A+Real-Time+Object+2-D+Recognition
 
 What operating system and IDE you used to run and compile your code.
 MacOS, Visual Studio Code, CMake
