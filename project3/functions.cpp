@@ -50,7 +50,6 @@ int morphological(cv::Mat &src, cv::Mat &dst) {
 
 	// create structuring element
 	int morph_size = 2;
-
 	cv::Mat element = getStructuringElement(
         MORPH_RECT,
         Size(2 * morph_size + 1, 2 * morph_size + 1),
