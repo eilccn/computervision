@@ -11,20 +11,19 @@
 using namespace cv;
 using namespace std;
 
-/*** THRESHOLDING ALGORITHM
+/** THRESHOLDING ALGORITHM
  * separates object from background
-***/
+**/
 int threshold(cv::Mat &src, cv::Mat &dst) {
 
     // pre-process image by blurring as suggested in part 1
 	cv::Mat blur_img;
 	cv::blur(src, blur_img, Size(3, 3), Point(-1, -1));
 
-	// could also consider making high saturation pixels darker 
-
     // create dst image with size same as src rgb image but with a single channel only
     dst.create(src.size(), CV_8UC1);
 
+    // compute the thresholded image
     int i, j;
     int threshold = 127;
 
@@ -39,5 +38,31 @@ int threshold(cv::Mat &src, cv::Mat &dst) {
 
     return 0;
 
+}
+
+/** MORPHOLOGICAL FILTERING
+ * cleans up the thresholded binary image
+ * uses built-in opencv growing and shrinking fxns
+**/
+int morphological(cv::Mat &src, cv::Mat &dst) {
+    // threshold the image
+			cv::Mat threshold_img;
+			threshold(src, threshold_img);
+
+			// create structuring element
+			int morph_size = 2;
+
+			cv::Mat element = getStructuringElement(
+        		MORPH_RECT,
+        		Size(2 * morph_size + 1, 2 * morph_size + 1),
+        		Point(morph_size, morph_size));
+
+			// apply closing morphological filtering
+			cv::morphologyEx(threshold_img, dst, MORPH_CLOSE, element, Point(-1, -1), 2);
+
+			// apply open morphological filtering
+			cv::morphologyEx(threshold_img, dst, MORPH_OPEN, element, Point(-1, -1), 2);
+    
+    return 0;
 }
 

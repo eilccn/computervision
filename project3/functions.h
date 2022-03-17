@@ -3,4 +3,6 @@
 
 int threshold(cv::Mat &src, cv::Mat &dst);
 
+int morphological(cv::Mat &src, cv::Mat &dst);
+
 #endif

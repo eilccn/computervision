@@ -59,28 +59,35 @@ int main(int argc, char *argv[]) {
         cv::Mat convertedImage; 
 		convertedImage = frame;		
 
-		// if-else ladder for filter and corresponding cv::Mat converted image output
+		/** if-else ladder for computing tasks 1-4:
+		 * thresholding
+		 * morphological filtering
+		 * connected components
+		 * moments
+		 **/
 		if (filterState == PREVIEW) {
-		  convertedImage = frame;
+			convertedImage = frame;
 		}
 		else if (filterState == THRESHOLD) {
-		  // call thresholding algorithm function (in functions.cpp)
-		  threshold(frame, convertedImage);
+			// call thresholding algorithm function 
+			threshold(frame, convertedImage);
         }
-		/*
 		else if (filterState == MORPH) {
-		  
+			// call morphological filtering function
+			morphological(frame, convertedImage);
 		}
 		else if (filterState == CC) {
-		  
+			
 		}
+		/*
 		else if (filterState == MOMENTS) {
 
 		}
 		*/
 
 		// load video
-		cv::imshow(window, convertedImage);
+		cv::imshow(window, frame); // display original image
+		cv::imshow(window, convertedImage); // display filtered image
 
 		// wait for keypress
         int key = waitKey(1);
