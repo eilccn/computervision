@@ -351,5 +351,4 @@ CMakeFiles/project3.dir/functions.cpp.o: \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/video.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/video/tracking.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/video/background_segm.hpp \
-  /Users/eileenchang/computervision/project3/functions.h \
-  /Users/eileenchang/computervision/project3/filter.h
+  /Users/eileenchang/computervision/project3/functions.h

@@ -6,7 +6,6 @@
 #include <opencv2/highgui.hpp>
 #include <iostream>
 #include "functions.h"
-#include "filter.h"
 
 using namespace cv;
 using namespace std;
@@ -126,7 +125,7 @@ int moments(cv::Mat &src, cv::Mat &dst) {
     cv::Mat labelImage(src.size(), CV_32S);
     int nRegions = cv::connectedComponentsWithStats(binary, labelImage, stats, centroids);
     //cout << "Number of connected components = " << nLabels << endl << endl;
-
+    
     /**
     // print stats and centroids
     cout << "Show statistics and centroids:" << endl;
@@ -136,26 +135,43 @@ int moments(cv::Mat &src, cv::Mat &dst) {
 	cout << "stats.size()=" << endl << stats.size() << std::endl;
     **/
 
-	// assign different colors to each connected component region
-	std::vector<Vec3b> colors(nRegions);
-	colors[0] = Vec3b(0, 0, 0);//background
+   	dst.create(src.size(), CV_8UC3);
 			
-	for (int label = 1; label < nRegions; label++) {
-		colors[label] = Vec3b((rand() & 255), (rand() & 255), (rand() & 255));
-	}
-			
-	dst.create(src.size(), CV_8UC3);
-			
-	for (int r = 0; r < dst.rows; ++r) {
-		for (int c = 0; c < dst.cols; ++c) {
-			int label = labelImage.at<int>(r, c);
-			Vec3b &pixel = dst.at<Vec3b>(r, c);
+	for (int label = 0; label < nRegions; label++) {
 
-			pixel = colors[label];
-		}
+        // select the image part relative to label
+        cv::Mat obj = (binary == label);              
+        Moments m = cv::moments(obj, false); // get moments as world coordinates
+
+        // centroid (x, y)
+        Point2d mc(m.m10/m.m00, m.m01/m.m00); 
+
+        // orientation of least central moment
+        double m11 = m.m11 / m.m00;
+        double m20 = m.m20 / m.m00;
+        double m02 = m.m02 / m.m00;
+    
+        double orientation = 0.5*atan(2*m11 / (m20 - m02));
+
+        // major axis
+        
+
+        // minor axis
+        
+        // draw major and minor axes
+        
+
+        // get and draw the center
+        // remember m.m00 could be 0 if object has self-intersections
+        if (m.m00 != 0) {
+            Point center;
+            center.x = m.m10 / m.m00;
+            center.y = m.m01 / m.m00;
+            cv::circle(dst, center, 3, Scalar(0, 255, 0), -1);
+        }
 	}
 	
-	// create rectangular bounding box around each region		
+	// create oriented bounding box around each region		
 	for(int i=0; i<stats.rows; i++) {
 		int x = stats.at<int>(Point(0, i));
 		int y = stats.at<int>(Point(1, i));

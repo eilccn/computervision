@@ -271,5 +271,4 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/highgui.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/videoio.hpp \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iostream \
-  /Users/eileenchang/computervision/project3/functions.h \
-  /Users/eileenchang/computervision/project3/filter.h
+  /Users/eileenchang/computervision/project3/functions.h

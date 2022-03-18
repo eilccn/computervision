@@ -4,7 +4,6 @@
 #include <opencv2/highgui.hpp>
 #include <iostream>
 #include "functions.h"
-#include "filter.h"
 
 using namespace cv;
 using namespace std;
@@ -82,11 +81,11 @@ int main(int argc, char *argv[]) {
 			// call connected components function
 			conn_comp(frame, convertedImage);
 		}
-		/*
 		else if (filterState == MOMENTS) {
-
+			// call moments function
+			moments(frame, convertedImage);
 		}
-		*/
+		
 
 		// load video
 		cv::imshow(window, convertedImage); // display filtered image
