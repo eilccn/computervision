@@ -7,4 +7,6 @@ int morphological(cv::Mat &src, cv::Mat &dst);
 
 int conn_comp(cv::Mat &src, cv::Mat &dst);
 
+int features(cv::Mat &src, cv::Mat &dst);
+
 #endif

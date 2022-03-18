@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
 
 	// initialize video
 	cv::VideoCapture *capdev;
-	const char* window = "Main Window";
-        cv::namedWindow(window, cv::WINDOW_AUTOSIZE);
+	const char* window = "converted image";
+    cv::namedWindow(window, cv::WINDOW_AUTOSIZE);
 
 	// open the video device
 	capdev = new cv::VideoCapture(1);
@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
 	for(;!quit;) {
 		cv::Mat frame;
         *capdev >> frame; // get a new frame from the camera, treat as a stream
+		cv::imshow("original image", frame); // display original image
 
 		// test if video capture  was successful
         if( frame.empty() ) {
@@ -88,7 +89,6 @@ int main(int argc, char *argv[]) {
 		*/
 
 		// load video
-		cv::imshow(window, frame); // display original image
 		cv::imshow(window, convertedImage); // display filtered image
 
 		// wait for keypress

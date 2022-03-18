@@ -67,7 +67,9 @@ int morphological(cv::Mat &src, cv::Mat &dst) {
 }
 
 /** CONNECTED COMPONENTS
- * 
+ * compute connected components 
+ * display regions by color
+ * limits recognition to largest N regions
 **/
 int conn_comp(cv::Mat &src, cv::Mat &dst) {
 
@@ -80,7 +82,49 @@ int conn_comp(cv::Mat &src, cv::Mat &dst) {
 
     // connected components computation
     cv::Mat labelImage(src.size(), CV_32S);
-    int nLabels = cv::connectedComponentsWithStats(binary, labelImage, stats, centroids);
+    int nRegions = cv::connectedComponentsWithStats(binary, labelImage, stats, centroids);
+    //cout << "Number of connected components = " << nLabels << endl << endl;
+
+	// assign different colors to each connected component region
+	std::vector<Vec3b> colors(nRegions);
+	colors[0] = Vec3b(0, 0, 0);//background
+			
+	for (int label = 1; label < nRegions; label++) {
+		colors[label] = Vec3b((rand() & 255), (rand() & 255), (rand() & 255));
+	}
+			
+	dst.create(src.size(), CV_8UC3);
+			
+	for (int r = 0; r < dst.rows; ++r) {
+		for (int c = 0; c < dst.cols; ++c) {
+			int label = labelImage.at<int>(r, c);
+			Vec3b &pixel = dst.at<Vec3b>(r, c);
+
+			pixel = colors[label];
+		}
+	}
+
+    return 0;
+}
+
+/** COMPUTE REGION FEATURES & MOMENTS
+ * computes set of 2 features for regions given a region map and a region ID
+ * computes axis of least central moment and the oriented bounding box
+ * all features are translation, scale, and rotation invariant
+ * display at least one feature in real time on the video output
+ * 
+**/
+int moments(cv::Mat &src, cv::Mat &dst) {
+    // initialize cv::Mat variables for built-in conn comp fxn
+    cv::Mat labels, stats, centroids;
+
+    // create binary image
+	cv::Mat binary;
+	morphological(src, binary);
+
+    // connected components computation
+    cv::Mat labelImage(src.size(), CV_32S);
+    int nRegions = cv::connectedComponentsWithStats(binary, labelImage, stats, centroids);
     //cout << "Number of connected components = " << nLabels << endl << endl;
 
     /**
@@ -93,17 +137,17 @@ int conn_comp(cv::Mat &src, cv::Mat &dst) {
     **/
 
 	// assign different colors to each connected component region
-	std::vector<Vec3b> colors(nLabels);
+	std::vector<Vec3b> colors(nRegions);
 	colors[0] = Vec3b(0, 0, 0);//background
 			
-	for (int label = 1; label < nLabels; label++) {
+	for (int label = 1; label < nRegions; label++) {
 		colors[label] = Vec3b((rand() & 255), (rand() & 255), (rand() & 255));
 	}
 			
 	dst.create(src.size(), CV_8UC3);
 			
 	for (int r = 0; r < dst.rows; ++r) {
-				for (int c = 0; c < dst.cols; ++c) {
+		for (int c = 0; c < dst.cols; ++c) {
 			int label = labelImage.at<int>(r, c);
 			Vec3b &pixel = dst.at<Vec3b>(r, c);
 
@@ -118,7 +162,7 @@ int conn_comp(cv::Mat &src, cv::Mat &dst) {
 		int w = stats.at<int>(Point(2, i));
 		int h = stats.at<int>(Point(3, i));
 				
-		Scalar color(255,0,0);
+		Scalar color(0,255,0);
 		Rect rect(x,y,w,h);
 		cv::rectangle(src, rect, color);
 	}
