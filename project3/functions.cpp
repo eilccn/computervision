@@ -71,22 +71,26 @@ int morphological(cv::Mat &src, cv::Mat &dst) {
 **/
 int conn_comp(cv::Mat &src, cv::Mat &dst) {
 
-    // initialize variables
+    // initialize cv::Mat variables for built-in conn comp fxn
     cv::Mat labels, stats, centroids;
 
     // create binary image
 	cv::Mat binary;
 	morphological(src, binary);
 
-    // # of connected components
+    // connected components computation
     cv::Mat labelImage(src.size(), CV_32S);
     int nLabels = cv::connectedComponentsWithStats(binary, labelImage, stats, centroids);
-    cout << "Number of connected components = " << nLabels << endl << endl;
+    //cout << "Number of connected components = " << nLabels << endl << endl;
 
+    /**
     // print stats and centroids
     cout << "Show statistics and centroids:" << endl;
     cout << "stats:" << endl << "(left,top,width,height,area)" << endl << stats << endl << endl;
-    cout << "centroids:" << endl << "(x, y)" << endl << centroids << endl << endl; 
+    cout << "centroids: " << endl << "(x, y)" << endl << centroids << endl << endl; 
+    cout << "labels: " << endl << labels << std::endl;
+	cout << "stats.size()=" << endl << stats.size() << std::endl;
+    **/
 
 	// assign different colors to each connected component region
 	std::vector<Vec3b> colors(nLabels);
@@ -107,10 +111,7 @@ int conn_comp(cv::Mat &src, cv::Mat &dst) {
 		}
 	}
 	
-	//std::cout << "labels" << labels << std::endl;
-	//std::cout << "stats.size()=" << stats.size() << std::endl;
-	//std::cout << "centroids" << centroids << std::endl;
-			
+	// create rectangular bounding box around each region		
 	for(int i=0; i<stats.rows; i++) {
 		int x = stats.at<int>(Point(0, i));
 		int y = stats.at<int>(Point(1, i));

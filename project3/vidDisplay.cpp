@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
         cv::namedWindow(window, cv::WINDOW_AUTOSIZE);
 
 	// open the video device
-	capdev = new cv::VideoCapture(0);
+	capdev = new cv::VideoCapture(1);
 	if( !capdev->isOpened() ) {
 		printf("Unable to open video device\n");
 		return(-1);
