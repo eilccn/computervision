@@ -5,4 +5,6 @@ int threshold(cv::Mat &src, cv::Mat &dst);
 
 int morphological(cv::Mat &src, cv::Mat &dst);
 
+int conn_comp(cv::Mat &src, cv::Mat &dst);
+
 #endif

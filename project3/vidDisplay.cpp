@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
 	cv::Size refS( (int) capdev->get(cv::CAP_PROP_FRAME_WIDTH ),
 		       (int) capdev->get(cv::CAP_PROP_FRAME_HEIGHT));
 
+	
 	printf("Expected size: %d %d\n", refS.width, refS.height);
 
 	// create instance of filterState to keep track of states	
@@ -77,7 +78,8 @@ int main(int argc, char *argv[]) {
 			morphological(frame, convertedImage);
 		}
 		else if (filterState == CC) {
-			
+			// call connected components function
+			conn_comp(frame, convertedImage);
 		}
 		/*
 		else if (filterState == MOMENTS) {
