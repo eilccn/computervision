@@ -216,17 +216,18 @@ int moments(cv::Mat &src, cv::Mat &dst) {
             }
         }
 
-       /* UNROTATED POINTS*/
         // computing unrotated points
         Point2d min_xpyp = helper(minxp, minyp, orientation, x_cent, y_cent, src.rows);
         Point2d max_xpyp = helper(maxxp, maxyp, orientation, x_cent, y_cent, src.rows);
         Point2d minmax_xpyp = helper(minxp, maxyp, orientation, x_cent, y_cent, src.rows);
         Point2d maxmin_xpyp = helper(maxxp, minyp, orientation, x_cent, y_cent, src.rows);
         
+        /*
         cv::line(dst, min_xpyp, max_xpyp, {255,0,0}, 3); 
         cv::line(dst, max_xpyp, minmax_xpyp, {0,255,0}, 3); 
         cv::line(dst, minmax_xpyp, maxmin_xpyp, {0,0,255}, 3); 
         cv::line(dst, maxmin_xpyp, min_xpyp, {255,255,255}, 3); 
+        */
         
     }
 
