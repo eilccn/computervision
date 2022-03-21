@@ -9,7 +9,7 @@ using namespace cv;
 using namespace std;
 
 enum Filter {
-	PREVIEW, THRESHOLD, MORPH, CC, MOMENTS
+	PREVIEW, THRESHOLD, MORPH, CC, MOMENTS, FEATURES
 };
 
 int main(int argc, char *argv[]) {
@@ -60,11 +60,12 @@ int main(int argc, char *argv[]) {
         cv::Mat convertedImage; 
 		convertedImage = frame;		
 
-		/** if-else ladder for computing tasks 1-4:
+		/** if-else ladder for computing tasks 1-5:
 		 * thresholding
 		 * morphological filtering
 		 * connected components
 		 * moments
+		 * extract features into a database
 		 **/
 		if (filterState == PREVIEW) {
 			convertedImage = frame;
@@ -85,7 +86,12 @@ int main(int argc, char *argv[]) {
 			// call moments function
 			moments(frame, convertedImage);
 		}
-		
+		/*
+		else if (filterState == FEATURES) {
+			// call features function
+			features(frame, convertedImage, char *argv);
+		}
+		*/
 
 		// load video
 		cv::imshow(window, convertedImage); // display filtered image
@@ -117,6 +123,9 @@ int main(int argc, char *argv[]) {
 		}		
 		else if (key == 'n') {
 		  filterState = MOMENTS;
+		}
+		else if (key == 'd') {
+		  filterState = FEATURES;
 		}
 	}
 	

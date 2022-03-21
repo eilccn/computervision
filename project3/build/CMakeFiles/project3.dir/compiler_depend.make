@@ -353,6 +353,30 @@ CMakeFiles/project3.dir/functions.cpp.o: ../functions.cpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/video.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/video/tracking.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/video/background_segm.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/edge_filter.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/disparity_filter.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/sparse_match_interpolator.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/structured_edge_detection.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/edgeboxes.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/edge_drawing.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/seeds.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/segmentation.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/fast_hough_transform.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/estimated_covariance.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/weighted_median_filter.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/slic.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/lsc.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/paillou_filter.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/fast_line_detector.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/deriche_filter.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/peilin.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/fourier_descriptors.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/ridgefilter.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/brightedges.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/run_length_morphology.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/edgepreserving_filter.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/color_match.hpp \
   ../functions.h
 
 CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
@@ -630,9 +654,35 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
   ../functions.h
 
 
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/color_match.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/run_length_morphology.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/peilin.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/deriche_filter.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/fast_line_detector.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/paillou_filter.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/weighted_median_filter.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/fast_hough_transform.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/segmentation.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/edge_drawing.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/edge_filter.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc.hpp:
+
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/stitching/detail/exposure_compensate.hpp:
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/queue:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/edgepreserving_filter.hpp:
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/list:
 
@@ -720,6 +770,8 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/dnn/dict.hpp:
 
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/estimated_covariance.hpp:
+
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/flann.hpp:
 
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/dnn/version.hpp:
@@ -757,6 +809,8 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/_types/_fd_def.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/_types/_suseconds_t.h:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/ridgefilter.hpp:
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/__tree:
 
@@ -956,6 +1010,8 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/stdexcept:
 
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/disparity_filter.hpp:
+
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/imgproc.hpp:
 
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/matx.hpp:
@@ -973,6 +1029,8 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/_types/_uintmax_t.h:
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/exception:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/brightedges.hpp:
 
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/stitching/detail/util.hpp:
 
@@ -994,6 +1052,8 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/sstream:
 
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/structured_edge_detection.hpp:
+
 /Library/Developer/CommandLineTools/usr/include/c++/v1/cfloat:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/_types/_int16_t.h:
@@ -1011,6 +1071,8 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 /Library/Developer/CommandLineTools/usr/include/c++/v1/errno.h:
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/ratio:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/sparse_match_interpolator.hpp:
 
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/flann/heap.h:
 
@@ -1078,11 +1140,17 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/cvdef.h:
 
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/lsc.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/xlocale/_string.h:
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/ctime:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/stdint.h:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/slic.hpp:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/seeds.hpp:
 
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/stitching/detail/warpers_inl.hpp:
 
@@ -1320,6 +1388,8 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/__cxx_version:
 
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/fourier_descriptors.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/stdio.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/pthread.h:
@@ -1329,6 +1399,8 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/_types/_time_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/wchar.h:
+
+/usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/edgeboxes.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/_types/_size_t.h:
 

@@ -1,5 +1,5 @@
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+#ifndef FUNCTIONS2_H
+#define FUNCTIONS2_H
 
 int threshold(cv::Mat &src, cv::Mat &dst);
 

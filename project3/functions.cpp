@@ -3,12 +3,15 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/ximgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>
 #include "functions.h"
 
 using namespace cv;
 using namespace std;
+
+RNG rng(12345); // used for moments_2 fxn
 
 /** THRESHOLDING ALGORITHM
  * separates object from background
@@ -111,77 +114,169 @@ int conn_comp(cv::Mat &src, cv::Mat &dst) {
  * computes axis of least central moment and the oriented bounding box
  * all features are translation, scale, and rotation invariant
  * display at least one feature in real time on the video output
- * 
 **/
+
+// helper function for computing unrotated points
+Point2d helper(int xp, int yp, double orientation, int x_cent, int y_cent, int rows) {
+
+    int x_unrotated = ( xp * cos(orientation) ) - ( yp * sin(orientation) ) + x_cent;
+    int y_unrotated = ( xp * sin(orientation) ) + ( yp * cos(orientation) ) + y_cent;
+    y_unrotated = (rows - 1) - y_unrotated;
+    
+    return Point2d(x_unrotated, y_unrotated);
+}
+
 int moments(cv::Mat &src, cv::Mat &dst) {
-    // initialize cv::Mat variables for built-in conn comp fxn
-    cv::Mat labels, stats, centroids;
 
     // create binary image
 	cv::Mat binary;
 	morphological(src, binary);
 
-    // connected components computation
+    // create destination image
+    dst = Mat::zeros( binary.size(), CV_8UC3 );
+
+    // connected components 
+    cv::Mat labels, stats, centroids; // initialize cv::Mat variables for built-in conn comp fxn
     cv::Mat labelImage(src.size(), CV_32S);
     int nRegions = cv::connectedComponentsWithStats(binary, labelImage, stats, centroids);
-    //cout << "Number of connected components = " << nLabels << endl << endl;
-    
-    /**
+    //cout << "Number of connected components = " << nRegions << endl << endl;
+
+    /*
     // print stats and centroids
     cout << "Show statistics and centroids:" << endl;
     cout << "stats:" << endl << "(left,top,width,height,area)" << endl << stats << endl << endl;
     cout << "centroids: " << endl << "(x, y)" << endl << centroids << endl << endl; 
     cout << "labels: " << endl << labels << std::endl;
 	cout << "stats.size()=" << endl << stats.size() << std::endl;
-    **/
+    */
 
-   	dst.create(src.size(), CV_8UC3);
-			
-	for (int label = 0; label < nRegions; label++) {
+    // compute axes of least central moments for each region
+    for (int label=0; label < nRegions; label++) {
 
         // select the image part relative to label
-        cv::Mat obj = (binary == label);              
-        Moments m = cv::moments(obj, false); // get moments as world coordinates
+        cv::Mat obj = (labelImage == label);              
+
+        // get moments as world coordinates    
+        Moments m = cv::moments(obj, true); 
 
         // centroid (x, y)
         Point2d mc(m.m10/m.m00, m.m01/m.m00); 
+        int x_cent = m.m10/m.m00;
+        int y_cent = m.m01/m.m00; 
 
         // orientation of least central moment
-        double m11 = m.m11 / m.m00;
-        double m20 = m.m20 / m.m00;
-        double m02 = m.m02 / m.m00;
-    
-        double orientation = 0.5*atan(2*m11 / (m20 - m02));
+        double pi = 3.14159265359; // convert degrees to radians
+        double orientation =  ( 0.5*atan(2*m.mu11 / (m.mu20 - m.mu02)) ) * (pi / 180); 
 
-        // major axis
-        
+        // second points to display axes of least central moment
+        int x2 = x_cent + 200 * cos(orientation);
+        int y2 = y_cent - 200 * sin(orientation);
+        cv::Point p2(x2, y2);
 
-        // minor axis
-        
-        // draw major and minor axes
-        
+        int x3 = x_cent + 200 * -1 * sin(orientation);
+        int y3 = y_cent + 200 * cos(orientation);
+        cv::Point p3(x3, y3);
 
-        // get and draw the center
-        // remember m.m00 could be 0 if object has self-intersections
-        if (m.m00 != 0) {
-            Point center;
-            center.x = m.m10 / m.m00;
-            center.y = m.m01 / m.m00;
-            cv::circle(dst, center, 3, Scalar(0, 255, 0), -1);
+        // draw axes
+        cv::line(dst, mc, p2, {255,0,0}, 3); 
+        cv::line(dst, mc, p3, {255,0,0}, 3); 
+        // draw centroid
+        cv::circle(dst, mc, 3, {255, 255, 255}, 3);
+
+        // compute min & max (xprime, yprime) points
+        int minxp=INT_MIN;
+        int maxxp=INT_MAX;
+        int minyp=INT_MIN;
+        int maxyp=INT_MAX;
+        
+        for (int i=0; i<src.rows; i++) {
+            for(int j=0; j<src.cols; j++) {
+                int x = j;
+                int y = (src.rows - 1) - i;
+
+                float xpf = (x - x_cent)*cos(orientation) + (y - y_cent)*sin(orientation);
+                float ypf = ( (x - x_cent)*(-1.0 * sin(orientation)) ) +  ( (y - y_cent)*cos(orientation) );
+
+                int xp = (int) xpf;
+                int yp = (int) ypf;
+
+                if (xp < minxp) {
+                    minxp = xp;
+                }
+                if (xp > maxxp) {
+                    maxxp = xp;
+                }
+                if (yp < minyp) {
+                    minyp = yp;
+                }
+                if (yp > maxxp) {
+                    maxxp = yp;
+                }
+
+            }
         }
-	}
-	
-	// create oriented bounding box around each region		
-	for(int i=0; i<stats.rows; i++) {
-		int x = stats.at<int>(Point(0, i));
-		int y = stats.at<int>(Point(1, i));
-		int w = stats.at<int>(Point(2, i));
-		int h = stats.at<int>(Point(3, i));
-				
-		Scalar color(0,255,0);
-		Rect rect(x,y,w,h);
-		cv::rectangle(src, rect, color);
-	}
+
+       /* UNROTATED POINTS*/
+        // computing unrotated points
+        Point2d min_xpyp = helper(minxp, minyp, orientation, x_cent, y_cent, src.rows);
+        Point2d max_xpyp = helper(maxxp, maxyp, orientation, x_cent, y_cent, src.rows);
+        Point2d minmax_xpyp = helper(minxp, maxyp, orientation, x_cent, y_cent, src.rows);
+        Point2d maxmin_xpyp = helper(maxxp, minyp, orientation, x_cent, y_cent, src.rows);
+        
+        cv::line(dst, min_xpyp, max_xpyp, {255,0,0}, 3); 
+        cv::line(dst, max_xpyp, minmax_xpyp, {0,255,0}, 3); 
+        cv::line(dst, minmax_xpyp, maxmin_xpyp, {0,0,255}, 3); 
+        cv::line(dst, maxmin_xpyp, min_xpyp, {255,255,255}, 3); 
+        
+    }
+
+   // oriented bounding box
+    vector<vector<Point> > contours;
+    findContours( binary, contours, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) );
+    vector<RotatedRect> minRect( contours.size() );
+    vector<RotatedRect> minEllipse( contours.size() );
+
+    for( size_t i = 0; i < contours.size(); i++ )
+    {
+        minRect[i] = minAreaRect( contours[i] );
+        if( contours[i].size() > 5 )
+        {
+            minEllipse[i] = fitEllipse( contours[i] );
+        }
+    }
+
+    for( size_t i = 0; i< contours.size(); i++ )
+    {
+        Scalar color = Scalar( rng.uniform(0, 256), rng.uniform(0,256), rng.uniform(0,256) );
+        // contour
+        drawContours( dst, contours, (int)i, color );
+
+        // ellipse
+        //ellipse( dst, minEllipse[i], color, 2 );
+
+        // rotated rectangle
+        Point2f rect_points[4];
+        minRect[i].points( rect_points );
+        for ( int j = 0; j < 4; j++ )
+        {
+            line( dst, rect_points[j], rect_points[(j+1)%4], color );
+        }
+    }
 
     return 0;
 }
+
+
+/** EXTRACT FEATURES TO DATABASE
+ * collect feature vectors from objects, attach labels, and store them in csv DB
+ * prompt the user for a name/label ...
+ * then store the feature vector for the current object and its label into csv DB
+ * works for both real-time and still images
+**/
+int features(cv::Mat &src, cv::Mat &dst, char *argv) {
+    return 0;
+}
+
+
+
+
