@@ -9,6 +9,6 @@ int conn_comp(cv::Mat &src, cv::Mat &dst);
 
 int moments(cv::Mat &src, cv::Mat &dst);
 
-int features(cv::Mat &src, cv::Mat &dst, char *argv);
+int features(cv::Mat &img, std::vector<std::vector<float>> &fvec, char *obj_name);
 
 #endif

@@ -1,9 +1,15 @@
 #include <cstdio>
+#include <cstring>
+#include <cstdlib>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>
+#include <dirent.h>
+#include <fstream>
+#include <vector>
 #include "functions.h"
+#include "features.csv"
 
 using namespace cv;
 using namespace std;
@@ -13,7 +19,26 @@ enum Filter {
 };
 
 int main(int argc, char *argv[]) {
+	
 	int quit = 0;
+
+	/*  check for sufficient arguments 
+    if (argc < 2) {
+        std::cout << "Please enter: \n[argv0]: ./project3 \n"
+            "[argv1]: label name for object \n"
+            "[argv2]: csv file path \n"
+            "[argv3]: still image path (if exists) \n" << std::endl;
+        exit(-1);
+    }
+	
+
+	// check for image path
+    cv::Mat img = cv::imread(argv[3]);
+	if (img.empty()) {
+        std::cout << "Not a valid image file" << std::endl;
+        return -1;
+    }
+	*/
 
 	// declare variables for image capture
 	char label[256]; // a string for image capture file
@@ -48,7 +73,7 @@ int main(int argc, char *argv[]) {
 	for(;!quit;) {
 		cv::Mat frame;
         *capdev >> frame; // get a new frame from the camera, treat as a stream
-		cv::imshow("original image", frame); // display original image
+		//cv::imshow("original image", frame); // display original image
 
 		// test if video capture  was successful
         if( frame.empty() ) {
@@ -67,6 +92,10 @@ int main(int argc, char *argv[]) {
 		 * moments
 		 * extract features into a database
 		 **/
+
+		// initialize vector for training feature set
+    	std::vector<std::vector<float>> train_fvec; 
+
 		if (filterState == PREVIEW) {
 			convertedImage = frame;
 		}
@@ -89,7 +118,7 @@ int main(int argc, char *argv[]) {
 		/*
 		else if (filterState == FEATURES) {
 			// call features function
-			features(frame, convertedImage, char *argv);
+			features(frame, train_fvec, char *argv);
 		}
 		*/
 

@@ -197,5 +197,62 @@ int moments(cv::Mat &src, cv::Mat &dst) {
     return 0;
 }
 
+int moments_save() {
+    int minx_ur, maxx_ur, miny_ur, maxy_ur;
+
+    // min_xpyp
+    for (int i=0; i<obj.rows; i++) {
+        for (int j=0; j<obj.cols; j++) {
+            minx_ur = ( minxp * cos(orientation) ) - ( minyp * sin(orientation) ) + x_cent;
+            miny_ur = ( minxp * sin(orientation) ) + ( minyp * cos(orientation) ) + y_cent;
+
+            int x = j;
+            int y = (obj.rows - 1) - i;
+        }
+    }
+
+    // max_xpyp
+    for (int i=0; i<obj.rows; i++) {
+        for (int j=0; j<obj.cols; j++) {
+            maxx_ur = ( maxxp * cos(orientation) ) - ( maxyp * sin(orientation) ) + x_cent;
+            maxy_ur = ( maxxp * sin(orientation) ) + ( maxyp * cos(orientation) ) + y_cent;
+
+            int x = j;
+            int y = (obj.rows - 1) - i;
+        }
+    }
+
+    // minmax_xpyp
+    for (int i=0; i<obj.rows; i++) {
+        for (int j=0; j<obj.cols; j++) {
+            minx_ur = ( minxp * cos(orientation) ) - ( maxyp * sin(orientation) ) + x_cent;
+            maxy_ur = ( minxp * sin(orientation) ) + ( maxyp * cos(orientation) ) + y_cent;
+
+            int x = j;
+            int y = (obj.rows - 1) - i;
+        }
+    }
+
+    // maxmin_xpyp
+    for (int i=0; i<obj.rows; i++) {
+        for (int j=0; j<obj.cols; j++) {
+            maxx_ur = ( maxxp * cos(orientation) ) - ( minyp * sin(orientation) ) + x_cent;
+            miny_ur = ( maxxp * sin(orientation) ) + ( minyp * cos(orientation) ) + y_cent;
+
+            int x = j;
+            int y = (obj.rows - 1) - i;
+        }
+    }
+        
+    Point min_xpyp(minx_ur, miny_ur);
+    Point max_xpyp(maxx_ur, maxy_ur);
+    Point minmax_xpyp(minx_ur, maxy_ur);
+    Point maxmin_xpyp(maxx_ur, miny_ur);
+
+    cout << "POINTS" << endl << endl;
+    cout << min_xpyp << endl << max_xpyp << endl << minmax_xpyp << endl << maxmin_xpyp << endl;
+
+    return 0;
+}
 
 
