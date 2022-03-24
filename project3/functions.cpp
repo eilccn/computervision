@@ -6,7 +6,11 @@
 #include <opencv2/ximgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>
+#include <dirent.h>
+#include <fstream>
 #include "functions.h"
+#include "csv_util.h"
+#include "features.csv"
 
 using namespace cv;
 using namespace std;
@@ -136,20 +140,7 @@ void print(std::vector <double> const &a) {
 }
 
 // moments function
-int moments(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
-
-    /*
-    struct Features {
-        double mu11;
-        double mu02;
-        double mu20;
-        double filled;
-        double aspectratio;
-    };
-
-    std::vector<double> temp_featureset; // vector for featureset
-    Features features;
-    */
+int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
 
     // create binary image
 	cv::Mat binary;
@@ -186,12 +177,6 @@ int moments(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
     featureset.push_back((double) m.mu11);
     featureset.push_back((double) m.mu02);
     featureset.push_back((double) m.mu20);
-
-    /*
-    features.mu11 = m.mu11;
-    features.mu02 = m.mu02;
-    features.mu20 = m.mu20;
-    */
 
     // centroid (x, y)
     Point mc(m.m10/m.m00, m.m01/m.m00); 
@@ -255,44 +240,42 @@ int moments(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
     //cout << "minxp, maxxp, ..." << endl;
     //cout << minxp << endl << maxxp << endl << minyp << endl << maxyp << endl;
     
-    // computing unrotated points
+    // compute unrotated points
     Point min_xpyp = helper(minxp, minyp, orientation, x_cent, y_cent, obj.rows);
     Point max_xpyp = helper(maxxp, minyp, orientation, x_cent, y_cent, obj.rows);
     Point minmax_xpyp = helper(minxp, maxyp, orientation, x_cent, y_cent, obj.rows);
     Point maxmin_xpyp = helper(maxxp, maxyp, orientation, x_cent, y_cent, obj.rows);
     
-    
     //cout << "POINTS" << endl << endl;
     //cout << min_xpyp << endl << max_xpyp << endl << minmax_xpyp << endl << maxmin_xpyp << endl;
     
     /*
+    // draw bounding box lines
     cv::line(dst, min_xpyp, minmax_xpyp, {255,0,0}, 3); 
     cv::line(dst, minmax_xpyp, maxmin_xpyp, {0,255,0}, 3); 
     cv::line(dst, maxmin_xpyp, max_xpyp, {0,0,255}, 3); 
     cv::line(dst, max_xpyp, min_xpyp, {255,255,255}, 3); 
     
-    
+    // draw bounding box points
     cv::circle(dst, min_xpyp, 3, {255, 255, 255}, 3);
     cv::circle(dst, max_xpyp, 3, {255, 255, 255}, 3);
     cv::circle(dst, minmax_xpyp, 3, {255, 255, 255}, 3);
     cv::circle(dst, maxmin_xpyp, 3, {255, 255, 255}, 3);
     */
     
-    
+
    // oriented bounding box
     vector<vector<Point> > contours;
     findContours( binary, contours, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) );
     vector<RotatedRect> minRect( contours.size() );
     vector<RotatedRect> minEllipse( contours.size() );
 
-    // push % filled of oriented bounding box to featureset called in as parameter
-    //features.filled = (double) contourArea(contours[1], true);
-    featureset.push_back((double) contourArea(contours[1], true));
+    // push % filled of oriented bounding box to featureset 
+    featureset.push_back((double) contourArea(contours[1], false));
     
-    // push aspect ratio of oriented bounding box to featureset called in as a parameter
+    // push aspect ratio of oriented bounding box to featureset 
     Rect rect = boundingRect(contours[1]);
     double aspect_ratio = rect.width / rect.height;
-    //features.aspectratio = aspect_ratio;
     featureset.push_back(aspect_ratio);
 
     for( size_t i = 0; i < contours.size(); i++ )
@@ -316,7 +299,7 @@ int moments(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
         }
     }
 
-    /** Print features to feature vector passed in as a parameter
+    /** Print featureset
      * features: {mu22, mu02, mu20, % filled of oriented bounding box, aspect ratio of oriented bounding box}
      **/
     print(featureset);
@@ -332,9 +315,23 @@ int moments(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
  * then store the feature vector for the current object and its label into csv DB
  * works for both real-time and still images
 **/
-int features(cv::Mat &img, std::vector<double> &featureset, char *obj_name, char *csv_file) {
+int training_set(cv::Mat &src, cv::Mat &dst, char *csv_file) {
 
-     
+     // initialize variables
+     char outputfile[256];
+     char name[256];
+     strcpy(outputfile, csv_file);
+     std::vector<double> featureset;
+
+     // compute features
+     features(src, dst, featureset);
+
+     // obtain user input for object label/name
+     cout << "Enter a label for the object: ";
+     cin >> name;
+
+     // write feature set to csv database
+     append_image_data_csv(outputfile, name, featureset, 0);
 
     return 0;
 }

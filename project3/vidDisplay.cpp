@@ -10,12 +10,13 @@
 #include <vector>
 #include "functions.h"
 #include "features.csv"
+#include "csv_util.h"
 
 using namespace cv;
 using namespace std;
 
 enum Filter {
-	PREVIEW, THRESHOLD, MORPH, CC, MOMENTS, FEATURES
+	PREVIEW, THRESHOLD, MORPH, CC, FEATURES, TRAINING
 };
 
 int main(int argc, char *argv[]) {
@@ -25,9 +26,8 @@ int main(int argc, char *argv[]) {
 	/*  check for sufficient arguments 
     if (argc < 2) {
         std::cout << "Please enter: \n[argv0]: ./project3 \n"
-            "[argv1]: label name for object \n"
-            "[argv2]: csv file path \n"
-            "[argv3]: still image path (if exists) \n" << std::endl;
+            "[argv1]: csv file path \n"
+            "[argv2]: still image path (if exists) \n" << std::endl;
         exit(-1);
     }
 	
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 		 **/
 
 		// initialize vector for training feature set
-    	std::vector<std::vector<float>> train_fvec; 
+    	std::vector<double> training_featureset;
 
 		if (filterState == PREVIEW) {
 			convertedImage = frame;
@@ -111,17 +111,21 @@ int main(int argc, char *argv[]) {
 			// call connected components function
 			conn_comp(frame, convertedImage);
 		}
-		else if (filterState == MOMENTS) {
-			// call moments function
-			std::vector<double> featureset;
-			moments(frame, convertedImage, featureset);
-		}
-		/*
 		else if (filterState == FEATURES) {
-			// call features function
-			features(frame, train_fvec, char *argv);
+			// call moments function
+			features(frame, convertedImage, training_featureset);
 		}
-		*/
+		else if (filterState == TRAINING) {
+			// initialize csv file variable
+			std::fstream fileStream;
+			fileStream.open(argv[1]);
+			char outputfile[256]; 
+			strcpy(outputfile, argv[1]);
+
+			// call features function
+			training_set(frame, convertedImage, outputfile);
+		}
+		
 
 		// load video
 		cv::imshow(window, convertedImage); // display filtered image
@@ -152,10 +156,10 @@ int main(int argc, char *argv[]) {
 		  filterState = CC;
 		}		
 		else if (key == 'n') {
-		  filterState = MOMENTS;
+		  filterState = FEATURES;
 		}
 		else if (key == 'd') {
-		  filterState = FEATURES;
+		  filterState = TRAINING;
 		}
 	}
 	

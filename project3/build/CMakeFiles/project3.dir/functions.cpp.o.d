@@ -375,4 +375,11 @@ CMakeFiles/project3.dir/functions.cpp.o: \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/run_length_morphology.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/edgepreserving_filter.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/ximgproc/color_match.hpp \
-  /Users/eileenchang/computervision/project3/functions.h
+  /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/dirent.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/dirent.h \
+  /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/fstream \
+  /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/filesystem \
+  /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/stack \
+  /Users/eileenchang/computervision/project3/functions.h \
+  /Users/eileenchang/computervision/project3/csv_util.h \
+  /Users/eileenchang/computervision/project3/features.csv

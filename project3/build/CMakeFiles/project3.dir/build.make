@@ -69,10 +69,24 @@ include CMakeFiles/project3.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/project3.dir/flags.make
 
+CMakeFiles/project3.dir/csv_util.cpp.o: CMakeFiles/project3.dir/flags.make
+CMakeFiles/project3.dir/csv_util.cpp.o: ../csv_util.cpp
+CMakeFiles/project3.dir/csv_util.cpp.o: CMakeFiles/project3.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/project3.dir/csv_util.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project3.dir/csv_util.cpp.o -MF CMakeFiles/project3.dir/csv_util.cpp.o.d -o CMakeFiles/project3.dir/csv_util.cpp.o -c /Users/eileenchang/computervision/project3/csv_util.cpp
+
+CMakeFiles/project3.dir/csv_util.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/project3.dir/csv_util.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/eileenchang/computervision/project3/csv_util.cpp > CMakeFiles/project3.dir/csv_util.cpp.i
+
+CMakeFiles/project3.dir/csv_util.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/project3.dir/csv_util.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/eileenchang/computervision/project3/csv_util.cpp -o CMakeFiles/project3.dir/csv_util.cpp.s
+
 CMakeFiles/project3.dir/vidDisplay.cpp.o: CMakeFiles/project3.dir/flags.make
 CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp
 CMakeFiles/project3.dir/vidDisplay.cpp.o: CMakeFiles/project3.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/project3.dir/vidDisplay.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/project3.dir/vidDisplay.cpp.o"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project3.dir/vidDisplay.cpp.o -MF CMakeFiles/project3.dir/vidDisplay.cpp.o.d -o CMakeFiles/project3.dir/vidDisplay.cpp.o -c /Users/eileenchang/computervision/project3/vidDisplay.cpp
 
 CMakeFiles/project3.dir/vidDisplay.cpp.i: cmake_force
@@ -86,7 +100,7 @@ CMakeFiles/project3.dir/vidDisplay.cpp.s: cmake_force
 CMakeFiles/project3.dir/functions.cpp.o: CMakeFiles/project3.dir/flags.make
 CMakeFiles/project3.dir/functions.cpp.o: ../functions.cpp
 CMakeFiles/project3.dir/functions.cpp.o: CMakeFiles/project3.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/project3.dir/functions.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/project3.dir/functions.cpp.o"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project3.dir/functions.cpp.o -MF CMakeFiles/project3.dir/functions.cpp.o.d -o CMakeFiles/project3.dir/functions.cpp.o -c /Users/eileenchang/computervision/project3/functions.cpp
 
 CMakeFiles/project3.dir/functions.cpp.i: cmake_force
@@ -99,12 +113,14 @@ CMakeFiles/project3.dir/functions.cpp.s: cmake_force
 
 # Object files for target project3
 project3_OBJECTS = \
+"CMakeFiles/project3.dir/csv_util.cpp.o" \
 "CMakeFiles/project3.dir/vidDisplay.cpp.o" \
 "CMakeFiles/project3.dir/functions.cpp.o"
 
 # External object files for target project3
 project3_EXTERNAL_OBJECTS =
 
+project3: CMakeFiles/project3.dir/csv_util.cpp.o
 project3: CMakeFiles/project3.dir/vidDisplay.cpp.o
 project3: CMakeFiles/project3.dir/functions.cpp.o
 project3: CMakeFiles/project3.dir/build.make
@@ -165,7 +181,7 @@ project3: /usr/local/lib/libopencv_photo.4.5.4.dylib
 project3: /usr/local/lib/libopencv_imgproc.4.5.4.dylib
 project3: /usr/local/lib/libopencv_core.4.5.4.dylib
 project3: CMakeFiles/project3.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/eileenchang/computervision/project3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable project3"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/eileenchang/computervision/project3/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable project3"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/project3.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

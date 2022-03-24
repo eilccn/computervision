@@ -111,7 +111,7 @@ int getfloat(FILE *fp, float *v) {
 
   The function returns a non-zero value in case of an error.
  */
-int append_image_data_csv( char *filename, char *image_filename, std::vector<float> &image_data, int reset_file ) {
+int append_image_data_csv( char *filename, char *image_filename, std::vector<double> &image_data, int reset_file ) {
   char buffer[256];
   char mode[8];
   FILE *fp;
