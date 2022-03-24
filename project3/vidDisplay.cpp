@@ -113,7 +113,8 @@ int main(int argc, char *argv[]) {
 		}
 		else if (filterState == MOMENTS) {
 			// call moments function
-			moments(frame, convertedImage);
+			std::vector<double> featureset;
+			moments(frame, convertedImage, featureset);
 		}
 		/*
 		else if (filterState == FEATURES) {

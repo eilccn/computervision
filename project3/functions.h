@@ -7,8 +7,8 @@ int morphological(cv::Mat &src, cv::Mat &dst);
 
 int conn_comp(cv::Mat &src, cv::Mat &dst);
 
-int moments(cv::Mat &src, cv::Mat &dst);
+int moments(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset);
 
-int features(cv::Mat &img, std::vector<std::vector<float>> &fvec, char *obj_name);
+int features(cv::Mat &img, std::vector<double> &featureset, char *obj_name, char *csv_file);
 
 #endif

@@ -127,8 +127,29 @@ Point helper(int xp, int yp, double orientation, int x_cent, int y_cent, int row
     return Point(x_unrotated, y_unrotated);
 }
 
-// main function
-int moments(cv::Mat &src, cv::Mat &dst) {
+// helper vector print function
+void print(std::vector <double> const &a) {
+   std::cout << "The vector elements are: " << endl;
+
+   for(int i=0; i < a.size(); i++)
+   std::cout << a.at(i) << endl;
+}
+
+// moments function
+int moments(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
+
+    /*
+    struct Features {
+        double mu11;
+        double mu02;
+        double mu20;
+        double filled;
+        double aspectratio;
+    };
+
+    std::vector<double> temp_featureset; // vector for featureset
+    Features features;
+    */
 
     // create binary image
 	cv::Mat binary;
@@ -161,8 +182,16 @@ int moments(cv::Mat &src, cv::Mat &dst) {
 
     // get moments as world coordinates    
     Moments m = cv::moments(labelImage, true); 
-    double hu[7];
-    HuMoments(m, hu);
+    // push central moments to featureset
+    featureset.push_back((double) m.mu11);
+    featureset.push_back((double) m.mu02);
+    featureset.push_back((double) m.mu20);
+
+    /*
+    features.mu11 = m.mu11;
+    features.mu02 = m.mu02;
+    features.mu20 = m.mu20;
+    */
 
     // centroid (x, y)
     Point mc(m.m10/m.m00, m.m01/m.m00); 
@@ -256,13 +285,20 @@ int moments(cv::Mat &src, cv::Mat &dst) {
     vector<RotatedRect> minRect( contours.size() );
     vector<RotatedRect> minEllipse( contours.size() );
 
+    // push % filled of oriented bounding box to featureset called in as parameter
+    //features.filled = (double) contourArea(contours[1], true);
+    featureset.push_back((double) contourArea(contours[1], true));
+    
+    // push aspect ratio of oriented bounding box to featureset called in as a parameter
+    Rect rect = boundingRect(contours[1]);
+    double aspect_ratio = rect.width / rect.height;
+    //features.aspectratio = aspect_ratio;
+    featureset.push_back(aspect_ratio);
+
     for( size_t i = 0; i < contours.size(); i++ )
     {
         minRect[i] = minAreaRect( contours[i] );
-        if( contours[i].size() > 5 )
-        {
-            minEllipse[i] = fitEllipse( contours[i] );
-        }
+        
     }
 
     for( size_t i = 0; i< contours.size(); i++ )
@@ -270,9 +306,6 @@ int moments(cv::Mat &src, cv::Mat &dst) {
         Scalar color = Scalar( rng.uniform(0, 256), rng.uniform(0,256), rng.uniform(0,256) );
         // contour
         drawContours( dst, contours, (int)i, color );
-
-        // ellipse
-        //ellipse( dst, minEllipse[i], color, 2 );
 
         // rotated rectangle
         Point2f rect_points[4];
@@ -282,6 +315,12 @@ int moments(cv::Mat &src, cv::Mat &dst) {
             line( dst, rect_points[j], rect_points[(j+1)%4], color );
         }
     }
+
+    /** Print features to feature vector passed in as a parameter
+     * features: {mu22, mu02, mu20, % filled of oriented bounding box, aspect ratio of oriented bounding box}
+     **/
+    print(featureset);
+    
     
     return 0;
 }
@@ -293,7 +332,9 @@ int moments(cv::Mat &src, cv::Mat &dst) {
  * then store the feature vector for the current object and its label into csv DB
  * works for both real-time and still images
 **/
-int features(cv::Mat &img, std::vector<std::vector<float>> &fvec, char *obj_name) {
+int features(cv::Mat &img, std::vector<double> &featureset, char *obj_name, char *csv_file) {
+
+     
 
     return 0;
 }
