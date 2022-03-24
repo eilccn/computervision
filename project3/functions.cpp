@@ -113,11 +113,12 @@ int conn_comp(cv::Mat &src, cv::Mat &dst) {
     return 0;
 }
 
-/** COMPUTE REGION FEATURES & MOMENTS
+/** REGION FEATURES
  * computes set of features for regions given a region map and a region ID
  * computes major and minor axes of least central moment and the oriented bounding box
  * all features are translation, scale, and rotation invariant
  * displays the major and minor axes and the oriented bounding box in real time on the video output
+ * creates and outputs a featureset vector for each object 
 **/
 
 // helper function for computing unrotated points
@@ -139,7 +140,9 @@ void print(std::vector <double> const &a) {
    std::cout << a.at(i) << endl;
 }
 
-// moments function
+/** features function
+ * parameters: source image, destination image, vector for feature set values to be pushed into
+ **/
 int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
 
     // create binary image
@@ -165,13 +168,13 @@ int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
     */
 
     // compute axes of least central moments for each region
-    // commented out loop for calculating features for multiple objects simultaneously
+    // commented out loop for calculating features for multiple objects simultaneously 
     //for (int label=1; label < nRegions; label++) { 
 
     // select the first major object region
     cv::Mat obj = (labelImage == 1);              
 
-    // get moments as world coordinates    
+    /** MOMENTS **/
     Moments m = cv::moments(labelImage, true); 
     // push central moments to featureset
     featureset.push_back((double) m.mu11);
@@ -205,10 +208,52 @@ int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
     cv::line(dst, mc, p3, {255,0,0}, 3); 
     // draw centroid
     cv::circle(dst, mc, 3, {255, 255, 255}, 3);
+    
 
-    /** 
-     * 
-     * 
+    /** ORIENTED BOUNDING BOX **/
+    // initialize variables
+    vector<vector<Point> > contours;
+    findContours( binary, contours, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) );
+    vector<RotatedRect> minRect( contours.size() );
+    vector<RotatedRect> minEllipse( contours.size() );
+
+    // push % filled of oriented bounding box to featureset 
+    featureset.push_back((double) contourArea(contours[1], false));
+    
+    // push aspect ratio of oriented bounding box to featureset 
+    Rect rect = boundingRect(contours[1]);
+    long double aspect_ratio = (double) rect.width / (double) rect.height;
+    featureset.push_back(aspect_ratio);
+
+    for( size_t i = 0; i < contours.size(); i++ )
+    {
+        minRect[i] = minAreaRect( contours[i] );
+    }
+
+    for( size_t i = 0; i< contours.size(); i++ )
+    {
+        Scalar color = Scalar( rng.uniform(0, 256), rng.uniform(0,256), rng.uniform(0,256) );
+        // compute contour
+        drawContours( dst, contours, (int)i, color );
+
+        // rotated rectangle
+        Point2f rect_points[4];
+        minRect[i].points( rect_points );
+        for ( int j = 0; j < 4; j++ )
+        {
+            line( dst, rect_points[j], rect_points[(j+1)%4], color );
+        }
+    }
+
+    /* print featureset
+     * featureset: {mu22, mu02, mu20, % filled of oriented bounding box, aspect ratio of oriented bounding box}
+     */
+    //print(featureset);
+
+    /** MIN/MAX OF (X', Y')
+     * compute x', y' and their min/max values
+     * draw lines connecting min/max values to create an oriented bounding box
+     * alternative method (to contours above) for drawing oriented bounding box
      **/
     // initialize variables for xprime and yprime
     int xp, yp;
@@ -259,65 +304,14 @@ int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
     cv::line(dst, minmax_xpyp, maxmin_xpyp, {0,255,0}, 3); 
     cv::line(dst, maxmin_xpyp, max_xpyp, {0,0,255}, 3); 
     cv::line(dst, max_xpyp, min_xpyp, {255,255,255}, 3); 
-    
-    // draw bounding box points
-    cv::circle(dst, min_xpyp, 3, {255, 255, 255}, 3);
-    cv::circle(dst, max_xpyp, 3, {255, 255, 255}, 3);
-    cv::circle(dst, minmax_xpyp, 3, {255, 255, 255}, 3);
-    cv::circle(dst, maxmin_xpyp, 3, {255, 255, 255}, 3);
     */
-    
-
-   // oriented bounding box
-    vector<vector<Point> > contours;
-    findContours( binary, contours, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0) );
-    vector<RotatedRect> minRect( contours.size() );
-    vector<RotatedRect> minEllipse( contours.size() );
-
-    // push % filled of oriented bounding box to featureset 
-    featureset.push_back((double) contourArea(contours[1], false));
-    
-    // push aspect ratio of oriented bounding box to featureset 
-    Rect rect = boundingRect(contours[1]);
-    long double aspect_ratio = (double) rect.width / (double) rect.height;
-
-    featureset.push_back(aspect_ratio);
-    cout << "aspect ratio: " << aspect_ratio << endl;
-    cout << "width: " << rect.width << endl;
-    cout << "height: " << rect.height << endl;
-
-    for( size_t i = 0; i < contours.size(); i++ )
-    {
-        minRect[i] = minAreaRect( contours[i] );
-        
-    }
-
-    for( size_t i = 0; i< contours.size(); i++ )
-    {
-        Scalar color = Scalar( rng.uniform(0, 256), rng.uniform(0,256), rng.uniform(0,256) );
-        // contour
-        drawContours( dst, contours, (int)i, color );
-
-        // rotated rectangle
-        Point2f rect_points[4];
-        minRect[i].points( rect_points );
-        for ( int j = 0; j < 4; j++ )
-        {
-            line( dst, rect_points[j], rect_points[(j+1)%4], color );
-        }
-    }
-
-    /** Print featureset
-     * features: {mu22, mu02, mu20, % filled of oriented bounding box, aspect ratio of oriented bounding box}
-     **/
-    //print(featureset);
-    
     
     return 0;
 }
 
 
 /** EXTRACT FEATURES TO DATABASE
+ * parameters: source image, destination image, path of csv file passed in from cl
  * collect feature vectors from objects, attach labels, and store them in csv DB
  * prompt the user for a name/label ...
  * then store the feature vector for the current object and its label into csv DB
@@ -331,8 +325,6 @@ int training_set(cv::Mat &src, cv::Mat &dst, char *csv_file) {
      strcpy(outputfile, csv_file);
      std::vector<double> featureset;
 
-   
-
      // compute features
      features(src, dst, featureset);
 
@@ -343,7 +335,7 @@ int training_set(cv::Mat &src, cv::Mat &dst, char *csv_file) {
      // write feature set to csv database
      append_image_data_csv(outputfile, name, featureset, 0);
 
-    return 0;
+     return 0;
 }
 
 

@@ -97,6 +97,7 @@ int main(int argc, char *argv[]) {
     	std::vector<double> training_featureset;
 
 		if (filterState == PREVIEW) {
+			// original image
 			convertedImage = frame;
 		}
 		else if (filterState == THRESHOLD) {
@@ -112,7 +113,7 @@ int main(int argc, char *argv[]) {
 			conn_comp(frame, convertedImage);
 		}
 		else if (filterState == FEATURES) {
-			// call moments function
+			// call features function 
 			features(frame, convertedImage, training_featureset);
 		}
 		else if (filterState == TRAINING) {
@@ -122,14 +123,15 @@ int main(int argc, char *argv[]) {
 			char outputfile[256]; 
 			strcpy(outputfile, argv[1]);
 
-			
+			// call training_set function
 			// compute features, write features to csv file
 			training_set(frame, convertedImage, outputfile);
 
+			// return back to original image after writing data to the csv for a single object
+			// press the 'n' keypress again to enter training mode and write data for each new object
 			filterState = PREVIEW;
 
 		}
-		
 
 		// load video
 		cv::imshow(window, convertedImage); // display filtered image
