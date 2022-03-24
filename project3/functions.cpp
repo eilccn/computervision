@@ -206,6 +206,10 @@ int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
     // draw centroid
     cv::circle(dst, mc, 3, {255, 255, 255}, 3);
 
+    /** 
+     * 
+     * 
+     **/
     // initialize variables for xprime and yprime
     int xp, yp;
     // compute min & max (xprime, yprime) points
@@ -275,8 +279,12 @@ int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
     
     // push aspect ratio of oriented bounding box to featureset 
     Rect rect = boundingRect(contours[1]);
-    double aspect_ratio = rect.width / rect.height;
+    long double aspect_ratio = (double) rect.width / (double) rect.height;
+
     featureset.push_back(aspect_ratio);
+    cout << "aspect ratio: " << aspect_ratio << endl;
+    cout << "width: " << rect.width << endl;
+    cout << "height: " << rect.height << endl;
 
     for( size_t i = 0; i < contours.size(); i++ )
     {
@@ -302,7 +310,7 @@ int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
     /** Print featureset
      * features: {mu22, mu02, mu20, % filled of oriented bounding box, aspect ratio of oriented bounding box}
      **/
-    print(featureset);
+    //print(featureset);
     
     
     return 0;
@@ -322,6 +330,8 @@ int training_set(cv::Mat &src, cv::Mat &dst, char *csv_file) {
      char name[256];
      strcpy(outputfile, csv_file);
      std::vector<double> featureset;
+
+   
 
      // compute features
      features(src, dst, featureset);

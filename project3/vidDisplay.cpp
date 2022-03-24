@@ -122,8 +122,12 @@ int main(int argc, char *argv[]) {
 			char outputfile[256]; 
 			strcpy(outputfile, argv[1]);
 
-			// call features function
+			
+			// compute features, write features to csv file
 			training_set(frame, convertedImage, outputfile);
+
+			filterState = PREVIEW;
+
 		}
 		
 
@@ -155,10 +159,10 @@ int main(int argc, char *argv[]) {
 		else if (key == 'c') {
 		  filterState = CC;
 		}		
-		else if (key == 'n') {
+		else if (key == 'f') {
 		  filterState = FEATURES;
 		}
-		else if (key == 'd') {
+		else if (key == 'n') {
 		  filterState = TRAINING;
 		}
 	}
