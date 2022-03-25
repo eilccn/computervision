@@ -364,7 +364,6 @@ int training(cv::Mat &src, cv::Mat &dst, char *csv_file) {
  */
 
 int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset,  std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
-    morphological(src, dst);
 
     // initialize struct for object label and distance metric value pairs
     struct ObjectStruct {
@@ -403,6 +402,7 @@ int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset
                 CV_RGB(118, 185, 0), //font color
                 2);
     
+    /*
     // print list of all objects ordered from best match to least match
     std::cout << "*********************************" << std::endl;
     std::cout << "All objects ordered from best match to least match:" << std::endl;  
@@ -410,6 +410,7 @@ int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset
     for( auto& n : obj_distance) {
         std::cout << n.object << ": " << std::fixed << n.value << std::endl;
     }
+    */
 
     return 0;
 }

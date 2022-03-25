@@ -132,16 +132,11 @@ int main(int argc, char *argv[]) {
 			
 			// return back to original image after writing data to the csv for a single object
 			// press the 'n' keypress again to enter training mode and write data for each new object
-			filterState = PREVIEW;
+			filterState = FEATURES;
 		}
 		else if (filterState == CLASSIFY) {
 			// read csv file and obtain vectors for object names and object featuresets
 			read_image_data_csv( outputfile, obj_labels, db_featureset, 0 );
-
-			// print names of all objects in the database
-			for (auto& n: obj_labels) {
-				cout << n << ", ";
-			}
 
 			// initialize vector for unknown object featureset
 			std::vector<double> unknown_featureset;
@@ -154,7 +149,7 @@ int main(int argc, char *argv[]) {
 
 			// return back to original image 
 			// press the 'd' keypress again to enter classify mode and classify a new object
-			filterState = PREVIEW;
+			//filterState = FEATURES;
 		}
 		
 
