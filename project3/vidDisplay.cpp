@@ -126,8 +126,6 @@ int main(int argc, char *argv[]) {
 			features(frame, convertedImage, training_featureset);
 		}
 		else if (filterState == TRAINING) {
-			morphological(frame, convertedImage);
-
 			// call training_set function
 			// compute features, write features to csv file
 			training(frame, convertedImage, outputfile);
@@ -137,13 +135,12 @@ int main(int argc, char *argv[]) {
 			filterState = PREVIEW;
 		}
 		else if (filterState == CLASSIFY) {
-			morphological(frame, convertedImage); 
-
+			// read csv file and obtain vectors for object names and object featuresets
 			read_image_data_csv( outputfile, obj_labels, db_featureset, 0 );
 
+			// print names of all objects in the database
 			for (auto& n: obj_labels) {
-			cout << "labels" << endl;
-			cout << n << endl;
+				cout << n << ", ";
 			}
 
 			// initialize vector for unknown object featureset
@@ -153,7 +150,7 @@ int main(int argc, char *argv[]) {
 			features(frame, convertedImage, unknown_featureset);
 
 			// compute scaled Euclidean distance with unknown object and known objects
-			classify(unknown_featureset, obj_labels, db_featureset);
+			classify(frame, convertedImage, unknown_featureset, obj_labels, db_featureset);
 
 			// return back to original image 
 			// press the 'd' keypress again to enter classify mode and classify a new object

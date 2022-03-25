@@ -363,8 +363,9 @@ int training(cv::Mat &src, cv::Mat &dst, char *csv_file) {
  * output the label on the video display
  */
 
-int classify(std::vector<double> &unknown_featureset,  std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
-    
+int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset,  std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
+    morphological(src, dst);
+
     // initialize struct for object label and distance metric value pairs
     struct ObjectStruct {
         double value;
@@ -373,7 +374,6 @@ int classify(std::vector<double> &unknown_featureset,  std::vector<char *> obj_l
 
     std::vector<ObjectStruct> obj_distance; //vector for pairs
     ObjectStruct pair;
-    //alt std::vector<pair<int, string>> obj_distance;
 
     // compute scaled Euclidean distance
     for (int i=0; i<obj_labels.size(); i++) {
@@ -396,16 +396,20 @@ int classify(std::vector<double> &unknown_featureset,  std::vector<char *> obj_l
     });
 
     // display match as text on video output
+    cv::putText(dst, obj_distance[1].object, 
+                cv::Point(10, dst.rows / 2),
+                cv::FONT_HERSHEY_DUPLEX,
+                1.0,
+                CV_RGB(118, 185, 0), //font color
+                2);
     
-    
-    // print smallest distance object matches
+    // print list of all objects ordered from best match to least match
     std::cout << "*********************************" << std::endl;
-    std::cout << "Object matches in order of top match to least match:" << std::endl;  
+    std::cout << "All objects ordered from best match to least match:" << std::endl;  
     std::cout << "*********************************" << std::endl;
     for( auto& n : obj_distance) {
         std::cout << n.object << ": " << std::fixed << n.value << std::endl;
     }
-
 
     return 0;
 }
