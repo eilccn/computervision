@@ -16,7 +16,7 @@ using namespace cv;
 using namespace std;
 
 enum Filter {
-	PREVIEW, THRESHOLD, MORPH, CC, FEATURES, TRAINING, CLASSIFY, KNN
+	PREVIEW, THRESHOLD, MORPH, CC, FEATURES, TRAINING, CLASSIFY, KNN_CLASSIFIER
 };
 
 int main(int argc, char *argv[]) {
@@ -144,12 +144,22 @@ int main(int argc, char *argv[]) {
 			// compute unknown object featureset
 			features(frame, convertedImage, unknown_featureset);
 
-			// compute scaled Euclidean distance with unknown object and known objects
+			// call classify function to find best object match  
 			classify(frame, convertedImage, unknown_featureset, obj_labels, db_featureset);
 
-			// return back to original image 
-			// press the 'd' keypress again to enter classify mode and classify a new object
-			//filterState = FEATURES;
+		}
+		else if (filterState == KNN_CLASSIFIER) {
+			// read csv file and obtain vectors for object names and object featuresets
+			read_image_data_csv( outputfile, obj_labels, db_featureset, 0 );
+
+			// initialize vector for unknown object featureset
+			std::vector<double> unknown_featureset;
+			
+			// compute unknown object featureset
+			features(frame, convertedImage, unknown_featureset);
+
+			// call KNN function to find best object match 
+			KNN(frame, convertedImage, unknown_featureset, obj_labels, db_featureset);
 		}
 		
 
@@ -189,6 +199,9 @@ int main(int argc, char *argv[]) {
 		}
 		else if (key == 'd') {
 			filterState = CLASSIFY;
+		}
+		else if (key == 'k') {
+			filterState = KNN_CLASSIFIER;
 		}
 	}
 	

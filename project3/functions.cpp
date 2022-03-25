@@ -355,22 +355,24 @@ int training(cv::Mat &src, cv::Mat &dst, char *csv_file) {
 
 
 
-/** CLASSIFY NEW IMAGES
+/** CLASSIFY UNKNOWN OBJECTS
  * compute features of unknown object
  * compare unknown features to known features in csv database
- * use scaled Euclidean distance metric [ (x_1 - x_2) / stdev_x ]
+ * use scaled Euclidean distance metric 
  * label the unknown object as its closest match
  * output the label on the video display
  */
 
-int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset,  std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
+// initialize struct for object label and distance metric value pairs
 
-    // initialize struct for object label and distance metric value pairs
+
+int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset, std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
+
+    // initialize struct for object name and its corresponding distance metric value
     struct ObjectStruct {
         double value;
         string object;
     };
-
     std::vector<ObjectStruct> obj_distance; //vector for pairs
     ObjectStruct pair;
 
@@ -415,11 +417,54 @@ int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset
     return 0;
 }
 
-int KNN(std::vector<double> &unknown_featureset,  std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
+
+
+
+/** KNN CLASSIFIER
+ * compute features of unknown object
+ * compare unknown features to known features in csv database
+ * use scaled Euclidean distance metric then find KNN 
+ * label the unknown object as its closest match
+ * output the label on the video display
+ * @param src 
+ * @param dst 
+ * @param unknown_featureset 
+ * @param obj_labels 
+ * @param db_featureset 
+ */
+int KNN(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset, std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
     // obtain user input K for computing K means
     int k_value;
     cout << "K = ";
     cin >> k_value;
+
+    // initialize struct for object name and its corresponding distance metric value
+    struct ObjectStruct {
+        double value;
+        string object;
+    };
+    std::vector<ObjectStruct> obj_distance; //vector for pairs
+    ObjectStruct pair;
+
+    // compute scaled Euclidean distance
+    for (int i=0; i<obj_labels.size(); i++) {
+        double distance = 0;
+        for (int j=0; j<unknown_featureset.size(); j++) {
+            distance += ( unknown_featureset[j] - db_featureset[i][j] ) * ( unknown_featureset[j] - db_featureset[i][j] ) ;
+            
+        }
+        distance = (double) sqrt(distance); 
+
+        // push distance metrics and object names as pairs to vector
+        pair.value = distance;
+        pair.object = obj_labels[i];
+        obj_distance.push_back(pair);
+    }
+    
+    // sort distance metrics from min to max
+    sort(obj_distance.begin(), obj_distance.end(), [](const ObjectStruct& a, const ObjectStruct& b) {
+        return a.value < b.value;
+    });
 
     // KNN matching 
     // initialize object groups
@@ -431,6 +476,8 @@ int KNN(std::vector<double> &unknown_featureset,  std::vector<char *> obj_labels
     int steps = 0;
     int flower = 0;
     int rect = 0;
+    int pin = 0;
+    int camera = 0;
 
     /*
     for (int i=0; i<k_value; i++) {
