@@ -158,7 +158,7 @@ int append_image_data_csv( char *filename, char *image_filename, std::vector<dou
 
   The function returns a non-zero value if something goes wrong.
  */
-int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::vector<std::vector<float>> &data, int echo_file ) {
+int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::vector<std::vector<double>> &data, int echo_file ) {
   FILE *fp;
   float fval;
   char img_file[256];
@@ -171,7 +171,7 @@ int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::ve
 
   printf("Reading %s\n", filename);
   for(;;) {
-    std::vector<float> dvec;
+    std::vector<double> dvec;
     
     
     // read the filename
@@ -184,7 +184,7 @@ int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::ve
     for(;;) {
       // get next feature
       float eol = getfloat( fp, &fval );
-      dvec.push_back( fval );
+      dvec.push_back( (double) fval );
       if( eol ) break;
     }
     // printf("read %lu features\n", dvec.size() );
@@ -196,7 +196,7 @@ int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::ve
     filenames.push_back( fname );
   }
   fclose(fp);
-  printf("Finished reading CSV file\n");
+  printf("Please first object, then press 'n' to return to training mode. \n");
 
   if(echo_file) {
     for(int i=0;i<data.size();i++) {

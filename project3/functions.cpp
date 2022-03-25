@@ -1,5 +1,8 @@
 #include <cstdio>
 #include <cmath>
+#include <stdio.h>
+#include <string.h>
+#include <string>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
@@ -45,6 +48,9 @@ int threshold(cv::Mat &src, cv::Mat &dst) {
     return 0;
 }
 
+
+
+
 /** MORPHOLOGICAL FILTERING
  * cleans up the thresholded binary image
  * uses built-in opencv growing and shrinking fxns
@@ -71,6 +77,9 @@ int morphological(cv::Mat &src, cv::Mat &dst) {
     
     return 0;
 }
+
+
+
 
 /** CONNECTED COMPONENTS
  * compute connected components 
@@ -112,6 +121,9 @@ int conn_comp(cv::Mat &src, cv::Mat &dst) {
 
     return 0;
 }
+
+
+
 
 /** REGION FEATURES
  * computes set of features for regions given a region map and a region ID
@@ -310,6 +322,8 @@ int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
 }
 
 
+
+
 /** EXTRACT FEATURES TO DATABASE
  * parameters: source image, destination image, path of csv file passed in from cl
  * collect feature vectors from objects, attach labels, and store them in csv DB
@@ -317,7 +331,7 @@ int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
  * then store the feature vector for the current object and its label into csv DB
  * works for both real-time and still images
 **/
-int training_set(cv::Mat &src, cv::Mat &dst, char *csv_file) {
+int training(cv::Mat &src, cv::Mat &dst, char *csv_file) {
 
      // initialize variables
      char outputfile[256];
@@ -336,6 +350,101 @@ int training_set(cv::Mat &src, cv::Mat &dst, char *csv_file) {
      append_image_data_csv(outputfile, name, featureset, 0);
 
      return 0;
+}
+
+
+
+
+/** CLASSIFY NEW IMAGES
+ * compute features of unknown object
+ * compare unknown features to known features in csv database
+ * use scaled Euclidean distance metric [ (x_1 - x_2) / stdev_x ]
+ * label the unknown object as its closest match
+ * output the label on the video display
+ */
+
+int classify(std::vector<double> &unknown_featureset,  std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
+    
+    // initialize struct for object label and distance metric value pairs
+    struct ObjectStruct {
+        double value;
+        string object;
+    };
+
+    std::vector<ObjectStruct> obj_distance; //vector for pairs
+    ObjectStruct pair;
+    //alt std::vector<pair<int, string>> obj_distance;
+
+    // compute scaled Euclidean distance
+    for (int i=0; i<obj_labels.size(); i++) {
+        double distance = 0;
+        for (int j=0; j<unknown_featureset.size(); j++) {
+            distance += ( unknown_featureset[j] - db_featureset[i][j] ) * ( unknown_featureset[j] - db_featureset[i][j] ) ;
+            
+        }
+        distance = (double) sqrt(distance); 
+
+        // push distance metrics and object names as pairs to vector
+        pair.value = distance;
+        pair.object = obj_labels[i];
+        obj_distance.push_back(pair);
+    }
+    
+    // sort distance metrics from min to max
+    sort(obj_distance.begin(), obj_distance.end(), [](const ObjectStruct& a, const ObjectStruct& b) {
+        return a.value < b.value;
+    });
+
+    // display match as text on video output
+    
+    
+    // print smallest distance object matches
+    std::cout << "*********************************" << std::endl;
+    std::cout << "Object matches in order of top match to least match:" << std::endl;  
+    std::cout << "*********************************" << std::endl;
+    for( auto& n : obj_distance) {
+        std::cout << n.object << ": " << std::fixed << n.value << std::endl;
+    }
+
+
+    return 0;
+}
+
+int KNN(std::vector<double> &unknown_featureset,  std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
+    // obtain user input K for computing K means
+    int k_value;
+    cout << "K = ";
+    cin >> k_value;
+
+    // KNN matching 
+    // initialize object groups
+    int pencil = 0;
+    int key = 0;
+    int star = 0;
+    int paint = 0;
+    int tree = 0;
+    int steps = 0;
+    int flower = 0;
+    int rect = 0;
+
+    /*
+    for (int i=0; i<k_value; i++) {
+        if (obj_distance[i].object.compare('pencil') = 0)) {
+            pencil++;
+        }
+        if (strcmp(obj_distance[i].object, 'key')) = 0) {
+            key++;
+        }
+        if (strcmp(obj_distance[i].object, 'star')) = 0) {
+            star++;
+        }
+        if (strcmp(obj_distance[i].object, 'paint')) = 0) {
+            paint++;
+        }
+    }
+    */
+
+    return 0;
 }
 
 

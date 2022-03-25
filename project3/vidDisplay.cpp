@@ -16,7 +16,7 @@ using namespace cv;
 using namespace std;
 
 enum Filter {
-	PREVIEW, THRESHOLD, MORPH, CC, FEATURES, TRAINING
+	PREVIEW, THRESHOLD, MORPH, CC, FEATURES, TRAINING, CLASSIFY, KNN
 };
 
 int main(int argc, char *argv[]) {
@@ -85,6 +85,19 @@ int main(int argc, char *argv[]) {
         cv::Mat convertedImage; 
 		convertedImage = frame;		
 
+		// initialize vector for training feature set
+    	std::vector<double> training_featureset;
+
+		// initialize csv file variables
+		std::fstream fileStream;
+		fileStream.open(argv[1]);
+		char outputfile[256]; 
+		strcpy(outputfile, argv[1]);
+		
+		// initialize vectors for the read function to push data into
+    	std::vector<char *> obj_labels; // vector for object label names
+    	std::vector<std::vector<double>> db_featureset; // vector for feature set data
+		
 		/** if-else ladder for computing tasks 1-5:
 		 * thresholding
 		 * morphological filtering
@@ -92,10 +105,6 @@ int main(int argc, char *argv[]) {
 		 * moments
 		 * extract features into a database
 		 **/
-
-		// initialize vector for training feature set
-    	std::vector<double> training_featureset;
-
 		if (filterState == PREVIEW) {
 			// original image
 			convertedImage = frame;
@@ -117,21 +126,40 @@ int main(int argc, char *argv[]) {
 			features(frame, convertedImage, training_featureset);
 		}
 		else if (filterState == TRAINING) {
-			// initialize csv file variable
-			std::fstream fileStream;
-			fileStream.open(argv[1]);
-			char outputfile[256]; 
-			strcpy(outputfile, argv[1]);
+			morphological(frame, convertedImage);
 
 			// call training_set function
 			// compute features, write features to csv file
-			training_set(frame, convertedImage, outputfile);
-
+			training(frame, convertedImage, outputfile);
+			
 			// return back to original image after writing data to the csv for a single object
 			// press the 'n' keypress again to enter training mode and write data for each new object
 			filterState = PREVIEW;
-
 		}
+		else if (filterState == CLASSIFY) {
+			morphological(frame, convertedImage); 
+
+			read_image_data_csv( outputfile, obj_labels, db_featureset, 0 );
+
+			for (auto& n: obj_labels) {
+			cout << "labels" << endl;
+			cout << n << endl;
+			}
+
+			// initialize vector for unknown object featureset
+			std::vector<double> unknown_featureset;
+			
+			// compute unknown object featureset
+			features(frame, convertedImage, unknown_featureset);
+
+			// compute scaled Euclidean distance with unknown object and known objects
+			classify(unknown_featureset, obj_labels, db_featureset);
+
+			// return back to original image 
+			// press the 'd' keypress again to enter classify mode and classify a new object
+			filterState = PREVIEW;
+		}
+		
 
 		// load video
 		cv::imshow(window, convertedImage); // display filtered image
@@ -166,6 +194,9 @@ int main(int argc, char *argv[]) {
 		}
 		else if (key == 'n') {
 		  filterState = TRAINING;
+		}
+		else if (key == 'd') {
+			filterState = CLASSIFY;
 		}
 	}
 	
