@@ -1,8 +1,6 @@
 #include <cstdio>
 #include <cmath>
-#include <stdio.h>
-#include <string.h>
-#include <string>
+#include <cstring>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
@@ -11,6 +9,7 @@
 #include <iostream>
 #include <dirent.h>
 #include <fstream>
+#include <numeric>
 #include "functions.h"
 #include "csv_util.h"
 #include "features.csv"
@@ -397,7 +396,7 @@ int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset
     });
 
     // display match as text on video output
-    cv::putText(dst, obj_distance[1].object, 
+    cv::putText(dst, obj_distance[0].object, 
                 cv::Point(10, dst.rows / 2),
                 cv::FONT_HERSHEY_DUPLEX,
                 1.0,
@@ -426,17 +425,8 @@ int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset
  * use scaled Euclidean distance metric then find KNN 
  * label the unknown object as its closest match
  * output the label on the video display
- * @param src 
- * @param dst 
- * @param unknown_featureset 
- * @param obj_labels 
- * @param db_featureset 
  */
-int KNN(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset, std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
-    // obtain user input K for computing K means
-    int k_value;
-    cout << "K = ";
-    cin >> k_value;
+int KNN(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset, std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset, int k_value) {
 
     // initialize struct for object name and its corresponding distance metric value
     struct ObjectStruct {
@@ -466,8 +456,15 @@ int KNN(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset, std
         return a.value < b.value;
     });
 
-    // KNN matching 
+    /** nearest neighbor matching **/
+
+    // initialize vector for counts of K nearest neighbors of each object
+    std::vector<std::pair<int, std::string> > results;
+
     // initialize object groups
+    /** note: this function will only work with the preset objects below
+     *  need to create a different functionality that can work with any object
+    **/
     int pencil = 0;
     int key = 0;
     int star = 0;
@@ -478,23 +475,157 @@ int KNN(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset, std
     int rect = 0;
     int pin = 0;
     int camera = 0;
-
-    /*
+    
+    // count how many of K neighbors are the same object
     for (int i=0; i<k_value; i++) {
-        if (obj_distance[i].object.compare('pencil') = 0)) {
+        if (obj_distance[i].object == "pencil") {
             pencil++;
         }
-        if (strcmp(obj_distance[i].object, 'key')) = 0) {
+        if (obj_distance[i].object == "key") {
             key++;
         }
-        if (strcmp(obj_distance[i].object, 'star')) = 0) {
+        if (obj_distance[i].object == "star") {
             star++;
         }
-        if (strcmp(obj_distance[i].object, 'paint')) = 0) {
+        if (obj_distance[i].object == "paint") {
             paint++;
         }
+        if (obj_distance[i].object == "tree") {
+            tree++;
+        }
+        if (obj_distance[i].object == "steps") {
+            steps++;
+        }
+        if (obj_distance[i].object == "flower") {
+            flower++;
+        }
+        if (obj_distance[i].object == "rect") {
+            rect++;
+        }
+        if (obj_distance[i].object == "pin") {
+            pin++;
+        }
+        if (obj_distance[i].object == "camera") {
+            camera++;
+        }
     }
-    */
+
+
+    // push total counts to vector
+    results.push_back({pencil, {"pencil"}});
+    results.push_back({key, {"key"}});
+    results.push_back({star, {"star"}});
+    results.push_back({paint, {"paint"}});
+    results.push_back({tree, {"tree"}});
+    results.push_back({steps, {"steps"}});
+    results.push_back({flower, {"flower"}});
+    results.push_back({rect, {"rect"}});
+    results.push_back({pin, {"pin"}});
+    results.push_back({camera, {"camera"}});
+    
+
+    // sort the counts from largest to smallest
+    sort(results.rbegin(), results.rend());
+
+    // print list of all objects ordered from best match to least match
+    std::cout << "*********************************" << std::endl;
+    std::cout << "All objects ordered from best match to least match:" << std::endl;  
+    std::cout << "*********************************" << std::endl;
+    for( auto& n : results) {
+        std::cout << n.second << ": " << std::fixed << n.first << std::endl;
+    }
+    
+    std::cout << "*********************************" << std::endl;
+    std::cout << "The best match:" << std::endl;  
+    std::cout << "*********************************" << std::endl;
+    std::cout << results[0].second << std::endl;
+   
+
+    /** note: removed text display functionality and the best match is revealed in terminal
+    // display match as text on video output
+    cv::putText(dst, results[0].second, 
+                cv::Point(10, dst.rows / 2),
+                cv::FONT_HERSHEY_DUPLEX,
+                1.0,
+                CV_RGB(118, 185, 0), //font color
+                2);
+    **/
+
+    /*** ALTERNATIVE CODE FOR KNN (NEEDS EDITS due to seg fault caused by std::accummulate) ***/
+    /*
+    // initialize object groups
+        std::vector<double> pencil_vec;
+        std::vector<double> key_vec;
+        std::vector<double> star_vec;
+        std::vector<double> paint_vec;
+        std::vector<double> tree_vec;
+        std::vector<double> steps_vec;
+        std::vector<double> flower_vec;
+        std::vector<double> rect_vec;
+        std::vector<double> pin_vec;
+        std::vector<double> camera_vec;
+
+        // find the closest K neighbors of each object and sum their distances
+        for(auto &n : obj_distance) {
+            if (n.object == "pencil") {
+                pencil_vec.push_back(n.value);
+            }
+            if (n.object == "key") {
+                key_vec.push_back(n.value);
+            }
+            if (n.object == "star") {
+                star_vec.push_back(n.value);
+            }
+            if (n.object == "paint") {
+                paint_vec.push_back(n.value);
+            }
+            if (n.object == "tree") {
+                tree_vec.push_back(n.value);
+            }
+            if (n.object == "steps") {
+                steps_vec.push_back(n.value);
+            }
+            if (n.object == "flower") {
+                flower_vec.push_back(n.value);
+            }
+            if (n.object == "rect") {
+                rect_vec.push_back(n.value);
+            }
+            if (n.object == "pin") {
+                pin_vec.push_back(n.value);
+            }
+            if (n.object == "camera") {
+                camera_vec.push_back(n.value);
+            }
+        }
+
+        // sum first K values of each object vector 
+        double pencil = (double) std::accumulate(pencil_vec.begin(), pencil_vec.begin() + k_value, 0);
+        double key = (double) std::accumulate(key_vec.begin(), key_vec.begin() + k_value, 0);
+        double star = (double) std::accumulate(star_vec.begin(), star_vec.begin() + k_value, 0);
+        double paint = (double) std::accumulate(paint_vec.begin(), paint_vec.begin() + k_value, 0);
+        double tree = (double) std::accumulate(tree_vec.begin(), tree_vec.begin() + k_value, 0);
+        double steps = (double) std::accumulate(steps_vec.begin(), steps_vec.begin() + k_value, 0);
+        double flower = (double) std::accumulate(flower_vec.begin(), flower_vec.begin() + k_value, 0);
+        double rect = (double) std::accumulate(rect_vec.begin(), rect_vec.begin() + k_value, 0);
+        double pin = (double) std::accumulate(pin_vec.begin(), pin_vec.begin() + k_value, 0);
+        double camera = (double) std::accumulate(camera_vec.begin(), camera_vec.begin() + k_value, 0);
+
+        // push total sums to vector
+        results.push_back({pencil, {"pencil"}});
+        results.push_back({key, {"key"}});
+        results.push_back({star, {"star"}});
+        results.push_back({paint, {"paint"}});
+        results.push_back({tree, {"tree"}});
+        results.push_back({steps, {"steps"}});
+        results.push_back({flower, {"flower"}});
+        results.push_back({rect, {"rect"}});
+        results.push_back({pin, {"pin"}});
+        results.push_back({camera, {"camera"}});
+        
+        sort(results.begin(), results.end());
+        */
+        
 
     return 0;
 }

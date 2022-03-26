@@ -169,7 +169,7 @@ int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::ve
     return(-1);
   }
 
-  printf("Reading %s\n", filename);
+  //printf("Reading %s\n", filename);
   for(;;) {
     std::vector<double> dvec;
     
@@ -196,7 +196,7 @@ int read_image_data_csv( char *filename, std::vector<char *> &filenames, std::ve
     filenames.push_back( fname );
   }
   fclose(fp);
-  printf("Finished reading csv file. \n");
+  //printf("Finished reading csv file. \n");
 
   if(echo_file) {
     for(int i=0;i<data.size();i++) {

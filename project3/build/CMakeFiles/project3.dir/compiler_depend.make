@@ -443,19 +443,27 @@ CMakeFiles/project3.dir/functions.cpp.o: ../functions.cpp \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/__nullptr \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/limits \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/__undef_macros \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/cstring \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/string.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/string.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/_types/_rsize_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/_types/_errno_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/strings.h \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/string \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/string_view \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/__string \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/algorithm \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/initializer_list \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/cstring \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/utility \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/opencv.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/opencv_modules.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/cvdef.h \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/version.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/hal/interface.h \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/cv_cpu_dispatch.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/emmintrin.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/xmmintrin.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/mmintrin.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/mm_malloc.h \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/array \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/__tuple \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/utility \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/initializer_list \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/cstdint \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/__debug \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/iosfwd \
@@ -475,13 +483,14 @@ CMakeFiles/project3.dir/functions.cpp.o: ../functions.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/ctype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/_ctype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/runetype.h \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/memory \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/iterator \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/__functional_base \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/typeinfo \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/exception \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/cstdlib \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/new \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/iterator \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/__functional_base \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/algorithm \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/memory \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/tuple \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/stdexcept \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/atomic \
@@ -489,24 +498,6 @@ CMakeFiles/project3.dir/functions.cpp.o: ../functions.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/Block.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/TargetConditionals.h \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/bit \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/cwchar \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/cwctype \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/cctype \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/wctype.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/wctype.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/_types/_wctrans_t.h \
-  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/opencv.hpp \
-  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/opencv_modules.hpp \
-  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core.hpp \
-  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/cvdef.h \
-  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/version.hpp \
-  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/hal/interface.h \
-  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/cv_cpu_dispatch.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/emmintrin.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/xmmintrin.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/mmintrin.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include/mm_malloc.h \
-  /Library/Developer/CommandLineTools/usr/include/c++/v1/array \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/base.hpp \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/climits \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/limits.h \
@@ -517,6 +508,15 @@ CMakeFiles/project3.dir/functions.cpp.o: ../functions.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/i386/_limits.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/syslimits.h \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/cvstd.hpp \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/cctype \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/string \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/string_view \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/__string \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/cwchar \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/cwctype \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/wctype.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/wctype.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/_types/_wctrans_t.h \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/cvstd_wrapper.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/neon_utils.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/vsx_utils.hpp \
@@ -735,6 +735,7 @@ CMakeFiles/project3.dir/functions.cpp.o: ../functions.cpp \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/fstream \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/filesystem \
   /Library/Developer/CommandLineTools/usr/include/c++/v1/stack \
+  /Library/Developer/CommandLineTools/usr/include/c++/v1/numeric \
   ../functions.h \
   ../csv_util.h \
   ../features.csv
@@ -1520,6 +1521,8 @@ CMakeFiles/project3.dir/vidDisplay.cpp.o: ../vidDisplay.cpp \
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/imgproc.hpp:
 
 /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/matx.hpp:
+
+/Library/Developer/CommandLineTools/usr/include/c++/v1/numeric:
 
 /Library/Developer/CommandLineTools/usr/include/c++/v1/algorithm:
 

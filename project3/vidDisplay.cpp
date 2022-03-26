@@ -23,22 +23,22 @@ int main(int argc, char *argv[]) {
 	
 	int quit = 0;
 
-	/*  check for sufficient arguments 
-    if (argc < 2) {
+	//check for sufficient arguments 
+    if (argc < 1) {
         std::cout << "Please enter: \n[argv0]: ./project3 \n"
             "[argv1]: csv file path \n"
             "[argv2]: still image path (if exists) \n" << std::endl;
-        exit(-1);
     }
 	
-
+	/*
 	// check for image path
-    cv::Mat img = cv::imread(argv[3]);
+    cv::Mat img = cv::imread(argv[2]);
 	if (img.empty()) {
         std::cout << "Not a valid image file" << std::endl;
         return -1;
     }
 	*/
+
 
 	// declare variables for image capture
 	char label[256]; // a string for image capture file
@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
 			
 			// return back to original image after writing data to the csv for a single object
 			// press the 'n' keypress again to enter training mode and write data for each new object
-			filterState = FEATURES;
+			filterState = PREVIEW;
 		}
 		else if (filterState == CLASSIFY) {
 			// read csv file and obtain vectors for object names and object featuresets
@@ -158,8 +158,17 @@ int main(int argc, char *argv[]) {
 			// compute unknown object featureset
 			features(frame, convertedImage, unknown_featureset);
 
+			// obtain user input K for computing K means
+			int k_value;
+			cout << "K = ";
+			cin >> k_value;
+
 			// call KNN function to find best object match 
-			KNN(frame, convertedImage, unknown_featureset, obj_labels, db_featureset);
+			KNN(frame, convertedImage, unknown_featureset, obj_labels, db_featureset, k_value);
+
+			// return back to original image after writing data to the csv for a single object
+			// press the 'k' keypress again to enter knn mode
+			filterState = PREVIEW;
 		}
 		
 
