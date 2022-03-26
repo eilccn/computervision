@@ -1,3 +1,12 @@
+/*
+Eileen Chang
+
+CS 5330 Computer Vision
+Spring 2022
+
+Main function that controls the video output and calls various functions from functions.cpp for real-time 2d object recognition
+
+*/
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>

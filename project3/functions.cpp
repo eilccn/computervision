@@ -1,3 +1,20 @@
+/*
+Eileen Chang
+
+CS 5330 Computer Vision
+Spring 2022
+
+Functions.cpp that contains functions for 2d object recognition (in order):
+* threshold 
+* morphological
+* cc (connected components)
+* features
+* training
+* classify
+* knn
+
+More in-depth descriptions for each function are provided along with each function below
+*/
 #include <cstdio>
 #include <cmath>
 #include <cstring>
@@ -361,10 +378,6 @@ int training(cv::Mat &src, cv::Mat &dst, char *csv_file) {
  * label the unknown object as its closest match
  * output the label on the video display
  */
-
-// initialize struct for object label and distance metric value pairs
-
-
 int classify(cv::Mat &src, cv::Mat &dst, std::vector<double> &unknown_featureset, std::vector<char *> obj_labels, std::vector<std::vector<double>> &db_featureset) {
 
     // initialize struct for object name and its corresponding distance metric value
