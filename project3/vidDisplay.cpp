@@ -25,7 +25,7 @@ using namespace cv;
 using namespace std;
 
 enum Filter {
-	PREVIEW, THRESHOLD, MORPH, CC, FEATURES, TRAINING, CLASSIFY, KNN_CLASSIFIER
+	PREVIEW, THRESHOLD, MORPH, CC, FEATURES, TRAINING, CLASSIFY, KNN_CLASSIFIER, KNN_SUMS
 };
 
 int main(int argc, char *argv[]) {
@@ -144,8 +144,18 @@ int main(int argc, char *argv[]) {
 			filterState = PREVIEW;
 		}
 		else if (filterState == CLASSIFY) {
-			// read csv file and obtain vectors for object names and object featuresets
-			read_image_data_csv( outputfile, obj_labels, db_featureset, 0 );
+			// if csv is empty return to PREVIEW mode
+			if( fileStream.peek() == std::ifstream::traits_type::eof() ) { 
+				cout << "*********************************" << endl;
+        		cout << "Database is empty. Please restart the program and press 'n' to enter training mode." << endl;
+				cout << "*********************************" << endl;
+				break;
+    		}
+    		else {
+				// read csv file and obtain vectors for object names and object featuresets
+				read_image_data_csv( outputfile, obj_labels, db_featureset, 0 );
+    		
+			}
 
 			// initialize vector for unknown object featureset
 			std::vector<double> unknown_featureset;
@@ -158,8 +168,18 @@ int main(int argc, char *argv[]) {
 
 		}
 		else if (filterState == KNN_CLASSIFIER) {
-			// read csv file and obtain vectors for object names and object featuresets
-			read_image_data_csv( outputfile, obj_labels, db_featureset, 0 );
+			// if csv is empty return to PREVIEW mode
+			if( fileStream.peek() == std::ifstream::traits_type::eof() ) { 
+        		cout << "*********************************" << endl;
+        		cout << "Database is empty. Please restart the program and press 'n' to enter training mode." << endl;
+				cout << "*********************************" << endl;
+				break;
+    		}
+    		else {
+				// read csv file and obtain vectors for object names and object featuresets
+				read_image_data_csv( outputfile, obj_labels, db_featureset, 0 );
+    		
+			}
 
 			// initialize vector for unknown object featureset
 			std::vector<double> unknown_featureset;
@@ -172,6 +192,13 @@ int main(int argc, char *argv[]) {
 			cout << "K = ";
 			cin >> k_value;
 
+			// check if K input is greater than the size of the database
+			if (k_value > obj_labels.size()) {
+        		cout << "K value is greater than the number of objects that exists in the database" << endl;
+				cout << "Please re-enter K: ";
+				cin >> k_value;
+			}
+
 			// call KNN function to find best object match 
 			KNN(frame, convertedImage, unknown_featureset, obj_labels, db_featureset, k_value);
 
@@ -179,6 +206,47 @@ int main(int argc, char *argv[]) {
 			// press the 'k' keypress again to enter knn mode
 			filterState = PREVIEW;
 		}
+		/*
+		else if (filterState == KNN_SUMS) {
+			// if csv is empty return to PREVIEW mode
+			if( fileStream.peek() == std::ifstream::traits_type::eof() ) { 
+        		cout << "*********************************" << endl;
+        		cout << "Database is empty. Please restart the program and press 'n' to enter training mode." << endl;
+				cout << "*********************************" << endl;
+				break;
+    		}
+    		else {
+				// read csv file and obtain vectors for object names and object featuresets
+				read_image_data_csv( outputfile, obj_labels, db_featureset, 0 );
+    		
+			}
+
+			// initialize vector for unknown object featureset
+			std::vector<double> unknown_featureset;
+			
+			// compute unknown object featureset
+			features(frame, convertedImage, unknown_featureset);
+
+			// obtain user input K for computing K means
+			int k_value;
+			cout << "K = ";
+			cin >> k_value;
+
+			// check if K input is greater than the size of the database
+			if (k_value > obj_labels.size()) {
+        		cout << "K value is greater than the number of objects that exists in the database" << endl;
+				cout << "Please re-enter K: ";
+				cin >> k_value;
+			}
+
+			// call KNN function to find best object match 
+			KNN_sums(frame, convertedImage, unknown_featureset, obj_labels, db_featureset, k_value);
+
+			// return back to original image after writing data to the csv for a single object
+			// press the 'k' keypress again to enter knn mode
+			filterState = PREVIEW;
+		}
+		*/
 		
 
 		// load video
@@ -220,6 +288,9 @@ int main(int argc, char *argv[]) {
 		}
 		else if (key == 'k') {
 			filterState = KNN_CLASSIFIER;
+		}
+		else if (key == 'y') {
+			filterState = KNN_SUMS;
 		}
 	}
 	
