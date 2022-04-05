@@ -69,24 +69,10 @@ include CMakeFiles/project4.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/project4.dir/flags.make
 
-CMakeFiles/project4.dir/csv_util.cpp.o: CMakeFiles/project4.dir/flags.make
-CMakeFiles/project4.dir/csv_util.cpp.o: ../csv_util.cpp
-CMakeFiles/project4.dir/csv_util.cpp.o: CMakeFiles/project4.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/project4.dir/csv_util.cpp.o"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project4.dir/csv_util.cpp.o -MF CMakeFiles/project4.dir/csv_util.cpp.o.d -o CMakeFiles/project4.dir/csv_util.cpp.o -c /Users/eileenchang/computervision/project4/csv_util.cpp
-
-CMakeFiles/project4.dir/csv_util.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/project4.dir/csv_util.cpp.i"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/eileenchang/computervision/project4/csv_util.cpp > CMakeFiles/project4.dir/csv_util.cpp.i
-
-CMakeFiles/project4.dir/csv_util.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/project4.dir/csv_util.cpp.s"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/eileenchang/computervision/project4/csv_util.cpp -o CMakeFiles/project4.dir/csv_util.cpp.s
-
 CMakeFiles/project4.dir/main.cpp.o: CMakeFiles/project4.dir/flags.make
 CMakeFiles/project4.dir/main.cpp.o: ../main.cpp
 CMakeFiles/project4.dir/main.cpp.o: CMakeFiles/project4.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/project4.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/project4.dir/main.cpp.o"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project4.dir/main.cpp.o -MF CMakeFiles/project4.dir/main.cpp.o.d -o CMakeFiles/project4.dir/main.cpp.o -c /Users/eileenchang/computervision/project4/main.cpp
 
 CMakeFiles/project4.dir/main.cpp.i: cmake_force
@@ -97,16 +83,30 @@ CMakeFiles/project4.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/project4.dir/main.cpp.s"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/eileenchang/computervision/project4/main.cpp -o CMakeFiles/project4.dir/main.cpp.s
 
+CMakeFiles/project4.dir/functions.cpp.o: CMakeFiles/project4.dir/flags.make
+CMakeFiles/project4.dir/functions.cpp.o: ../functions.cpp
+CMakeFiles/project4.dir/functions.cpp.o: CMakeFiles/project4.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/eileenchang/computervision/project4/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/project4.dir/functions.cpp.o"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/project4.dir/functions.cpp.o -MF CMakeFiles/project4.dir/functions.cpp.o.d -o CMakeFiles/project4.dir/functions.cpp.o -c /Users/eileenchang/computervision/project4/functions.cpp
+
+CMakeFiles/project4.dir/functions.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/project4.dir/functions.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/eileenchang/computervision/project4/functions.cpp > CMakeFiles/project4.dir/functions.cpp.i
+
+CMakeFiles/project4.dir/functions.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/project4.dir/functions.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/eileenchang/computervision/project4/functions.cpp -o CMakeFiles/project4.dir/functions.cpp.s
+
 # Object files for target project4
 project4_OBJECTS = \
-"CMakeFiles/project4.dir/csv_util.cpp.o" \
-"CMakeFiles/project4.dir/main.cpp.o"
+"CMakeFiles/project4.dir/main.cpp.o" \
+"CMakeFiles/project4.dir/functions.cpp.o"
 
 # External object files for target project4
 project4_EXTERNAL_OBJECTS =
 
-project4: CMakeFiles/project4.dir/csv_util.cpp.o
 project4: CMakeFiles/project4.dir/main.cpp.o
+project4: CMakeFiles/project4.dir/functions.cpp.o
 project4: CMakeFiles/project4.dir/build.make
 project4: /usr/local/lib/libopencv_gapi.4.5.4.dylib
 project4: /usr/local/lib/libopencv_stitching.4.5.4.dylib
