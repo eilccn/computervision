@@ -29,6 +29,7 @@ int startWebcamMonitoring(cv::Mat &cameraMatrix, cv::Mat &distanceCoeffs, float 
 bool loadCameraCalibration(string name, cv::Mat &cameraMatrix, cv::Mat distanceCoeffs);
 int storeCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs);
 int readCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs);
+vector<cv::Point3f> Generate3DPoints();
 
 
 #endif

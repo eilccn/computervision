@@ -307,3 +307,41 @@ int readCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs){
     return 0;
 }
 
+vector<cv::Point3f> Generate3DPoints() {
+    vector<cv::Point3f> points;
+
+    float x, y, z;
+
+    // 8 corners of a cube
+
+    // +0.5 z face
+    z = .5;
+    x = .5; y = .5;
+    points.push_back(cv::Point3f(x, y, z));
+    y = -.5;
+    points.push_back(cv::Point3f(x, y, z));
+    x = -.5; y = .5;
+    points.push_back(cv::Point3f(x, y, z));
+    y = -.5;
+    points.push_back(cv::Point3f(x, y, z));
+
+    // -0.5 z face
+    z = -.5;
+    x = .5; y = .5;
+    points.push_back(cv::Point3f(x, y, z));
+    y = -.5;
+    points.push_back(cv::Point3f(x, y, z));
+    x = -.5; y = .5;
+    points.push_back(cv::Point3f(x, y, z));
+    y = -.5;
+    points.push_back(cv::Point3f(x, y, z));
+
+    // mid point
+    x = 0; y = 0; z = 0;
+    points.push_back(cv::Point3f(x, y, z));
+
+    return points;
+}
+
+
+

@@ -3,7 +3,7 @@ Eileen Chang
 CS5330 
 Spring 2022
 
-Main file for AR functionalities (Tasks 4-7)
+Main file for Calibration (Tasks 1-4) and AR functionalities (Tasks 4-7)
 */
 
 #include <cstdio>
@@ -26,6 +26,10 @@ Main file for AR functionalities (Tasks 4-7)
 using namespace cv;
 using namespace std;
 
+enum Filter {
+	CORNERS, AXES, OBJECT, ROBUST
+};
+
 int main( int argc, char *argv[] ) {
     // check for sufficient arguments
     if (argc < 1) {
@@ -38,9 +42,11 @@ int main( int argc, char *argv[] ) {
 
     /* initialize variables */
     int quit =0;
+    int framesPerSecond = 20;
     cv::Mat frame;
     cv::Mat convertedImage;
     convertedImage = frame;
+    cv::namedWindow("Main Window", cv::WINDOW_AUTOSIZE);
 
     // chessboard parameters
     const float calibrationSquareDimension = 0.01778f; // meters
@@ -85,10 +91,12 @@ int main( int argc, char *argv[] ) {
         return(-1);
     }
 
-    int framesPerSecond = 20;
-    cv::namedWindow("Main Window", cv::WINDOW_AUTOSIZE);
 
+    // bool for solvePnP 
     bool flag = false;
+
+    // create instance of filterState to keep track of states	
+	Filter filterState = Filter::CORNERS;
 
     /* loop for various functions */
     for(;!quit;) {
@@ -105,120 +113,168 @@ int main( int argc, char *argv[] ) {
         bool found = false;
         found = findChessboardCorners(frame, patternsize, corners, CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE);
 
-        if(found) {
-            cornerList.clear();
-            pointList.clear();
-            points.resize(0);
+        if (filterState == CORNERS) {
+            if(found) {
+                cornerList.clear();
+                pointList.clear();
+                points.resize(0);
 
-            /* refine pixel coordinates of 2D points for more accurracy */
-            cv::Mat gray;
-            cvtColor(frame, gray, COLOR_BGR2GRAY);
-            cv::TermCriteria criteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 30, 0.001);
-            cv::cornerSubPix(gray, corners, cv::Size(11,11), cv::Size(-1,-1), criteria);
+                /* refine pixel coordinates of 2D points for more accurracy */
+                cv::Mat gray;
+                cvtColor(frame, gray, COLOR_BGR2GRAY);
+                cv::TermCriteria criteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 30, 0.001);
+                cv::cornerSubPix(gray, corners, cv::Size(11,11), cv::Size(-1,-1), criteria);
 
-            /* draw to chessboard */
-            frame.copyTo(convertedImage);
-            drawChessboardCorners(convertedImage, patternsize, corners, found);
-            imshow("Main Window", convertedImage);
+                /* draw to chessboard */
+                frame.copyTo(convertedImage);
+                drawChessboardCorners(convertedImage, patternsize, corners, found);
+                //imshow("Main Window", convertedImage);
 
-            // push corners
-            cornerList.push_back(corners);
+                // push corners
+                cornerList.push_back(corners);
 
-            // push points
-            /* define world coordinates for 3D points */
-            for(int i=0; i<patternsize.width; i++) {
-                for(int j=0; j<patternsize.height; j++) {
-                    points.push_back(cv::Point3d(j * calibrationSquareDimension, i * calibrationSquareDimension, 0.0f));
+                // push points
+                /* define world coordinates for 3D points */
+                for(int i=0; i<patternsize.width; i++) {
+                    for(int j=0; j<patternsize.height; j++) {
+                        points.push_back(cv::Point3f(j * calibrationSquareDimension, i * calibrationSquareDimension, 0.0f));
+                    }
                 }
+                
+                
             }
-            
-            
+            else {
+                convertedImage = frame;
+            }
         }
-        else {
-            imshow("Main Window", frame);
+        else if (filterState == AXES) {
+            if (found) {
+                // draw axes 
+                printf("Drawing (x,y,z) axes ...\n");
+                frame.copyTo(convertedImage);
+
+                // read calibration data
+                readCameraConfig(cameraMatrix, distanceCoeffs);
+
+                // draw corners
+                drawChessboardCorners(convertedImage, patternsize, corners, found);
+
+                // draw frame axes
+                cv::drawFrameAxes(convertedImage, cameraMatrix, distanceCoeffs, rotation_values, translation_values, 0.05f, 3);
+                
+            }
         }
+        else if (filterState == OBJECT) {
+            /*
+            Mat pt1 = (Mat_<double>(3,1) << corners[0].x, corners[0].y, 1);
+            Mat pt2 = (Mat_<double>(3,1) << corners[0].x, corners[1].y, 1);
+            */
+
+            // Generate 3D points
+            vector<cv::Point3f> objectPoints = Generate3DPoints();
+            vector<cv::Point2f> imagePoints;
+            std::vector<cv::Point2f> projectedPoints;
+            cv::projectPoints(objectPoints, rotation_values, translation_values, cameraMatrix, distanceCoeffs, projectedPoints);
+
+            frame.copyTo(convertedImage);
+            // Display the points in an image
+            //cv::Mat image(480, 640, CV_8UC3);
+            const uint black_r(0), black_g(0), black_b(0);
+            const uint silver_r(192), silver_g(192), silver_b(192);
+            // image = cv::Scalar(redVal,greenVal,blueVal);
+            //convertedImage = cv::Scalar(black_b, black_g, black_r);
+            // cv::viz::COLOR blk(cv::viz::Color::black());
+            cv::Vec3b color(silver_b, silver_g, silver_r);
+            for (unsigned int i = 0; i < projectedPoints.size(); ++i)
+            {
+                cout << "Project point " << objectPoints[i] << " to " << projectedPoints[i];
+                cv::Point2f pt = projectedPoints[i];
+                if (0<= (pt.x) && (pt.x) <= convertedImage.cols && 0<= (-pt.y) && (-pt.y) <= convertedImage.rows )
+                {
+                    unsigned int ix(std::floor(pt.x)), iy(std::ceil(-pt.y));
+                    cout << ", and set image.at(" << ix << ", " << iy << ") = " << color;
+                    convertedImage.at<cv::Vec3b>(iy, ix) = color;
+                }
+                cout << endl;
+            }
+
+
+        }
+        /*
+        else if (filterState == ROBUST) {
+
+        }
+        */
+
+        imshow("Main Window", convertedImage);
 
         // wait for keypress
-        char character = waitKey(1000 / framesPerSecond);
+        int key = waitKey(1);
+        //char key = waitKey(1000 / framesPerSecond);
 
         // switch case
-        switch(character) {
-            case 's':
+        if (key == 's') {
+            // save image to computer
+            if (found) {
+                // saving images for calibration
+                cv::Mat temp;
+                frame.copyTo(temp);
+                savedImages.push_back(temp);
+
                 // save image to computer
-                if (found) {
-                    // saving images for calibration
-                    cv::Mat temp;
-                    frame.copyTo(temp);
-                    savedImages.push_back(temp);
+                sprintf(buffer, "%s.%03d.png", label, frameid++);
+                cv::imwrite(buffer, convertedImage, pars);
+                printf("Image written: %s\n", buffer);
 
-                    // save image to computer
-                    sprintf(buffer, "%s.%03d.png", label, frameid++);
-                    cv::imwrite(buffer, convertedImage, pars);
-                    printf("Image written: %s\n", buffer);
-
-                }
-                break;
-            case 'q':
-                // exit program
-                quit=1;
-                break;
-            case 13:
-                // turn flag on for solvePnP
-                flag = true;
-                break;
-            case 'f':
-                // turn flag off for solvePnP
-                flag = false;
-                break;
-            case 'c':
-                /* camera calibration */
-                printf("Calibrating ...\n");
-                
-                if(savedImages.size() > 5) { // require more than 5 images to be saved
-                    // camera calibration function
-                    cameraCalibration(savedImages, patternsize, calibrationSquareDimension, cameraMatrix, distanceCoeffs);
-                    // save data from calibration to file
-                    storeCameraConfig(cameraMatrix, distanceCoeffs);
-                }
-                else {
-                    printf("Not enough images saved for calibration");
-                }
-                
-                break;
-            case 'd':
-                if (found) {
-                    // draw axes 
-                    printf("Drawing (x,y,z) axes ...\n");
-                    // read calibration data
-                    readCameraConfig(cameraMatrix, distanceCoeffs);
-                    cv::Mat draw_axes;
-                    frame.copyTo(draw_axes);
-
-                    // draw corners
-                    drawChessboardCorners(draw_axes, patternsize, corners, found);
-
-                    // draw frame axes
-                    cv::drawFrameAxes(draw_axes, cameraMatrix, distanceCoeffs, rotation_values, translation_values, 10.0f, 3);
-                    imshow("Axes", draw_axes);
-                }
-            
-                break;
-            /* 
-            case 't':
-                // place 3D virtual object
-
-                break;
-            case 'r':
-                // detect robust features
-                
-                break;
-            */
-                
+            }
         }
+        else if (key == 'q') {
+            // exit program
+            quit=1;
+        }
+        else if (key == ' ') {
+            // turn flag on for solvePnP
+            flag = true;
+        }
+        else if (key == 'f') {
+            // turn flag off for solvePnP
+            flag = false;
+        }
+        else if (key == 'c') {
+            /* camera calibration */
+            printf("Calibrating ...\n");
+            
+            if(savedImages.size() > 5) { // require more than 5 images to be saved
+                // camera calibration function
+                cameraCalibration(savedImages, patternsize, calibrationSquareDimension, cameraMatrix, distanceCoeffs);
+                // save data from calibration to file
+                storeCameraConfig(cameraMatrix, distanceCoeffs);
+            }
+            else {
+                printf("Not enough images saved for calibration");
+            }
+            
+        }
+        else if (key == 'x') {
+            // draw corners
+            filterState = CORNERS; 
+        }
+        else if (key == 'd') {
+            // draw axes
+            filterState = AXES;
+        }
+        else if (key == 'o') {
+            // place 3D virtual object
+            filterState = OBJECT;
+        }
+        else if (key == 'r') {
+            // detect robust features
+            filterState = ROBUST;
+        }
+                
 
-
+        /* calculate board's pose (rotation and translation) */
         if (flag) {
-            /* calculate board's pose (rotation and translation) */
             printf("Calculating board's pose (rotation and translation) ...\n");
             // read calibration data
             readCameraConfig(cameraMatrix, distanceCoeffs);
@@ -239,7 +295,7 @@ int main( int argc, char *argv[] ) {
             }
 
             // calculate pose
-            solvePnP(objp, imagep, cameraMatrix, distanceCoeffs, rotation_values, translation_values);
+            solvePnP(objp, imagep, cameraMatrix, distanceCoeffs, rotation_values, translation_values, false, SOLVEPNP_ITERATIVE);
 
 
             // print rotation and translation values
