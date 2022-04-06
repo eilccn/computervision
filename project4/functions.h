@@ -21,12 +21,14 @@ using namespace cv;
 using namespace std;
 
 int createArucoMarkers();
-int createKnownBoardPosition(cv::Size boardSize, float squareEdgeLength, std::vector<Point3f>& points);
+int createKnownBoardPosition(cv::Size boardSize, float squareEdgeLength, std::vector<Vec3f>& points);
 int getChessboardCorners(std::vector<Mat> images, vector<vector<Point2f> >& cornerList, bool showResults = false);
 int cameraCalibration(vector<Mat> calibrationImages, Size boardSize, float squareEdgeLength, cv::Mat& cameraMatrix, cv::Mat& distanceCoeffs);
 bool saveCameraCalibration(string name, cv::Mat cameraMatrix, cv::Mat distanceCoeffs);
 int startWebcamMonitoring(cv::Mat &cameraMatrix, cv::Mat &distanceCoeffs, float arucoSquareDimensions);
 bool loadCameraCalibration(string name, cv::Mat &cameraMatrix, cv::Mat distanceCoeffs);
+int storeCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs);
+int readCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs);
 
 
 #endif

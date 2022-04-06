@@ -30,6 +30,11 @@ cv::Size patternsize( 6, 9 ); // size of chessboard
 const float calibrationSquareDimension = 0.01778f; // chessboard square in meters
 const float arucoSquareDimension = 0.1016f; // aruco square in meters
 
+/**
+ * @brief Create Aruco Markers 
+ * 
+ * @return int 0
+ */
 int createArucoMarkers() {
     cv::Mat outputMarker;
 
@@ -46,16 +51,34 @@ int createArucoMarkers() {
 }
 
 
-int createKnownBoardPosition(cv::Size boardSize, float squareEdgeLength, std::vector<Point3f>& points) {
+/**
+ * @brief Create a Known Board Position object
+ * 
+ * @param boardSize 
+ * @param squareEdgeLength 
+ * @param points 
+ * @return int 0
+ */
+int createKnownBoardPosition(cv::Size boardSize, float squareEdgeLength, std::vector<Vec3f> &points) {
     /* define world coordinates for 3D points */
     for(int i=0; i<boardSize.width; i++) {
         for(int j=0; j<boardSize.height; j++) {
-            points.push_back(cv::Point3f(j * squareEdgeLength, i * squareEdgeLength, 0.0f));
+            points.push_back(cv::Vec3f(j * squareEdgeLength, i * squareEdgeLength, 0.0f));
         }
     }
     return 0;
 }
 
+
+
+/**
+ * @brief Find and draw the chessboard corners for a vector of saved images
+ * 
+ * @param images 
+ * @param cornerList 
+ * @param showResults 
+ * @return int 0
+ */
 int getChessboardCorners(std::vector<Mat> images, vector<vector<Point2f> >& cornerList, bool showResults = false) {
 
     for(std::vector<Mat>::iterator iter = images.begin(); iter != images.end(); iter++) {
@@ -81,11 +104,22 @@ int getChessboardCorners(std::vector<Mat> images, vector<vector<Point2f> >& corn
     return 0;
 }
 
+
+/**
+ * @brief Calibrate the camera
+ * 
+ * @param calibrationImages 
+ * @param boardSize 
+ * @param squareEdgeLength 
+ * @param cameraMatrix 
+ * @param distanceCoeffs 
+ * @return int 0
+ */
 int cameraCalibration(vector<Mat> calibrationImages, Size boardSize, float squareEdgeLength, cv::Mat& cameraMatrix, cv::Mat& distanceCoeffs) {
     std::vector<vector<Point2f> > cornerList;
     getChessboardCorners(calibrationImages, cornerList, false);
 
-    vector<vector<Point3f> > pointList(1);
+    std::vector<vector<Vec3f> > pointList(1);
 
     createKnownBoardPosition(boardSize, squareEdgeLength, pointList[0]);
     pointList.resize(cornerList.size(), pointList[0]);
@@ -93,7 +127,7 @@ int cameraCalibration(vector<Mat> calibrationImages, Size boardSize, float squar
     vector<Mat> rVectors, tVectors;
     distanceCoeffs = cv::Mat::zeros(8,1,CV_64FC1);
 
-    double rms = calibrateCamera(pointList, cornerList, boardSize, cameraMatrix, distanceCoeffs, rVectors, tVectors, CALIB_FIX_ASPECT_RATIO | CALIB_FIX_K4 | CALIB_FIX_K5);
+    double rms = calibrateCamera(pointList, cornerList, boardSize, cameraMatrix, distanceCoeffs, rVectors, tVectors, CALIB_FIX_ASPECT_RATIO /*| CALIB_FIX_K4 | CALIB_FIX_K5*/);
     cout << "cameraMatrix: " << cameraMatrix << endl;
     cout << "distCoeffs: " << distanceCoeffs << endl;
     cout << "Rotation vector : " <<  std::fixed << &rVectors << endl;
@@ -102,6 +136,17 @@ int cameraCalibration(vector<Mat> calibrationImages, Size boardSize, float squar
     return 0;
 }
 
+
+
+/**
+ * @brief Save calibration matrix and distance coefficients to an outstream file 
+ * 
+ * @param name of file
+ * @param cameraMatrix 
+ * @param distanceCoeffs 
+ * @return true 
+ * @return false 
+ */
 bool saveCameraCalibration(string name, cv::Mat cameraMatrix, cv::Mat distanceCoeffs) {
     ofstream outStream(name);
     if(outStream) {
@@ -141,6 +186,15 @@ bool saveCameraCalibration(string name, cv::Mat cameraMatrix, cv::Mat distanceCo
 }
 
 
+
+/**
+ * @brief Detect aruco markers
+ * 
+ * @param cameraMatrix 
+ * @param distanceCoeffs 
+ * @param arucoSquareDimensions 
+ * @return int 
+ */
 int startWebcamMonitoring(cv::Mat &cameraMatrix, cv::Mat &distanceCoeffs, float arucoSquareDimensions) {
     cv::Mat frame;
 
@@ -180,6 +234,16 @@ int startWebcamMonitoring(cv::Mat &cameraMatrix, cv::Mat &distanceCoeffs, float 
 }
 
 
+
+/**
+ * @brief Load saved camera calibration data for later use
+ * 
+ * @param name 
+ * @param cameraMatrix 
+ * @param distanceCoeffs 
+ * @return true 
+ * @return false 
+ */
 bool loadCameraCalibration(string name, cv::Mat &cameraMatrix, cv::Mat distanceCoeffs) {
     ifstream inStream(name);
     if(inStream) {
@@ -221,3 +285,25 @@ bool loadCameraCalibration(string name, cv::Mat &cameraMatrix, cv::Mat distanceC
     }
     return false;
 }
+
+
+int storeCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs) {
+    cv::FileStorage fs("CameraConfig.yaml", cv::FileStorage::WRITE);
+    fs << "intriMat" << cameraMatrix;
+    fs << "distCoeff" << distCoeffs;
+    fs.release();
+    return 0;
+}
+
+
+
+int readCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs){
+    cv::FileStorage fs("CameraConfig.yaml", cv::FileStorage::READ);
+    fs ["intriMat"] >> cameraMatrix;
+    fs ["distCoeff"] >> distCoeffs;
+    std::cout << "CameraMatrix" << cameraMatrix << std::endl;
+    std::cout << "distCoeff" << distCoeffs << std::endl;
+    fs.release();
+    return 0;
+}
+

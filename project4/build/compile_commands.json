@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/Users/eileenchang/computervision/project4/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/project4.dir/ar_main.cpp.o -c /Users/eileenchang/computervision/project4/ar_main.cpp",
+  "file": "/Users/eileenchang/computervision/project4/ar_main.cpp"
+},
+{
+  "directory": "/Users/eileenchang/computervision/project4/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/project4.dir/functions.cpp.o -c /Users/eileenchang/computervision/project4/functions.cpp",
+  "file": "/Users/eileenchang/computervision/project4/functions.cpp"
+}
+]
