@@ -8,4 +8,8 @@ Project 2: Content-based image retrieval
 
 Project 3: Real-time 2D object recognition
 
-Project 4: Calibration and Augmented Reality
+Project 4: Calibration and augmented reality
+
+Project 5: Recognition using deep networks
+
+Project 6: 
