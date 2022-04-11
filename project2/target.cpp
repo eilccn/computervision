@@ -24,7 +24,7 @@
 using namespace std;
 using namespace cv;
 
-int main( int argc, char *argv[] ) {
+int main( int argc, char *argv[] ) { 
 
     /*  check for sufficient arguments */
     if (argc < 1) {

@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/eileenchang/computervision/hw1/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/hw1.dir/pow.cpp.o -c /Users/eileenchang/computervision/hw1/pow.cpp",
+  "file": "/Users/eileenchang/computervision/hw1/pow.cpp"
+}
+]

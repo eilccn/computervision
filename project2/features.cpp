@@ -154,18 +154,19 @@ int texturecolor(cv::Mat &img, std::vector<float> &fvec) {
         for(j=0; j<gray_img.cols; j++) {
             for(c=0; c<3; c++) {
                 auto value = gray_img.at<uchar>(i,j);
-                hist1d.at<int>(value)++;
-                /*graymag_fvec.push_back(value);*/
+                /*hist1d.at<int>(value)++;*/
+                graymag_fvec.push_back(value);
             }
         }
     }
 
-
+    /*
     for(i=0; i<hist1d.rows; i++) {
         for(j=0; j<hist1d.cols; j++) {
             graymag_fvec.push_back(hist1d.at<int>(i,j));
         }
     }
+    */
 
     /* COLOR */
     std::vector<float> color_fvec;

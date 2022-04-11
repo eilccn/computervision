@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/Users/eileenchang/computervision/project2/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/project2.dir/target.cpp.o -c /Users/eileenchang/computervision/project2/target.cpp",
+  "file": "/Users/eileenchang/computervision/project2/target.cpp"
+},
+{
+  "directory": "/Users/eileenchang/computervision/project2/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/project2.dir/features.cpp.o -c /Users/eileenchang/computervision/project2/features.cpp",
+  "file": "/Users/eileenchang/computervision/project2/features.cpp"
+},
+{
+  "directory": "/Users/eileenchang/computervision/project2/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/project2.dir/directory.cpp.o -c /Users/eileenchang/computervision/project2/directory.cpp",
+  "file": "/Users/eileenchang/computervision/project2/directory.cpp"
+},
+{
+  "directory": "/Users/eileenchang/computervision/project2/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/project2.dir/csv_util.cpp.o -c /Users/eileenchang/computervision/project2/csv_util.cpp",
+  "file": "/Users/eileenchang/computervision/project2/csv_util.cpp"
+},
+{
+  "directory": "/Users/eileenchang/computervision/project2/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/project2.dir/distance.cpp.o -c /Users/eileenchang/computervision/project2/distance.cpp",
+  "file": "/Users/eileenchang/computervision/project2/distance.cpp"
+},
+{
+  "directory": "/Users/eileenchang/computervision/project2/build",
+  "command": "/usr/bin/clang++  -isystem /usr/local/Cellar/opencv/4.5.4_3/include/opencv4 -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk -std=gnu++11 -o CMakeFiles/project2.dir/filters.cpp.o -c /Users/eileenchang/computervision/project2/filters.cpp",
+  "file": "/Users/eileenchang/computervision/project2/filters.cpp"
+}
+]

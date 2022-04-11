@@ -342,7 +342,7 @@ int features(cv::Mat &src, cv::Mat &dst, std::vector<double> &featureset) {
 
 
 /** EXTRACT FEATURES TO DATABASE
- * parameters: source image, destination image, path of csv file passed in from cl
+ * parameters: source image, destination image, path of csv file passed in from command line
  * collect feature vectors from objects, attach labels, and store them in csv DB
  * prompt the user for a name/label ...
  * then store the feature vector for the current object and its label into csv DB

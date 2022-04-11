@@ -36,7 +36,7 @@ CMakeFiles/vid_display.dir/vidDisplay.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/_ctermid.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/_types/_off_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk/usr/include/sys/_types/_ssize_t.h \
-  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/imgproc.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/imgcodecs.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/cvdef.h \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/version.hpp \
@@ -266,9 +266,9 @@ CMakeFiles/vid_display.dir/vidDisplay.cpp.o: \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/utility.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/optim.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/core/ovx.hpp \
+  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/imgproc.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/./imgproc/segmentation.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/highgui.hpp \
-  /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/imgcodecs.hpp \
   /usr/local/Cellar/opencv/4.5.4_3/include/opencv4/opencv2/videoio.hpp \
   /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/iostream \
   /Users/eileenchang/computervision/project1/vid_display/filter.h

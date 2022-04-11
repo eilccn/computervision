@@ -1,0 +1,3 @@
+/Users/eileenchang/computervision/hw1/build/CMakeFiles/hw1.dir
+/Users/eileenchang/computervision/hw1/build/CMakeFiles/edit_cache.dir
+/Users/eileenchang/computervision/hw1/build/CMakeFiles/rebuild_cache.dir

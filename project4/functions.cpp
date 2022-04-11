@@ -59,13 +59,14 @@ int createArucoMarkers() {
  * @param points 
  * @return int 0
  */
-int createKnownBoardPosition(cv::Size boardSize, float squareEdgeLength, std::vector<Vec3f> &points) {
+int createKnownBoardPosition(cv::Size boardSize, float squareEdgeLength, std::vector<Point3f> &points) {
     /* define world coordinates for 3D points */
     for(int i=0; i<boardSize.width; i++) {
         for(int j=0; j<boardSize.height; j++) {
-            points.push_back(cv::Vec3f(j * squareEdgeLength, i * squareEdgeLength, 0.0f));
+            points.push_back(cv::Point3f(j * squareEdgeLength, i * squareEdgeLength, 0.0f));
         }
     }
+    //pointList.push_back(std::vector<cv::Point3f>( points ) );
     return 0;
 }
 
@@ -79,27 +80,31 @@ int createKnownBoardPosition(cv::Size boardSize, float squareEdgeLength, std::ve
  * @param showResults 
  * @return int 0
  */
-int getChessboardCorners(std::vector<Mat> images, vector<vector<Point2f> >& cornerList, bool showResults = false) {
+int getChessboardCorners(std::vector<Mat> images, vector<vector<Point2f> > &cornerList, bool showResults = false) {
 
     for(std::vector<Mat>::iterator iter = images.begin(); iter != images.end(); iter++) {
+        /* refine pixel coordinates of 2D points for more accurracy */
         std::vector<Point2f> corners;
+        cv::Mat gray;
+        cvtColor(*iter, gray, COLOR_BGR2GRAY);
         bool found = findChessboardCorners(*iter, patternsize, corners, CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE);
 
         if (found) {
             /* refine pixel coordinates of 2D points for more accurracy */
-            cv::Mat gray;
-            cvtColor(*iter, gray, COLOR_BGR2GRAY);
             cv::TermCriteria criteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 30, 0.001);
             cv::cornerSubPix(gray, corners, cv::Size(11,11), cv::Size(-1,-1), criteria);
 
+            cornerList.push_back(corners);
+
         }
+        
         if (showResults) {
             drawChessboardCorners(*iter, patternsize, corners, found);
             imshow("Looking for Corners", *iter);
             waitKey(0);
         }
 
-        cornerList.push_back(corners);
+        
     }
     return 0;
 }
@@ -119,7 +124,8 @@ int cameraCalibration(vector<Mat> calibrationImages, Size boardSize, float squar
     std::vector<vector<Point2f> > cornerList;
     getChessboardCorners(calibrationImages, cornerList, false);
 
-    std::vector<vector<Vec3f> > pointList(1);
+    std::vector<vector<Point3f> > pointList(1);
+    //std::vector<vector<Point3f> > pointList;
 
     createKnownBoardPosition(boardSize, squareEdgeLength, pointList[0]);
     pointList.resize(cornerList.size(), pointList[0]);
@@ -190,13 +196,13 @@ bool saveCameraCalibration(string name, cv::Mat cameraMatrix, cv::Mat distanceCo
 /**
  * @brief Detect aruco markers
  * 
+ * @param dst
  * @param cameraMatrix 
  * @param distanceCoeffs 
  * @param arucoSquareDimensions 
  * @return int 
  */
-int startWebcamMonitoring(cv::Mat &cameraMatrix, cv::Mat &distanceCoeffs, float arucoSquareDimensions) {
-    cv::Mat frame;
+int startWebcamMonitoring(cv::Mat &dst, cv::Mat &cameraMatrix, cv::Mat &distanceCoeffs, float arucoSquareDimensions) {
 
     vector<int> markerIds;
     vector<vector<Point2f> > markerCorners, rejectedCandidates;
@@ -204,33 +210,16 @@ int startWebcamMonitoring(cv::Mat &cameraMatrix, cv::Mat &distanceCoeffs, float 
 
     Ptr<aruco::Dictionary> markerDictionary = aruco::getPredefinedDictionary(aruco::PREDEFINED_DICTIONARY_NAME::DICT_4X4_50);
 
-    VideoCapture vid(1);
-    if(!vid.isOpened()) {
-        return -1;
-    }
-
-    namedWindow("Main Window", WINDOW_AUTOSIZE);
     vector<Vec3d> rotationVectors, translationVectors;
 
-    while(true) {
-        if(!vid.read(frame)) {
-            break;
-        }
+    aruco::detectMarkers(dst, markerDictionary, markerCorners, markerIds);
+    aruco::estimatePoseSingleMarkers(markerCorners, arucoSquareDimension, cameraMatrix, distanceCoeffs, rotationVectors, translationVectors);
 
-        aruco::detectMarkers(frame, markerDictionary, markerCorners, markerIds);
-        aruco::estimatePoseSingleMarkers(markerCorners, arucoSquareDimension, cameraMatrix, distanceCoeffs, rotationVectors, translationVectors);
-
-        for(int i=0; i<markerIds.size(); i++) {
-            aruco::drawAxis(frame, cameraMatrix, distanceCoeffs, rotationVectors[i], translationVectors[i], 0.1f);
-        }
+    for(int i=0; i<markerIds.size(); i++) {
+        aruco::drawAxis(dst, cameraMatrix, distanceCoeffs, rotationVectors[i], translationVectors[i], 0.1f);
     }
 
-    imshow("Main Window", frame);
-    if(waitKey(30) >= 0) {
-        return(-1);
-    }
-
-    return 1;
+    return 0;
 }
 
 
@@ -286,7 +275,13 @@ bool loadCameraCalibration(string name, cv::Mat &cameraMatrix, cv::Mat distanceC
     return false;
 }
 
-
+/**
+ * @brief Save camera calibration matrix and distance coefficients to a yaml file 
+ * 
+ * @param cameraMatrix 
+ * @param distCoeffs 
+ * @return int 
+ */
 int storeCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs) {
     cv::FileStorage fs("CameraConfig.yaml", cv::FileStorage::WRITE);
     fs << "intriMat" << cameraMatrix;
@@ -297,6 +292,13 @@ int storeCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs) {
 
 
 
+/**
+ * @brief Read camera calibration matrix and distance coefficients from a yaml file
+ * 
+ * @param cameraMatrix 
+ * @param distCoeffs 
+ * @return int 
+ */
 int readCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs){
     cv::FileStorage fs("CameraConfig.yaml", cv::FileStorage::READ);
     fs ["intriMat"] >> cameraMatrix;
@@ -307,41 +309,26 @@ int readCameraConfig(cv::Mat &cameraMatrix, cv::Mat &distCoeffs){
     return 0;
 }
 
-vector<cv::Point3f> Generate3DPoints() {
-    vector<cv::Point3f> points;
 
-    float x, y, z;
 
-    // 8 corners of a cube
-
-    // +0.5 z face
-    z = .5;
-    x = .5; y = .5;
-    points.push_back(cv::Point3f(x, y, z));
-    y = -.5;
-    points.push_back(cv::Point3f(x, y, z));
-    x = -.5; y = .5;
-    points.push_back(cv::Point3f(x, y, z));
-    y = -.5;
-    points.push_back(cv::Point3f(x, y, z));
-
-    // -0.5 z face
-    z = -.5;
-    x = .5; y = .5;
-    points.push_back(cv::Point3f(x, y, z));
-    y = -.5;
-    points.push_back(cv::Point3f(x, y, z));
-    x = -.5; y = .5;
-    points.push_back(cv::Point3f(x, y, z));
-    y = -.5;
-    points.push_back(cv::Point3f(x, y, z));
-
-    // mid point
-    x = 0; y = 0; z = 0;
-    points.push_back(cv::Point3f(x, y, z));
-
-    return points;
+/**
+ * @brief Function to draw a cube 
+ * 
+ * @param points vector of world points to write to
+ * @param origin origin of the cube
+ * @param scale scale of the cube
+ * @param color color of the cube
+ * @return int 
+ */
+int draw_axes(std::vector<cv::Vec3f> &points, cv::Point3f origin, float scale){
+  points.push_back(cv::Point3f(0, 0, 0)); // origin 
+  points.push_back(cv::Point3f(0, 0, 1)); // z axis
+  points.push_back(cv::Point3f(1, 0, 0)); // x axis
+  points.push_back(cv::Point3f(0, 1, 0)); // y axis
+  return 0; 
 }
+
+
 
 
 

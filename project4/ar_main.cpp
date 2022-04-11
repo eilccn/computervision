@@ -27,7 +27,7 @@ using namespace cv;
 using namespace std;
 
 enum Filter {
-	CORNERS, AXES, OBJECT, ROBUST
+	CORNERS, AXES, OBJECT, ROBUST, ARUCO
 };
 
 int main( int argc, char *argv[] ) {
@@ -58,10 +58,8 @@ int main( int argc, char *argv[] ) {
     double rows = double(convertedImage.rows / 2);
     double data[3][3] = { {1, 0, col}, {0, 1, rows}, {0, 0, 1} };
     cv::Mat cameraMatrix = cv::Mat(3,3, CV_64FC1, &data);
-
-    //cv::Mat cameraMatrix = cv::Mat::eye(3, 3, CV_64F);
-    cv::Mat distanceCoeffs = cv::Mat::zeros(8, 1, CV_64FC1);
-
+    // distortion coefficients
+    cv::Mat distCoeffs = cv::Mat::zeros(8, 1, CV_64FC1);
     // extract paths of individual images 
     std::vector<Mat> savedImages; 
     // image points found by findChessboardCorners
@@ -71,9 +69,19 @@ int main( int argc, char *argv[] ) {
     // 3D world points, constructed
     std::vector<cv::Point3f> points; 
     // vector of vectors of 3D points for each checkerboard image
-    std::vector<std::vector<cv::Point3f> > pointList; 
+    std::vector<std::vector<cv::Point3f> > pointList(1); 
     // solvePnP rvecs and tvecs
-    cv::Mat rotation_values, translation_values;
+    cv::Mat rotation_values = cv::Mat::zeros(3, 1, CV_64FC1);
+    cv::Mat translation_values = cv::Mat::zeros(3, 1, CV_64FC1);
+    // create undistorted corners or image points
+    std::vector<cv::Point2f> imagePoints;
+    // initialize vector for projectPoints 3D cube image points output
+    std::vector<Point2f> cubeProjectedPoints; 
+    // initialize vector for projectPoints 3D axes image points output
+    std::vector<Point2f> axesProjectedPoints; 
+    // bool for solvePnP 
+    bool flag = false;
+
 
     // variables for image capture
 	char label[256]; // a string for image capture file
@@ -91,11 +99,7 @@ int main( int argc, char *argv[] ) {
         return(-1);
     }
 
-
-    // bool for solvePnP 
-    bool flag = false;
-
-    // create instance of filterState to keep track of states	
+    // create instance of filterState to keep track of state machine states	
 	Filter filterState = Filter::CORNERS;
 
     /* loop for various functions */
@@ -108,20 +112,30 @@ int main( int argc, char *argv[] ) {
             break;
         }
         
-
         /* detect and extract chessboard corners */
         bool found = false;
-        found = findChessboardCorners(frame, patternsize, corners, CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE);
+        cv::Mat gray;
+        cvtColor(frame, gray, COLOR_BGR2GRAY);
+        found = findChessboardCorners(gray, patternsize, corners, CALIB_CB_ADAPTIVE_THRESH | CALIB_CB_FAST_CHECK | CALIB_CB_NORMALIZE_IMAGE);
 
+
+        /**
+         * @brief if-else ladder for:
+         * CORNERS: finding, drawing, and pushing corners + pushing 3D world points
+         * AXES: drawing a 3D axes
+         * OBJECT: drawing a 3D object
+         * ROBUST: harris corner detection
+         * ARUCO: detect aruco markers
+         */
+
+        // CORNERS
         if (filterState == CORNERS) {
             if(found) {
                 cornerList.clear();
                 pointList.clear();
-                points.resize(0);
+                points.clear();
 
                 /* refine pixel coordinates of 2D points for more accurracy */
-                cv::Mat gray;
-                cvtColor(frame, gray, COLOR_BGR2GRAY);
                 cv::TermCriteria criteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 30, 0.001);
                 cv::cornerSubPix(gray, corners, cv::Size(11,11), cv::Size(-1,-1), criteria);
 
@@ -146,66 +160,163 @@ int main( int argc, char *argv[] ) {
             else {
                 convertedImage = frame;
             }
+        // AXES
         }
         else if (filterState == AXES) {
             if (found) {
+                axesProjectedPoints.clear();
+
                 // draw axes 
                 printf("Drawing (x,y,z) axes ...\n");
                 frame.copyTo(convertedImage);
 
                 // read calibration data
-                readCameraConfig(cameraMatrix, distanceCoeffs);
+                readCameraConfig(cameraMatrix, distCoeffs);
 
                 // draw corners
                 drawChessboardCorners(convertedImage, patternsize, corners, found);
 
-                // draw frame axes
-                cv::drawFrameAxes(convertedImage, cameraMatrix, distanceCoeffs, rotation_values, translation_values, 0.05f, 3);
+                // create undistorted corners or image points
+                undistortPoints(corners, imagePoints, cameraMatrix, distCoeffs);
+
+
+                //cout << "POINTS" << endl;
+                std::vector<Point3d> objp;
+                for(auto &i : points) {
+                    objp.push_back(i);
+                    //cout << i << endl;
+                }
+
+                //cout << "CORNERS" << endl;
+                std::vector<Point2d> imagep;
+                for(auto &j : imagePoints) {
+                    imagep.push_back(j);
+                    //cout << j << endl;
+                }
+                
+                
+                // draw 3D axes using projectPoints
+                std::vector<Point3f> axis;
+                axis.push_back(cv::Point3f(0.02, 0, 0));
+                axis.push_back(cv::Point3f(0, 0.02, 0));
+                axis.push_back(cv::Point3f(0, 0, -0.02));
+                
+
+                // solvePnP rvecs and tvecs
+                cv::Mat rvec; //= cv::Mat::zeros(3, 1, CV_64FC1);
+                cv::Mat tvec; //= cv::Mat::zeros(3, 1, CV_64FC1);
+
+                // solvePnP for finding rotation and translation values
+                solvePnP(objp, imagep, cameraMatrix, distCoeffs, rvec, tvec);
+                
+                
+                // projectPoints to find 2D world image points
+                projectPoints(axis, rvec, tvec, cameraMatrix, distCoeffs, axesProjectedPoints);
+
+                cout << "image points" << endl;
+                for (auto &n : axesProjectedPoints) {
+                    cout << n << endl;
+                }
+
+                // draw lines from origin corner to projected image points
+                cv::line(convertedImage, corners[0], axesProjectedPoints[0], {255,0,0}, 5);
+                cv::line(convertedImage, corners[0], axesProjectedPoints[1], {0,255,0}, 5);
+                cv::line(convertedImage, corners[0], axesProjectedPoints[2], {0,0,255}, 5);
+                
+                cout << "corner 8" << endl;
+                cout << corners[8] << endl;
+                cout << axesProjectedPoints[0] << endl;
+                
+                
+
+                // draw 3D axes using cv::drawFrameAxes
+                //cv::drawFrameAxes(convertedImage, cameraMatrix, distCoeffs, rvec, tvec, 0.2f, 3);
+
+                
+                // highlight corners 
+                cv::circle(convertedImage, corners[0], 30, {0, 255, 0}, FILLED, 5);
+                cv::circle(convertedImage, corners[8], 30, {0, 255, 0}, FILLED, 5);
+                cv::circle(convertedImage, corners[45], 30, {0, 255, 0}, FILLED, 5);
+                cv::circle(convertedImage, corners[53], 30, {0, 255, 0}, FILLED, 5);
                 
             }
+            else {
+                filterState = CORNERS;
+            }
+        // OBJECT
         }
         else if (filterState == OBJECT) {
-            /*
-            Mat pt1 = (Mat_<double>(3,1) << corners[0].x, corners[0].y, 1);
-            Mat pt2 = (Mat_<double>(3,1) << corners[0].x, corners[1].y, 1);
-            */
+            if (found) {
+                // draw a 3D cube
+                printf("Drawing cube ...\n");
+                frame.copyTo(convertedImage);
 
-            // Generate 3D points
-            vector<cv::Point3f> objectPoints = Generate3DPoints();
-            vector<cv::Point2f> imagePoints;
-            std::vector<cv::Point2f> projectedPoints;
-            cv::projectPoints(objectPoints, rotation_values, translation_values, cameraMatrix, distanceCoeffs, projectedPoints);
+                // read calibration data
+                readCameraConfig(cameraMatrix, distCoeffs);
 
-            frame.copyTo(convertedImage);
-            // Display the points in an image
-            //cv::Mat image(480, 640, CV_8UC3);
-            const uint black_r(0), black_g(0), black_b(0);
-            const uint silver_r(192), silver_g(192), silver_b(192);
-            // image = cv::Scalar(redVal,greenVal,blueVal);
-            //convertedImage = cv::Scalar(black_b, black_g, black_r);
-            // cv::viz::COLOR blk(cv::viz::Color::black());
-            cv::Vec3b color(silver_b, silver_g, silver_r);
-            for (unsigned int i = 0; i < projectedPoints.size(); ++i)
-            {
-                cout << "Project point " << objectPoints[i] << " to " << projectedPoints[i];
-                cv::Point2f pt = projectedPoints[i];
-                if (0<= (pt.x) && (pt.x) <= convertedImage.cols && 0<= (-pt.y) && (-pt.y) <= convertedImage.rows )
-                {
-                    unsigned int ix(std::floor(pt.x)), iy(std::ceil(-pt.y));
-                    cout << ", and set image.at(" << ix << ", " << iy << ") = " << color;
-                    convertedImage.at<cv::Vec3b>(iy, ix) = color;
-                }
-                cout << endl;
+                // draw corners
+                drawChessboardCorners(convertedImage, patternsize, corners, found);
+
+                // axis
+                std::vector<Point3f> cube;
+                cube.push_back(Point3f(0,0,0));
+                cube.push_back(Point3f(0,0.04,0));
+                cube.push_back(Point3f(0.04,0.04,0));
+                cube.push_back(Point3f(0.04,0,0));
+                cube.push_back(Point3f(-0.04,0,0));
+                cube.push_back(Point3f(0,0.04,-0.04));
+                cube.push_back(Point3f(0.04,0.04,-0.04));
+                cube.push_back(Point3f(0.04,0,-0.04));
+                
+
+                projectPoints(cube, rotation_values, translation_values, cameraMatrix, distCoeffs, cubeProjectedPoints);
+
+                //cv::drawContours(convertedImage, cubeProjectedPoints)
+            
             }
-
-
+            else {
+                filterState = CORNERS;
+            }
+        // ROBUST
         }
-        /*
+        // harris corner detection
         else if (filterState == ROBUST) {
+            int thresh = 200;
+            int max_thresh = 255;
+            int blockSize = 2;
+            int apertureSize = 3;
+            double k = 0.04;
 
+            //cv::Mat temp = Mat::zeros( frame.size(), CV_32FC1 );
+            Mat temp = Mat::zeros( frame.size(), CV_32FC1 );
+            cornerHarris( gray, temp, blockSize, apertureSize, k );
+            
+            Mat dst_norm;
+            normalize( temp, dst_norm, 0, 255, NORM_MINMAX, CV_32FC1, Mat() );
+            //convertScaleAbs( dst_norm, convertedImage );
+
+            for( int i = 0; i < dst_norm.rows ; i++ )
+            {
+                for( int j = 0; j < dst_norm.cols; j++ )
+                {
+                    if( (int) dst_norm.at<float>(i,j) > thresh )
+                    {
+                        circle( convertedImage, Point(j,i), 5, {255, 105, 235}, 10, 8, 0 );
+                    }
+                }
+            }
         }
-        */
+        // ARUCO
+        else if (filterState == ARUCO) {
+            // read saved calibration data 
+            readCameraConfig(cameraMatrix, distCoeffs);
 
+            // detect aruco markers
+            startWebcamMonitoring(convertedImage, cameraMatrix, distCoeffs, calibrationSquareDimension);
+        }
+                
+
+        // display video in its designated state (via keypress)
         imshow("Main Window", convertedImage);
 
         // wait for keypress
@@ -227,31 +338,36 @@ int main( int argc, char *argv[] ) {
                 printf("Image written: %s\n", buffer);
 
             }
+            else {
+                filterState = CORNERS;
+            }
         }
         else if (key == 'q') {
             // exit program
             quit=1;
         }
         else if (key == ' ') {
-            // turn flag on for solvePnP
+            // turn flag on for solvePnP (see code proceeding this if-else ladder)
             flag = true;
         }
         else if (key == 'f') {
-            // turn flag off for solvePnP
+            // turn flag off for solvePnP (see code proceeding this if-else ladder)
             flag = false;
         }
         else if (key == 'c') {
-            /* camera calibration */
+            // camera calibration
             printf("Calibrating ...\n");
             
             if(savedImages.size() > 5) { // require more than 5 images to be saved
                 // camera calibration function
-                cameraCalibration(savedImages, patternsize, calibrationSquareDimension, cameraMatrix, distanceCoeffs);
+                cameraCalibration(savedImages, patternsize, calibrationSquareDimension, cameraMatrix, distCoeffs);
+
                 // save data from calibration to file
-                storeCameraConfig(cameraMatrix, distanceCoeffs);
+                storeCameraConfig(cameraMatrix, distCoeffs);
             }
             else {
                 printf("Not enough images saved for calibration");
+                return -1;
             }
             
         }
@@ -271,13 +387,20 @@ int main( int argc, char *argv[] ) {
             // detect robust features
             filterState = ROBUST;
         }
+        else if (key == 'a') {
+            // detect aruco markers
+            filterState = ARUCO;
+        }
                 
 
         /* calculate board's pose (rotation and translation) */
         if (flag) {
             printf("Calculating board's pose (rotation and translation) ...\n");
             // read calibration data
-            readCameraConfig(cameraMatrix, distanceCoeffs);
+            readCameraConfig(cameraMatrix, distCoeffs);
+
+            // create undistorted corners or image points
+            undistortPoints(corners, imagePoints, cameraMatrix, distCoeffs);
 
 
             //cout << "POINTS" << endl;
@@ -289,13 +412,16 @@ int main( int argc, char *argv[] ) {
 
             //cout << "CORNERS" << endl;
             std::vector<Point2d> imagep;
-            for(auto &j : corners) {
+            for(auto &j : imagePoints) {
                 imagep.push_back(j);
                 //cout << j << endl;
             }
 
+            cout << "point size" << endl;
+            cout << objp.size() << endl;
+
             // calculate pose
-            solvePnP(objp, imagep, cameraMatrix, distanceCoeffs, rotation_values, translation_values, false, SOLVEPNP_ITERATIVE);
+            solvePnP(objp, cornerList[0], cameraMatrix, distCoeffs, rotation_values, translation_values, true, SOLVEPNP_ITERATIVE);
 
 
             // print rotation and translation values
@@ -303,8 +429,6 @@ int main( int argc, char *argv[] ) {
             cout << "T = " << endl << " "  << translation_values << endl << endl;
             
         }
-
-    
     }
 
     // terminate the video capture
@@ -313,4 +437,4 @@ int main( int argc, char *argv[] ) {
     return 0;
 }
     // find aruco markers
-    //startWebcamMonitoring(cameraMatrix, distanceCoeffs, 0.099f);
+    //startWebcamMonitoring(cameraMatrix, distCoeffs, 0.099f);
