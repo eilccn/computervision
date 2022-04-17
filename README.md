@@ -12,4 +12,3 @@ Project 4: Calibration and augmented reality
 
 Project 5: Recognition using deep networks
 
-Project 6: 
