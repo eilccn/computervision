@@ -10,7 +10,7 @@ https://wiki.khoury.northeastern.edu/x/u-V5Bg
 Mac OS and Visual Studio Code
 
 ### Instructions for running your executables.
-Open .py files in Visual Studio Code and run with 
+Open .py files in Visual Studio Code and run with needed extensions (i.e. Python Intellisense)
 
 ### Whether received an accommodation for the project or you are using one or more time travel days.
 Time travel days 
