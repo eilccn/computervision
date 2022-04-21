@@ -1,5 +1,6 @@
 # Eileen Chang
 # Project 5: Recognition Using Deep Networks
+# Functions File (includes main)
 
 # IMPORT STATEMENTS
 import sys
@@ -63,11 +64,11 @@ class Net(nn.Module):
         return F.log_softmax(x)
 
 # FUNCTIONS 
-
 # first 6 example digits
+examples = enumerate(test_loader)
+batch_idx, (example_data, example_targets) = next(examples)
+
 def example():
-  examples = enumerate(test_loader)
-  batch_idx, (example_data, example_targets) = next(examples)
 
   example_data.shape
   torch.Size([1000, 1, 28, 28])
@@ -84,18 +85,19 @@ def example():
   fig
   plt.show()
 
+# train the model
 # initialize network and optimizer
 network = Net()
 optimizer = optim.SGD(network.parameters(), lr=learning_rate,
                       momentum=momentum)
-
-# train the model
+# initialize training data
 train_losses = []
 train_counter = []
 test_losses = []
-test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)]
+test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)] 
 
 def train(epoch):
+  # train the model
   network.train()
   for batch_idx, (data, target) in enumerate(train_loader):
     optimizer.zero_grad()
@@ -163,9 +165,6 @@ def main(argv):
 
     # plot training curve
     training_curve()
-
-  
-
 
     return
 
