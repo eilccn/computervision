@@ -39,10 +39,6 @@ my_dataset = datasets.ImageFolder(root="./root/",
 dataset_loader = torch.utils.data.DataLoader(my_dataset,
         batch_size=batch_size_test, shuffle=True, num_workers=0)
 
-class_names = my_dataset.classes
-
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
 samples = enumerate(dataset_loader)
 batch_xyz, (sample_data, sample_targets) = next(samples)
 
@@ -61,10 +57,3 @@ for i in range(9):
     plt.yticks([])
 fig
 plt.show()
-
-for i in range(10):
-    print("Example {}".format(i+1))
-    print("Output Value: {}".format(
-    my_output.data.max(1, keepdim=True)[1][i].item()))
-    print("Correct Value: {}".format(
-    sample_targets[i]))
