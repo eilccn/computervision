@@ -5,20 +5,38 @@
 # IMPORT STATEMENTS
 from main import *
 
+# initialize new set of network and optimizers
+continued_network = Net()
+continued_optimizer = optim.SGD(network.parameters(), lr=learning_rate,
+                                momentum=momentum)
+
+# load the internal state of the network and optimizer when we last saved them
+network_state_dict = torch.load("/Users/eileenchang/computervision/project5/results/model.pth")
+continued_network.load_state_dict(network_state_dict)
+
+optimizer_state_dict = torch.load("/Users/eileenchang/computervision/project5/results/optimizer.pth")
+continued_optimizer.load_state_dict(optimizer_state_dict)
 
 with torch.no_grad():
-    output = network(example_data)
+  output = continued_network(example_data)
 
 fig = plt.figure()
 for i in range(9):
-  plt.subplot(3,3,i+1)
-  plt.tight_layout()
-  plt.imshow(example_data[i][0], cmap='gray', interpolation='none')
-  plt.title("Prediction: {}".format(
+    plt.subplot(3,3,i+1)
+    plt.tight_layout()
+    plt.imshow(example_data[i][0], cmap='gray', interpolation='none')
+    plt.title("Prediction: {}".format(
     output.data.max(1, keepdim=True)[1][i].item()))
-  plt.xticks([])
-  plt.yticks([])
+    plt.xticks([])
+    plt.yticks([])
 fig
 plt.show()
+
+for i in range(10):
+    print("Example {}".format(i+1))
+    print("Output Value: {}".format(
+    output.data.max(1, keepdim=True)[1][i].item()))
+    print("Correct Value: {}".format(
+    example_targets[i]))
 
 

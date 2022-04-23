@@ -45,6 +45,7 @@ test_loader = torch.utils.data.DataLoader(
   batch_size=batch_size_test, shuffle=True)
 
 # CLASS DEFINITIONS
+# TASK 1C: Build a network model
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -61,7 +62,7 @@ class Net(nn.Module):
         x = F.relu(self.fc1(x))
         x = F.dropout(x, training=self.training)
         x = self.fc2(x)
-        return F.log_softmax(x)
+        return F.log_softmax(x, -1)
 
 # FUNCTIONS 
 # first 6 example digits
@@ -85,7 +86,6 @@ def example():
   fig
   plt.show()
 
-# train the model
 # initialize network and optimizer
 network = Net()
 optimizer = optim.SGD(network.parameters(), lr=learning_rate,
@@ -96,8 +96,8 @@ train_counter = []
 test_losses = []
 test_counter = [i*len(train_loader.dataset) for i in range(n_epochs + 1)] 
 
+# train the model
 def train(epoch):
-  # train the model
   network.train()
   for batch_idx, (data, target) in enumerate(train_loader):
     optimizer.zero_grad()
@@ -112,7 +112,7 @@ def train(epoch):
       train_losses.append(loss.item())
       train_counter.append(
         (batch_idx*64) + ((epoch-1)*len(train_loader.dataset)))
-      torch.save(network.state_dict(), '/Users/eileenchang/computervision/project5/results/model.pth')
+      torch.save(network.state_dict(), '/Users/eileenchang/computervision/project5/results/model.pth') # TASK 1E: Save the network to a file
       torch.save(optimizer.state_dict(), '/Users/eileenchang/computervision/project5/results/optimizer.pth')
 
 # model training test loop
@@ -123,7 +123,7 @@ def test():
   with torch.no_grad():
     for data, target in test_loader:
       output = network(data)
-      test_loss += F.nll_loss(output, target, size_average=False).item()
+      test_loss += F.nll_loss(output, target, reduction='sum').item()
       pred = output.data.max(1, keepdim=True)[1]
       correct += pred.eq(target.data.view_as(pred)).sum()
   test_loss /= len(test_loader.dataset)
@@ -150,14 +150,14 @@ def main(argv):
 
     # main function code
 
-    # in order to make network repeatable set the random seed for the torch package
+    # TASK 1B: in order to make network repeatable set the random seed for the torch package
     torch.manual_seed(42) # remove this line if you want to create different networks
     torch.backends.cudnn.enabled = False # turn off CUDA
 
-    # plot first 6 example digits
+    # TASK 1A: plot first 6 example digits
     example()
 
-    # training model test loop
+    # TASK 1D: training model test loop
     test()
     for epoch in range(1, n_epochs + 1):
       train(epoch)
