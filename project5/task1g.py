@@ -42,7 +42,7 @@ def handwritten_test(root_path):
     samples = enumerate(dataset_loader)
     batch_xyz, (sample_data, sample_targets) = next(samples)
 
-    # run the handwritten digit data against the pre-trained network
+    # run the handwritten digit data against the trained network
     with torch.no_grad():
         my_output = continued_network2(sample_data)
 
@@ -62,6 +62,8 @@ def handwritten_test(root_path):
 
 # MAIN FUNCTION
 def main(argv):
+    
+    # test network on new input 
     handwritten_test("./root/")
     
     return
