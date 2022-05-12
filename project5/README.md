@@ -13,4 +13,4 @@ Mac OS and Visual Studio Code
 Open .py files in Visual Studio Code and run with needed extensions (i.e. Python Intellisense)
 
 ### Whether received an accommodation for the project or you are using one or more time travel days.
-Time travel days 
+Accommodations and time travel days 

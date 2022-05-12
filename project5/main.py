@@ -1,6 +1,6 @@
 # Eileen Chang
 # Project 5: Recognition Using Deep Networks
-# Functions File (includes main)
+# Tasks 1A-1E 
 
 # IMPORT STATEMENTS
 import sys
