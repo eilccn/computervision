@@ -20,6 +20,4 @@ Instructions for running your executables:
 4. Run the program by first entering "./project3" followed by the path to the csv file 
 5. Note: Every time you need to rebuild the program, the csv file needs to be manually deleted and recreated for it to build correctly.
 
-Whether received an accommodation for the project or you are using one or more time travel days:
 
-Late submission via "stuff happens" clause
