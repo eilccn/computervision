@@ -179,7 +179,6 @@ int main( int argc, char *argv[] ) {
                 // create undistorted corners or image points
                 undistortPoints(corners, imagePoints, cameraMatrix, distCoeffs);
 
-
                 //cout << "POINTS" << endl;
                 std::vector<Point3d> objp;
                 for(auto &i : points) {
@@ -203,12 +202,11 @@ int main( int argc, char *argv[] ) {
                 
 
                 // solvePnP rvecs and tvecs
-                cv::Mat rvec; //= cv::Mat::zeros(3, 1, CV_64FC1);
-                cv::Mat tvec; //= cv::Mat::zeros(3, 1, CV_64FC1);
+                cv::Mat rvec; 
+                cv::Mat tvec; 
 
                 // solvePnP for finding rotation and translation values
                 solvePnP(objp, imagep, cameraMatrix, distCoeffs, rvec, tvec);
-                
                 
                 // projectPoints to find 2D world image points
                 projectPoints(axis, rvec, tvec, cameraMatrix, distCoeffs, axesProjectedPoints);
@@ -227,7 +225,6 @@ int main( int argc, char *argv[] ) {
                 cout << corners[8] << endl;
                 cout << axesProjectedPoints[0] << endl;
                 
-                
 
                 // draw 3D axes using cv::drawFrameAxes
                 //cv::drawFrameAxes(convertedImage, cameraMatrix, distCoeffs, rvec, tvec, 0.2f, 3);
@@ -243,7 +240,7 @@ int main( int argc, char *argv[] ) {
             else {
                 filterState = CORNERS;
             }
-        // OBJECT
+        // 3D OBJECT
         }
         else if (filterState == OBJECT) {
             if (found) {
@@ -260,18 +257,41 @@ int main( int argc, char *argv[] ) {
                 // axis
                 std::vector<Point3f> cube;
                 cube.push_back(Point3f(0,0,0));
-                cube.push_back(Point3f(0,0.04,0));
-                cube.push_back(Point3f(0.04,0.04,0));
-                cube.push_back(Point3f(0.04,0,0));
-                cube.push_back(Point3f(-0.04,0,0));
-                cube.push_back(Point3f(0,0.04,-0.04));
-                cube.push_back(Point3f(0.04,0.04,-0.04));
-                cube.push_back(Point3f(0.04,0,-0.04));
+                cube.push_back(Point3f(0,0.02,0));
+                cube.push_back(Point3f(0.02,0.02,0));
+                cube.push_back(Point3f(0.02,0,0));
+                cube.push_back(Point3f(-0.02,0,0));
+                cube.push_back(Point3f(0,0.02,-0.02));
+                cube.push_back(Point3f(0.02,0.02,-0.02));
+                cube.push_back(Point3f(0.02,0,-0.02));
                 
 
-                projectPoints(cube, rotation_values, translation_values, cameraMatrix, distCoeffs, cubeProjectedPoints);
+                // create undistorted corners or image points
+                undistortPoints(corners, imagePoints, cameraMatrix, distCoeffs);
 
-                //cv::drawContours(convertedImage, cubeProjectedPoints)
+                //cout << "POINTS" << endl;
+                std::vector<Point3d> objp;
+                for(auto &i : points) {
+                    objp.push_back(i);
+                    //cout << i << endl;
+                }
+
+                //cout << "CORNERS" << endl;
+                std::vector<Point2d> imagep;
+                for(auto &j : imagePoints) {
+                    imagep.push_back(j);
+                    //cout << j << endl;
+                }
+                // solvePnP rvecs and tvecs
+                cv::Mat rvec; 
+                cv::Mat tvec; 
+
+                // solvePnP for finding rotation and translation values
+                solvePnP(objp, imagep, cameraMatrix, distCoeffs, rvec, tvec);
+
+                projectPoints(cube, rvec, tvec, cameraMatrix, distCoeffs, cubeProjectedPoints);
+
+                cv::drawContours(convertedImage, cubeProjectedPoints, -1, {0,255,0}, 3);
             
             }
             else {
