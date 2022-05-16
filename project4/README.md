@@ -13,6 +13,4 @@ Instructions for running your executables:
 3. Build "project4" using the "CMake Tools" extension
 4. Run the program by entering "./project4" 
 
-Whether received an accommodation for the project or you are using one or more time travel days:
 
-Time travel days
